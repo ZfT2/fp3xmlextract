@@ -1,4 +1,4 @@
-package de.fp3xmlextract.convert;
+package de.zft2.fp3xmlextract.convert;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -24,10 +24,10 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-import de.fp3xmlextract.data.BankAccount;
-import de.fp3xmlextract.data.Booking;
-import de.fp3xmlextract.data.Booking.SepaTyp;
-import de.fp3xmlextract.exception.ConfigurationException;
+import de.zft2.fp3xmlextract.data.BankAccount;
+import de.zft2.fp3xmlextract.data.Booking;
+import de.zft2.fp3xmlextract.data.Booking.SepaTyp;
+import de.zft2.fp3xmlextract.exception.ConfigurationException;
 
 public class Converter extends AccountProcessor {
 
@@ -42,8 +42,6 @@ public class Converter extends AccountProcessor {
 	private static final String TAG_BEZEICHNUNG = "BEZEICHNUNG";
 	private static final String TAG_KONTOSTAND = "KONTOSTAND";
 	
-//	private static Map<String,Collection<String>> accountNumbersMap = new HashMap<>();
-	
 	private ConverterConfig config;
 	
 	public ConverterConfig getConfig() {
@@ -57,14 +55,6 @@ public class Converter extends AccountProcessor {
 	public Converter() throws ConfigurationException {
 		
 		super();
-		
-//		for (Map.Entry<Object, Object> property : propsTransfer.entrySet()) {
-//
-//			String[] possibleIdentifiers = ((String) property.getValue()).split(";");
-//			String accountNamePP = ((String) property.getKey());
-//			
-//			accountNumbersMap.put(accountNamePP, Arrays.asList(possibleIdentifiers));
-//		}
 		
 		setConfig(new ConverterConfig(false, true));
 	}
@@ -350,7 +340,7 @@ public class Converter extends AccountProcessor {
 			booking.setSepaTyp(sepaTyp);
 		} else {
 			if (removeFromPurpose) {
-				if (remainingPurpose.length() > 0)
+				if (!remainingPurpose.isEmpty())
 					remainingPurpose.append("  ");
 				remainingPurpose.append(sepaField.replace("SVWZ+", ""));
 			}

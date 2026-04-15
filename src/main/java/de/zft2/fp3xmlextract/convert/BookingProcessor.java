@@ -1,4 +1,4 @@
-package de.fp3xmlextract.convert;
+package de.zft2.fp3xmlextract.convert;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -17,12 +17,12 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import de.fp3xmlextract.config.Fp3xmlextractProperties;
-import de.fp3xmlextract.data.BankAccount;
-import de.fp3xmlextract.data.Booking;
-import de.fp3xmlextract.data.Booking.Typ;
-import de.fp3xmlextract.exception.AccountException;
-import de.fp3xmlextract.exception.ConfigurationException;
+import de.zft2.fp3xmlextract.config.Fp3xmlextractProperties;
+import de.zft2.fp3xmlextract.data.BankAccount;
+import de.zft2.fp3xmlextract.data.Booking;
+import de.zft2.fp3xmlextract.data.Booking.Typ;
+import de.zft2.fp3xmlextract.exception.AccountException;
+import de.zft2.fp3xmlextract.exception.ConfigurationException;
 
 public class BookingProcessor extends AccountProcessor {
 

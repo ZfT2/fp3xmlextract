@@ -1,4 +1,4 @@
-package de.fp3xmlextract.data;
+package de.zft2.fp3xmlextract.data;
 
 import java.math.BigDecimal;
 import java.util.List;

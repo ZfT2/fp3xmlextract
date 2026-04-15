@@ -1,4 +1,4 @@
-package de.fp3xmlextract.config;
+package de.zft2.fp3xmlextract.config;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;

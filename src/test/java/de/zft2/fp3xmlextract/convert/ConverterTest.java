@@ -1,4 +1,4 @@
-package de.fp3xmlextract.convert;
+package de.zft2.fp3xmlextract.convert;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -12,11 +12,11 @@ import java.util.Iterator;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import de.fp3xmlextract.data.BankAccount;
-import de.fp3xmlextract.data.Booking;
-import de.fp3xmlextract.data.Booking.SepaTyp;
-import de.fp3xmlextract.data.Booking.Typ;
-import de.fp3xmlextract.exception.ConfigurationException;
+import de.zft2.fp3xmlextract.data.BankAccount;
+import de.zft2.fp3xmlextract.data.Booking;
+import de.zft2.fp3xmlextract.data.Booking.SepaTyp;
+import de.zft2.fp3xmlextract.data.Booking.Typ;
+import de.zft2.fp3xmlextract.exception.ConfigurationException;
 
 class ConverterTest {
 

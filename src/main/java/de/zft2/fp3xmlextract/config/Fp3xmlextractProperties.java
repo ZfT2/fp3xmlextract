@@ -1,4 +1,4 @@
-package de.fp3xmlextract.config;
+package de.zft2.fp3xmlextract.config;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -24,7 +24,7 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import de.fp3xmlextract.exception.ConfigurationException;
+import de.zft2.fp3xmlextract.exception.ConfigurationException;
 
 public class Fp3xmlextractProperties extends Properties {
 

@@ -1,6 +1,6 @@
-package de.fp3xmlextract.dto;
+package de.zft2.fp3xmlextract.dto;
 
-import de.fp3xmlextract.data.Booking;
+import de.zft2.fp3xmlextract.data.Booking;
 
 public class CrossBookingPair {
 

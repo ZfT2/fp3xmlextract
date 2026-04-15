@@ -1,4 +1,4 @@
-package de.fp3xmlextract.exception;
+package de.zft2.fp3xmlextract.exception;
 
 import java.io.FileNotFoundException;
 

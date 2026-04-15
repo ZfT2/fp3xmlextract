@@ -1,4 +1,4 @@
-package de.fp3xmlextract.convert;
+package de.zft2.fp3xmlextract.convert;
 
 public class ConverterConfig {
 

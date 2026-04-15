@@ -1,4 +1,4 @@
-package de.fp3xmlextract.convert;
+package de.zft2.fp3xmlextract.convert;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -11,9 +11,9 @@ import java.util.stream.Stream;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import de.fp3xmlextract.config.Fp3xmlextractProperties;
-import de.fp3xmlextract.data.BankAccount;
-import de.fp3xmlextract.exception.ConfigurationException;
+import de.zft2.fp3xmlextract.config.Fp3xmlextractProperties;
+import de.zft2.fp3xmlextract.data.BankAccount;
+import de.zft2.fp3xmlextract.exception.ConfigurationException;
 
 public abstract class AccountProcessor {
 	
@@ -79,7 +79,7 @@ public abstract class AccountProcessor {
 				log.info("Found already transfer property for account {} in file, so skipping default.", accountDescription);
 				continue;
 			}
-			Set<String> identifiersSet = new HashSet<String>();
+			Set<String> identifiersSet = new HashSet<>();
 			if (account.getIban() != null) {
 				identifiersSet.add(account.getIban());
 				if (account.getIban().length() > 10) {
@@ -106,36 +106,6 @@ public abstract class AccountProcessor {
 
 		log.info("created/added default transfer properties with size: {}", propsTransfer.size());
 		return result;
-
-//		if (!propsTransfer.isEmpty()) {
-//			log.info("Transfer properties found, size: {}", propsTransfer.size());
-//			return false;
-//		}
-//		log.info("no transfer properties found, creating default...");
-//		for (BankAccount account : accountList) {
-//			String identifiersStringList = null;
-//			if (account.getIban() != null) {
-//				identifiersStringList = String.join(";", account.getIban());
-//				if (account.getIban().length() > 10) {
-//					identifiersStringList = String.join(";", identifiersStringList, account.getIban().substring(account.getIban().length() - 10));
-//				}
-//			}
-//			if (account.getNumber() != null) {
-//				identifiersStringList = String.join(";", identifiersStringList, account.getNumber(), account.getNumber().replaceFirst("^0+(?!$)", ""));
-//			}
-//			if (identifiersStringList != null) {
-//				propsTransfer.put(account.getBezeichnung(), identifiersStringList);
-//			}
-//		}
-//		
-//		for (Map.Entry<Object, Object> property : propsAccount.entrySet()) {
-//			String possibleIdentifiers = ((String) property.getValue());
-//			String accountNamePP = ((String) property.getKey());
-//			propsTransfer.put(accountNamePP, possibleIdentifiers);
-//		}
-//		
-//		log.info("created default transfer properties with size: {}", propsTransfer.size());
-//		return true;
 	}
 
 }
