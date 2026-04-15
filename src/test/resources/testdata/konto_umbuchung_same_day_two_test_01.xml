@@ -1,0 +1,79 @@
+<KONTEN>
+<KONTO>
+    <BEZEICHNUNG>yy Stadtsparkasse K</BEZEICHNUNG>
+    <KONTOART>Girokonto</KONTOART>
+    <KONTONR>1061525816</KONTONR>
+    <BLZ>19070574</BLZ>
+    <BANKNAME>Sparkasse KB</BANKNAME>
+    <WAEHRUNG>EUR</WAEHRUNG>
+    <KONTOBUCH>
+        <BUCHUNG>
+            <DATUM>27.01.06</DATUM>
+            <VALUTA>27.01.06</VALUTA>
+            <EMPFAENGER>
+                <NAME>MAX MUSTER</NAME>
+                <BLZ>90440500</BLZ>
+                <KONTONR>7004277541</KONTONR>
+                <BANKNAME>B-Bank, M-Stadt</BANKNAME>
+            </EMPFAENGER>
+            <ZWECK>SDIREKT-UEBERWEISUNG  EINZAHLUNG 1-2 / 2006  DATUM 27.01.2006, 15.06 UHR  1.TAN 593508</ZWECK>
+            <BETRAG>-200,00</BETRAG>
+            <WAEHRUNG>EUR</WAEHRUNG>
+            <QUELLE>0</QUELLE>
+        </BUCHUNG>
+		<BUCHUNG>
+            <DATUM>31.01.06</DATUM>
+            <VALUTA>31.01.06</VALUTA>
+            <EMPFAENGER>
+                <NAME>MAX MUSTER</NAME>
+                <BLZ>90440500</BLZ>
+                <KONTONR>7004277541</KONTONR>
+                <BANKNAME>B-Bank, M-Stadt</BANKNAME>
+            </EMPFAENGER>
+            <ZWECK>SDIREKT-UEBERWEISUNG  EINZAHLUNG 3 / 2006  DATUM 31.01.2006, 02.38 UHR  1.TAN 003608</ZWECK>
+            <BETRAG>-200,00</BETRAG>
+            <WAEHRUNG>EUR</WAEHRUNG>
+            <QUELLE>0</QUELLE>
+        </BUCHUNG>
+    </KONTOBUCH>
+</KONTO>
+<KONTO>
+    <BEZEICHNUNG>Tagesgeld B-Bank  - 7004277541</BEZEICHNUNG>
+    <KONTOART>Sparbuch</KONTOART>
+    <KONTONR>7004277541</KONTONR>
+    <BLZ>90440500</BLZ>
+    <BANKNAME>B-Bank, M-Stadt</BANKNAME>
+    <WAEHRUNG>EUR</WAEHRUNG>
+    <KONTOSTAND>77,94</KONTOSTAND>
+    <KONTOBUCH>
+        <BUCHUNG>
+            <DATUM>27.01.06</DATUM>
+            <VALUTA>27.01.06</VALUTA>
+            <EMPFAENGER>
+                <NAME>MAX MUSTER</NAME>
+                <BLZ>19070574</BLZ>
+                <KONTONR>1061525816</KONTONR>
+                <BANKNAME>Sparkasse KB</BANKNAME>
+            </EMPFAENGER>
+            <ZWECK>SDIREKT-UEBERWEISUNG  EINZAHLUNG 1-2 / 2006  DATUM 27.01.2006, 15.06 UHR  1.TAN 593508</ZWECK>
+            <BETRAG>200,00</BETRAG>
+            <WAEHRUNG>EUR</WAEHRUNG>
+            <QUELLE>0</QUELLE>
+        </BUCHUNG>
+		<BUCHUNG>
+            <DATUM>31.01.06</DATUM>
+            <VALUTA>31.01.06</VALUTA>
+            <EMPFAENGER>
+                <NAME>MAX MUSTER</NAME>
+                <BLZ>19070574</BLZ>
+                <KONTONR>1061525816</KONTONR>
+                <BANKNAME>Sparkasse KB</BANKNAME>
+            </EMPFAENGER>
+            <ZWECK>SDIREKT-UEBERWEISUNG  EINZAHLUNG 3 / 2006  DATUM 31.01.2006, 02.38 UHR  1.TAN 003608</ZWECK>
+            <BETRAG>200,00</BETRAG>
+            <WAEHRUNG>EUR</WAEHRUNG>
+            <QUELLE>0</QUELLE>
+        </BUCHUNG>
+    </KONTOBUCH>
+</KONTO>
+</KONTEN>

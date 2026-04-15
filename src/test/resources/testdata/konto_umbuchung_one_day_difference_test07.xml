@@ -1,0 +1,54 @@
+<KONTEN>
+	<KONTO>
+		<BEZEICHNUNG>K-Cash - 18884058</BEZEICHNUNG>
+		<KONTOART>Girokonto</KONTOART>
+		<IBAN>DE30120300000018884058</IBAN>
+		<BIC>LADENEM1001</BIC>
+		<KONTONR>18884058</KONTONR>
+		<BLZ>12030000</BLZ>
+		<BANKNAME>Deutsche Kbank H-Stadt</BANKNAME>
+		<WAEHRUNG>EUR</WAEHRUNG>
+		<KONTOBUCH>
+			<BUCHUNG>
+            <DATUM>02.02.10</DATUM>
+            <VALUTA>02.02.10</VALUTA>
+            <EMPFAENGER>
+                <NAME>MAX MUSTER</NAME>
+                <BLZ>50010517</BLZ>
+                <KONTONR>990651720</KONTONR>
+                <BANKNAME>Direktbank A Stadt 2</BANKNAME>
+            </EMPFAENGER>
+            <ZWECK>AG D-Bank 01-10  UEBERWEISUNGSGUTSCHRIFT</ZWECK>
+            <BETRAG>25518,14</BETRAG>
+            <WAEHRUNG>EUR</WAEHRUNG>
+            <QUELLE>0</QUELLE>
+        </BUCHUNG>
+		</KONTOBUCH>
+	</KONTO>
+	<KONTO>
+		<BEZEICHNUNG>ES-Konto - 0990651720</BEZEICHNUNG>
+    <KONTOART>Girokonto</KONTOART>
+    <IBAN>DE71500105170990651720</IBAN>
+    <BIC>DEFDDEFFXXX</BIC>
+    <KONTONR>0990651720</KONTONR>
+    <BLZ>50010517</BLZ>
+    <BANKNAME>Direktbank A Stadt 2</BANKNAME>
+    <WAEHRUNG>EUR</WAEHRUNG>
+    <KONTOBUCH>
+			<BUCHUNG>
+            <DATUM>01.02.10</DATUM>
+            <VALUTA>01.02.10</VALUTA>
+            <EMPFAENGER>
+                <NAME>MAX MUSTER</NAME>
+                <BLZ>12030000</BLZ>
+                <KONTONR>0018884058</KONTONR>
+                <BANKNAME>Deutsche Kbank H-Stadt</BANKNAME>
+            </EMPFAENGER>
+            <ZWECK>AG D-Bank 01-10  Überweisung</ZWECK>
+            <BETRAG>-25518,14</BETRAG>
+            <WAEHRUNG>EUR</WAEHRUNG>
+            <QUELLE>0</QUELLE>
+        </BUCHUNG>
+		</KONTOBUCH>
+	</KONTO>
+</KONTEN>

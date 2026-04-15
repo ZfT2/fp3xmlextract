@@ -1,0 +1,83 @@
+<KONTEN>
+	<KONTO>
+    <BEZEICHNUNG>Kontokorrent - 200174051</BEZEICHNUNG>
+    <KONTOART>Girokonto</KONTOART>
+    <IBAN>DE92500617410200174051</IBAN>
+    <BIC>GENODE99ABC</BIC>
+    <KONTONR>200174051</KONTONR>
+    <BLZ>50061741</BLZ>
+    <BANKNAME>Raiffeisenbank A, Stadt 1..</BANKNAME>
+    <WAEHRUNG>EUR</WAEHRUNG>
+    <KONTOSTAND>114,15</KONTOSTAND>
+    <KONTOBUCH>
+    <BUCHUNG>
+            <DATUM>15.01.24</DATUM>
+            <VALUTA>15.01.24</VALUTA>
+            <EMPFAENGER>
+                <NAME>Max Muster</NAME>
+                <BIC>KTBADEFFXXX</BIC>
+                <IBAN>DE79701308000004751027</IBAN>
+                <BANKNAME>M Privatbank, M-Stadt</BANKNAME>
+            </EMPFAENGER>
+            <ZWECK>Kundenref.: 0200174051/000000002/  V00001  Purpose: RINP  EndtoEnd: NOTPROVIDED  Vers. PKV Abschlag / DA-2  IBAN: DE79701308000004751027 BIC: KTBADEFFXXX  DAUERAUFTRAG</ZWECK>
+            <BETRAG>-900,00</BETRAG>
+            <WAEHRUNG>EUR</WAEHRUNG>
+            <QUELLE>0</QUELLE>
+        </BUCHUNG>
+			<BUCHUNG>
+            <DATUM>16.01.24</DATUM>
+            <VALUTA>16.01.24</VALUTA>
+            <EMPFAENGER>
+                <NAME>Max Muster</NAME>
+                <IBAN>DE79701308000004751027</IBAN>
+                <BANKNAME>M Privatbank, M-Stadt</BANKNAME>
+            </EMPFAENGER>
+            <ZWECK>EndtoEnd: NOTPROVIDED  Retoure SEPA Ueberweisung vom 15.01.2024, Rueckgabegrund: AC01 IBAN fehlerhaft und ungültig SVWZ: RETURN, Vers. PKV Abschlag IBAN: DE79701308000004751027 BIC: KTBADEFFXXX  RETOUREN</ZWECK>
+            <BETRAG>900,00</BETRAG>
+            <WAEHRUNG>EUR</WAEHRUNG>
+            <QUELLE>0</QUELLE>
+        </BUCHUNG>
+        <BUCHUNG>
+            <DATUM>19.01.24</DATUM>
+            <VALUTA>19.01.24</VALUTA>
+            <EMPFAENGER>
+                <NAME>Max Muster</NAME>
+                <BIC>GENODEF1M06</BIC>
+                <IBAN>DE79701308000004751027</IBAN>
+                <BANKNAME>M Privatbank, M-Stadt</BANKNAME>
+            </EMPFAENGER>
+            <ZWECK>Kundenref.: 0200174051/000000002/  V00002  Purpose: RINP  EndtoEnd: NOTPROVIDED  Vers. PKV Abschlag / DA-2  IBAN: DE79701308000004751027 BIC: GENODEF1M06  DAUERAUFTRAG</ZWECK>
+            <BETRAG>-900,00</BETRAG>
+            <WAEHRUNG>EUR</WAEHRUNG>
+            <QUELLE>0</QUELLE>
+        </BUCHUNG>
+		</KONTOBUCH>
+	</KONTO>
+	<KONTO>
+    <BEZEICHNUNG>Kontokorrent - 4751027</BEZEICHNUNG>
+    <KONTOART>Sparbuch</KONTOART>
+    <IBAN>DE79701308000004751027</IBAN>
+    <BIC>GENODEF1M06</BIC>
+    <KONTONR>4751027</KONTONR>
+    <BLZ>70130800</BLZ>
+    <BANKNAME>M Privatbank, M-Stadt</BANKNAME>
+    <WAEHRUNG>EUR</WAEHRUNG>
+    <KONTOSTAND>4300,00</KONTOSTAND>
+    <KONTOBUCH>
+			<BUCHUNG>
+            <DATUM>19.01.24</DATUM>
+            <VALUTA>19.01.24</VALUTA>
+            <EMPFAENGER>
+                <NAME>Max Muster</NAME>
+                <BIC>GENODE99ABC</BIC>
+                <IBAN>DE92500617410200174051</IBAN>
+                <BANKNAME>Raiffeisenbank A, Stadt 1..</BANKNAME>
+            </EMPFAENGER>
+            <ZWECK>Purpose: RINP  EndtoEnd: NOTPROVIDED  Vers. PKV Abschlag  DAUERAUFTRAG</ZWECK>
+            <BETRAG>900,00</BETRAG>
+            <WAEHRUNG>EUR</WAEHRUNG>
+            <QUELLE>0</QUELLE>
+        </BUCHUNG>
+		</KONTOBUCH>
+	</KONTO>
+</KONTEN>

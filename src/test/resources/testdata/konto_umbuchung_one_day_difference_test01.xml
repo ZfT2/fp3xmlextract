@@ -1,0 +1,54 @@
+<KONTEN>
+<KONTO>
+    <BEZEICHNUNG>Kontokorrent - 200174051</BEZEICHNUNG>
+    <KONTOART>Girokonto</KONTOART>
+    <IBAN>DE92500617410200174051</IBAN>
+    <BIC>GENODE99ABC</BIC>
+    <KONTONR>200174051</KONTONR>
+    <BLZ>50061741</BLZ>
+    <BANKNAME>Raiffeisenbank A, Stadt 1..</BANKNAME>
+    <WAEHRUNG>EUR</WAEHRUNG>
+    <KONTOSTAND>18,41</KONTOSTAND>
+    <KONTOBUCH>
+        <BUCHUNG>
+            <DATUM>22.05.24</DATUM>
+            <VALUTA>22.05.24</VALUTA>
+            <EMPFAENGER>
+                <NAME>Max Zweitname Drittname Mustermann</NAME>
+                <BIC>KTBADEFF</BIC>
+                <IBAN>DE55500150010006290050</IBAN>
+            </EMPFAENGER>
+            <ZWECK>EndtoEnd: NOTPROVIDED  Auszahlung 022 KT Direktbank  UEBERWEISUNG</ZWECK>
+            <BETRAG>100,00</BETRAG>
+            <WAEHRUNG>EUR</WAEHRUNG>
+            <QUELLE>0</QUELLE>
+        </BUCHUNG>
+    </KONTOBUCH>
+</KONTO>
+<KONTO>
+    <BEZEICHNUNG>Termineinlage - 6290050</BEZEICHNUNG>
+    <KONTOART>Sparbuch</KONTOART>
+    <IBAN>DE55500150010006290050</IBAN>
+    <BIC>KTBADEFFXXX</BIC>
+    <KONTONR>6290050</KONTONR>
+    <BLZ>50015001</BLZ>
+    <WAEHRUNG>EUR</WAEHRUNG>
+    <KONTOSTAND>424,56</KONTOSTAND>
+    <KONTOBUCH>
+        <BUCHUNG>
+            <DATUM>21.05.24</DATUM>
+            <VALUTA>21.05.24</VALUTA>
+            <EMPFAENGER>
+                <NAME>Max Muster</NAME>
+                <BIC>GENODE99ABC</BIC>
+                <IBAN>DE92500617410200174051</IBAN>
+                <BANKNAME>Raiffeisenbank A, Stadt 1..</BANKNAME>
+            </EMPFAENGER>
+            <ZWECK>Kundenref.: Payment-Information-ID-3390  EndtoEnd: NOTPROVIDED  Auszahlung 022 KT Direktbank TAN1:446213 IBAN: DE92500617410200174051 BIC: GENODE99ABC  Überweisungsauftrag</ZWECK>
+            <BETRAG>-100,00</BETRAG>
+            <WAEHRUNG>EUR</WAEHRUNG>
+            <QUELLE>0</QUELLE>
+        </BUCHUNG>
+    </KONTOBUCH>
+</KONTO>
+</KONTEN>

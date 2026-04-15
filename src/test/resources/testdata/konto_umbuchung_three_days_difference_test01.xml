@@ -1,0 +1,55 @@
+<KONTEN>
+	<KONTO>
+		<BEZEICHNUNG>K-Cash - 18884058</BEZEICHNUNG>
+		<KONTOART>Girokonto</KONTOART>
+		<IBAN>DE30120300000018884058</IBAN>
+		<BIC>LADENEM1001</BIC>
+		<KONTONR>18884058</KONTONR>
+		<BLZ>12030000</BLZ>
+		<BANKNAME>Deutsche Kbank H-Stadt</BANKNAME>
+		<WAEHRUNG>EUR</WAEHRUNG>
+		<KONTOBUCH>
+			<BUCHUNG>
+            <DATUM>12.04.19</DATUM>
+            <VALUTA>12.04.19</VALUTA>
+            <EMPFAENGER>
+                <NAME>Max Muster</NAME>
+                <BIC>BODADEF2XXX</BIC>
+                <IBAN>DE98501234000126541100</IBAN>
+                <BANKNAME>VTB Bank (Europe) Zndl Frankfurt am Ma..</BANKNAME>
+            </EMPFAENGER>
+            <ZWECK>Purpose: RINP  Vers. PKV Abschlag  DAUERAUFTRAG</ZWECK>
+            <BETRAG>-616,00</BETRAG>
+            <WAEHRUNG>EUR</WAEHRUNG>
+            <KATEGORIE>Umbuchung Sparkonten:PKV Abschlag</KATEGORIE>
+            <QUELLE>0</QUELLE>
+        </BUCHUNG>
+		</KONTOBUCH>
+	</KONTO>
+	<KONTO>
+    <BEZEICHNUNG>Tagesgeldkonto - 126541100</BEZEICHNUNG>
+    <KONTOART>Sparbuch</KONTOART>
+    <IBAN>DE98501234000126541100</IBAN>
+    <BIC>BODADEF2XXX</BIC>
+    <KONTONR>126541100</KONTONR>
+    <BLZ>50123400</BLZ>
+    <BANKNAME>V-Bank (A), Zweig, F-Stadt..</BANKNAME>
+    <WAEHRUNG>EUR</WAEHRUNG>
+    <KONTOBUCH>
+			<BUCHUNG>
+            <DATUM>15.04.19</DATUM>
+            <VALUTA>15.04.19</VALUTA>
+            <EMPFAENGER>
+                <NAME>Max Muster</NAME>
+                <BIC>LADENEM1001</BIC>
+                <IBAN>DE30120300000018884058</IBAN>
+                <BANKNAME>Deutsche Kbank H-Stadt</BANKNAME>
+            </EMPFAENGER>
+            <ZWECK>Purpose: RINP  EndtoEnd: NOTPROVIDED  Vers. PKV Abschlag Dauerauftrag-Gutschrift  Summenbeleg</ZWECK>
+            <BETRAG>616,00</BETRAG>
+            <WAEHRUNG>EUR</WAEHRUNG>
+            <QUELLE>0</QUELLE>
+        </BUCHUNG>
+		</KONTOBUCH>
+	</KONTO>
+</KONTEN>

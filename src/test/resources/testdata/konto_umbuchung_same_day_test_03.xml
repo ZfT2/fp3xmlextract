@@ -1,0 +1,64 @@
+<KONTEN>
+	<KONTO>
+    <BEZEICHNUNG>yy C-Bank</BEZEICHNUNG>
+    <KONTOART>Girokonto</KONTOART>
+    <IBAN>DE96370400440100657000</IBAN>
+    <BIC>DOBADEFFXXX</BIC>
+    <KONTONR>100657000</KONTONR>
+    <BLZ>37040044</BLZ>
+    <BANKNAME>C-Bank, K-Stadt</BANKNAME>
+    <WAEHRUNG>EUR</WAEHRUNG>
+    <KONTOBUCH>
+			<BUCHUNG>
+            <DATUM>06.03.06</DATUM>
+            <VALUTA>06.03.06</VALUTA>
+            <EMPFAENGER>
+                <BLZ>90440500</BLZ>
+                <KONTONR>7004277541</KONTONR>
+                <BANKNAME>B-Bank, M-Stadt</BANKNAME>
+            </EMPFAENGER>
+            <ZWECK>Einzahlung COMB (C-Bank)</ZWECK>
+            <BETRAG>-100,00</BETRAG>
+            <WAEHRUNG>EUR</WAEHRUNG>
+            <QUELLE>0</QUELLE>
+        </BUCHUNG>
+		</KONTOBUCH>
+	</KONTO>
+	<KONTO>
+    <BEZEICHNUNG>Tagesgeld B-Bank  - 7004277541</BEZEICHNUNG>
+    <KONTOART>Sparbuch</KONTOART>
+    <KONTONR>7004277541</KONTONR>
+    <BLZ>90440500</BLZ>
+    <BANKNAME>B-Bank, M-Stadt</BANKNAME>
+    <WAEHRUNG>EUR</WAEHRUNG>
+    <KONTOSTAND>77,94</KONTOSTAND>
+    <KONTOBUCH>
+        <BUCHUNG>
+            <DATUM>03.03.06</DATUM>
+            <VALUTA>03.03.06</VALUTA>
+            <EMPFAENGER>
+                <NAME>MAX MUSTER</NAME>
+                <BLZ>19070574</BLZ>
+                <KONTONR>1061525816</KONTONR>
+                <BANKNAME>Sparkasse KB</BANKNAME>
+            </EMPFAENGER>
+            <ZWECK>SDIREKT-UEBERWEISUNG  EINZAHLUNG  DATUM 02.03.2006, 21.17 UHR  1.TAN 701120</ZWECK>
+            <BETRAG>100,00</BETRAG>
+            <WAEHRUNG>EUR</WAEHRUNG>
+            <QUELLE>0</QUELLE>
+        </BUCHUNG>
+        <BUCHUNG>
+            <DATUM>06.03.06</DATUM>
+            <EMPFAENGER>
+                <BLZ>37040044</BLZ>
+                <KONTONR>0100657000</KONTONR>
+                <BANKNAME>C-Bank, K-Stadt</BANKNAME>
+            </EMPFAENGER>
+            <ZWECK>Einzahlung COMB (C-Bank)</ZWECK>
+            <BETRAG>100,00</BETRAG>
+            <WAEHRUNG>EUR</WAEHRUNG>
+            <QUELLE>0</QUELLE>
+        </BUCHUNG>
+    </KONTOBUCH>
+</KONTO>
+</KONTEN>

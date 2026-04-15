@@ -1,0 +1,55 @@
+<KONTEN>
+<KONTO>
+    <BEZEICHNUNG>Kontokorrent - 200174051</BEZEICHNUNG>
+    <KONTOART>Girokonto</KONTOART>
+    <IBAN>DE92500617410200174051</IBAN>
+    <BIC>GENODE99ABC</BIC>
+    <KONTONR>200174051</KONTONR>
+    <BLZ>50061741</BLZ>
+    <BANKNAME>Raiffeisenbank A, Stadt 1..</BANKNAME>
+    <WAEHRUNG>EUR</WAEHRUNG>
+    <KONTOSTAND>18,41</KONTOSTAND>
+    <KONTOBUCH>
+        <BUCHUNG>
+            <DATUM>03.04.24</DATUM>
+            <VALUTA>03.04.24</VALUTA>
+            <EMPFAENGER>
+                <NAME>MAX MUSTER</NAME>
+                <BIC>LADENEM1001</BIC>
+                <IBAN>DE30120300000018884058</IBAN>
+                <BANKNAME>Deutsche Kbank H-Stadt</BANKNAME>
+            </EMPFAENGER>
+            <ZWECK>EndtoEnd: NOTPROVIDED  Einzahlung 0002 VR-HT EineBank Giro  UEBERWEISUNG</ZWECK>
+            <BETRAG>34,19</BETRAG>
+            <WAEHRUNG>EUR</WAEHRUNG>
+            <QUELLE>0</QUELLE>
+        </BUCHUNG>
+    </KONTOBUCH>
+</KONTO>
+<KONTO>
+		<BEZEICHNUNG>K-Cash - 18884058</BEZEICHNUNG>
+		<KONTOART>Girokonto</KONTOART>
+		<IBAN>DE30120300000018884058</IBAN>
+		<BIC>LADENEM1001</BIC>
+		<KONTONR>18884058</KONTONR>
+		<BLZ>12030000</BLZ>
+		<BANKNAME>Deutsche Kbank H-Stadt</BANKNAME>
+		<WAEHRUNG>EUR</WAEHRUNG>
+		<KONTOBUCH>
+			<BUCHUNG>
+            <DATUM>02.04.24</DATUM>
+            <VALUTA>02.04.24</VALUTA>
+            <EMPFAENGER>
+                <NAME>Max Muster</NAME>
+                <BIC>GENODE99ABC</BIC>
+                <IBAN>DE92500617410200174051</IBAN>
+                <BANKNAME>Raiffeisenbank A, Stadt 1..</BANKNAME>
+            </EMPFAENGER>
+            <ZWECK>Kundenref.: Payment-Information-ID  -5089  Einzahlung 0002 VR-HT  EineBank Giro  DATUM 28.03.2024, 23.05 UHR  ONLINE-UEBERWEISUNG</ZWECK>
+            <BETRAG>-34,19</BETRAG>
+            <WAEHRUNG>EUR</WAEHRUNG>
+            <QUELLE>0</QUELLE>
+        </BUCHUNG>
+		</KONTOBUCH>
+	</KONTO>
+</KONTEN>

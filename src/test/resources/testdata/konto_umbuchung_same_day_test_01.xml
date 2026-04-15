@@ -1,0 +1,55 @@
+<KONTEN>
+<KONTO>
+    <BEZEICHNUNG>Kontokorrent - 200174051</BEZEICHNUNG>
+    <KONTOART>Girokonto</KONTOART>
+    <IBAN>DE92500617410200174051</IBAN>
+    <BIC>GENODE99ABC</BIC>
+    <KONTONR>200174051</KONTONR>
+    <BLZ>50061741</BLZ>
+    <BANKNAME>Raiffeisenbank A, Stadt 1..</BANKNAME>
+    <WAEHRUNG>EUR</WAEHRUNG>
+    <KONTOSTAND>18,41</KONTOSTAND>
+    <KONTOBUCH>
+        <BUCHUNG>
+            <DATUM>04.10.24</DATUM>
+            <VALUTA>04.10.24</VALUTA>
+            <EMPFAENGER>
+                <NAME>Max Zweitname Drittname Mustermann</NAME>
+                <BIC>KTBADEFFXXX</BIC>
+                <IBAN>DE55500150010006290050</IBAN>
+                <BANKNAME>J&amp;T BANKA, Zweigniederlassung Deutschl..</BANKNAME>
+            </EMPFAENGER>
+            <ZWECK>Auszahlung 044 KT Direktbank  UEBERWEISUNG  EndtoEnd: NOTPROVIDED</ZWECK>
+            <BETRAG>50,00</BETRAG>
+            <WAEHRUNG>EUR</WAEHRUNG>
+            <QUELLE>0</QUELLE>
+        </BUCHUNG>
+    </KONTOBUCH>
+</KONTO>
+<KONTO>
+    <BEZEICHNUNG>Termineinlage - 6290050</BEZEICHNUNG>
+    <KONTOART>Sparbuch</KONTOART>
+    <IBAN>DE55500150010006290050</IBAN>
+    <BIC>KTBADEFFXXX</BIC>
+    <KONTONR>6290050</KONTONR>
+    <BLZ>50015001</BLZ>
+    <WAEHRUNG>EUR</WAEHRUNG>
+    <KONTOSTAND>424,56</KONTOSTAND>
+    <KONTOBUCH>
+        <BUCHUNG>
+            <DATUM>04.10.24</DATUM>
+            <VALUTA>04.10.24</VALUTA>
+            <EMPFAENGER>
+                <NAME>Max Muster</NAME>
+                <BIC>GENODE99ABC</BIC>
+                <IBAN>DE92500617410200174051</IBAN>
+                <BANKNAME>Raiffeisenbank A, Stadt 1..</BANKNAME>
+            </EMPFAENGER>
+            <ZWECK>Auszahlung 044 KT Direktbank TAN1:420904 IBAN: DE92500617410200174051 BIC: GENODE99ABC  Überweisungsauftrag  Kundenref.: Payment-Information-ID-697  EndtoEnd: NOTPROVIDED</ZWECK>
+            <BETRAG>-50,00</BETRAG>
+            <WAEHRUNG>EUR</WAEHRUNG>
+            <QUELLE>0</QUELLE>
+        </BUCHUNG>
+    </KONTOBUCH>
+</KONTO>
+</KONTEN>

@@ -1,0 +1,557 @@
+<KONTEN>
+<KONTO>
+    <BEZEICHNUNG>K-Cash - 18884058</BEZEICHNUNG>
+    <KONTOART>Girokonto</KONTOART>
+    <IBAN>DE30120300000018884058</IBAN>
+    <BIC>LADENEM1001</BIC>
+    <KONTONR>18884058</KONTONR>
+    <BLZ>12030000</BLZ>
+    <BANKNAME>Deutsche Kbank H-Stadt</BANKNAME>
+    <WAEHRUNG>EUR</WAEHRUNG>
+    <KONTOBUCH>
+        <BUCHUNG>
+            <DATUM>24.08.06</DATUM>
+            <VALUTA>24.08.06</VALUTA>
+            <EMPFAENGER>
+                <NAME>MAX MUSTER</NAME>
+                <BLZ>19070574</BLZ>
+                <KONTONR>1061525816</KONTONR>
+                <BANKNAME>Sparkasse KB</BANKNAME>
+            </EMPFAENGER>
+            <ZWECK>EINZAHLUNG SPAR 1  GUTSCHRIFT</ZWECK>
+            <BETRAG>1400,00</BETRAG>
+            <WAEHRUNG>EUR</WAEHRUNG>
+            <QUELLE>0</QUELLE>
+        </BUCHUNG>
+        <BUCHUNG>
+            <DATUM>24.08.06</DATUM>
+            <VALUTA>24.08.06</VALUTA>
+            <EMPFAENGER/>
+            <ZWECK>ELEKTRON.AUFTRAG 24.08.2006  TAN267886/001  UEBERWEISUNG</ZWECK>
+            <BETRAG>-1395,00</BETRAG>
+            <WAEHRUNG>EUR</WAEHRUNG>
+            <QUELLE>0</QUELLE>
+        </BUCHUNG>
+        <BUCHUNG>
+            <DATUM>06.10.06</DATUM>
+            <VALUTA>10.10.06</VALUTA>
+            <EMPFAENGER>
+                <NAME>FIRMA S</NAME>
+                <BLZ>50850049</BLZ>
+                <KONTONR>7051625005</KONTONR>
+                <BANKNAME>Landesbank Hessen-Thür Girozentrale Darm</BANKNAME>
+            </EMPFAENGER>
+            <ZWECK>GUTSCHRIFT</ZWECK>
+            <BETRAG>68,00</BETRAG>
+            <WAEHRUNG>EUR</WAEHRUNG>
+            <QUELLE>0</QUELLE>
+        </BUCHUNG>
+        <BUCHUNG>
+            <DATUM>23.10.06</DATUM>
+            <VALUTA>23.10.06</VALUTA>
+            <EMPFAENGER>
+                <NAME>MAX MUSTER</NAME>
+                <BLZ>19070574</BLZ>
+                <KONTONR>1061525816</KONTONR>
+                <BANKNAME>Sparkasse KB</BANKNAME>
+            </EMPFAENGER>
+            <ZWECK>ELEKTRON.AUFTRAG 23.10.2006  TAN178508/001 AG GIRO  UEBERWEISUNG</ZWECK>
+            <BETRAG>-40,00</BETRAG>
+            <WAEHRUNG>EUR</WAEHRUNG>
+            <QUELLE>0</QUELLE>
+        </BUCHUNG>
+        <BUCHUNG>
+            <DATUM>31.10.06</DATUM>
+            <VALUTA>31.10.06</VALUTA>
+            <EMPFAENGER>
+                <NAME>FIRMA P GMBH</NAME>
+                <BLZ>50991400</BLZ>
+                <KONTONR>1741401</KONTONR>
+                <BANKNAME>Volksbank Kreis Bergstraße -alt- Lampert</BANKNAME>
+            </EMPFAENGER>
+            <ZWECK>GEHALT 10/06  GUTSCHRIFT</ZWECK>
+            <BETRAG>335,32</BETRAG>
+            <WAEHRUNG>EUR</WAEHRUNG>
+            <QUELLE>0</QUELLE>
+        </BUCHUNG>
+    </KONTOBUCH>
+</KONTO>
+<KONTO>
+    <BEZEICHNUNG>ES-Konto - 0990651720</BEZEICHNUNG>
+    <KONTOART>Girokonto</KONTOART>
+    <IBAN>DE71500105170990651720</IBAN>
+    <BIC>DEFDDEFFXXX</BIC>
+    <KONTONR>0990651720</KONTONR>
+    <BLZ>50010517</BLZ>
+    <BANKNAME>Direktbank A Stadt 2</BANKNAME>
+    <WAEHRUNG>EUR</WAEHRUNG>
+    <KONTOBUCH>
+        <BUCHUNG>
+            <DATUM>30.12.03</DATUM>
+            <VALUTA>30.12.03</VALUTA>
+            <EMPFAENGER/>
+            <ZWECK>Abschluss</ZWECK>
+            <BETRAG>2,30</BETRAG>
+            <WAEHRUNG>EUR</WAEHRUNG>
+            <QUELLE>0</QUELLE>
+        </BUCHUNG>
+        <BUCHUNG>
+            <DATUM>09.05.05</DATUM>
+            <VALUTA>09.05.05</VALUTA>
+            <EMPFAENGER/>
+            <ZWECK>StarMoney autom. Ausgleich  Fehlende Online-Umsätze</ZWECK>
+            <BETRAG>0,06</BETRAG>
+            <WAEHRUNG>EUR</WAEHRUNG>
+            <QUELLE>0</QUELLE>
+        </BUCHUNG>
+        <BUCHUNG>
+            <DATUM>09.05.05</DATUM>
+            <VALUTA>09.05.05</VALUTA>
+            <EMPFAENGER/>
+            <ZWECK>MAX MUSTER  EINLAGE EPS T&amp;M 10 0  Gutschrift</ZWECK>
+            <BETRAG>360,00</BETRAG>
+            <WAEHRUNG>EUR</WAEHRUNG>
+            <QUELLE>0</QUELLE>
+        </BUCHUNG>
+        <BUCHUNG>
+            <DATUM>03.08.05</DATUM>
+            <VALUTA>03.08.05</VALUTA>
+            <EMPFAENGER/>
+            <ZWECK>MUSTER  EPS RUECK.  Überweisung</ZWECK>
+            <BETRAG>-360,00</BETRAG>
+            <WAEHRUNG>EUR</WAEHRUNG>
+            <QUELLE>0</QUELLE>
+        </BUCHUNG>
+        <BUCHUNG>
+            <DATUM>07.02.08</DATUM>
+            <VALUTA>07.02.08</VALUTA>
+            <EMPFAENGER/>
+            <ZWECK>StarMoney autom. Ausgleich  Fehlende Online-Umsätze</ZWECK>
+            <BETRAG>2,35</BETRAG>
+            <WAEHRUNG>EUR</WAEHRUNG>
+            <QUELLE>0</QUELLE>
+        </BUCHUNG>
+        <BUCHUNG>
+            <DATUM>15.10.08</DATUM>
+            <VALUTA>15.10.08</VALUTA>
+            <EMPFAENGER>
+                <NAME>MAX MUSTER</NAME>
+                <BLZ>12030000</BLZ>
+                <KONTONR>0018884058</KONTONR>
+                <BANKNAME>Deutsche Kbank H-Stadt</BANKNAME>
+            </EMPFAENGER>
+            <ZWECK>EINZAHLUNG 01  Gutschrift</ZWECK>
+            <BETRAG>10000,00</BETRAG>
+            <WAEHRUNG>EUR</WAEHRUNG>
+            <QUELLE>0</QUELLE>
+        </BUCHUNG>
+        <BUCHUNG>
+            <DATUM>16.10.08</DATUM>
+            <VALUTA>16.10.08</VALUTA>
+            <EMPFAENGER>
+                <NAME>MAX MUSTER</NAME>
+                <BLZ>12030000</BLZ>
+                <KONTONR>0018884058</KONTONR>
+                <BANKNAME>Deutsche Kbank H-Stadt</BANKNAME>
+            </EMPFAENGER>
+            <ZWECK>EINZAHLUNG 02  Gutschrift</ZWECK>
+            <BETRAG>5150,00</BETRAG>
+            <WAEHRUNG>EUR</WAEHRUNG>
+            <QUELLE>0</QUELLE>
+        </BUCHUNG>
+        <BUCHUNG>
+            <DATUM>12.11.08</DATUM>
+            <VALUTA>12.11.08</VALUTA>
+            <EMPFAENGER>
+                <NAME>MAX MUSTER</NAME>
+                <BLZ>12030000</BLZ>
+                <KONTONR>0018884058</KONTONR>
+                <BANKNAME>Deutsche Kbank H-Stadt</BANKNAME>
+            </EMPFAENGER>
+            <ZWECK>AG GIRO  Überweisung</ZWECK>
+            <BETRAG>-75,00</BETRAG>
+            <WAEHRUNG>EUR</WAEHRUNG>
+            <QUELLE>0</QUELLE>
+        </BUCHUNG>
+        <BUCHUNG>
+            <DATUM>27.11.08</DATUM>
+            <VALUTA>27.11.08</VALUTA>
+            <EMPFAENGER>
+                <NAME>MAX MUSTER</NAME>
+                <BLZ>12030000</BLZ>
+                <KONTONR>0018884058</KONTONR>
+                <BANKNAME>Deutsche Kbank H-Stadt</BANKNAME>
+            </EMPFAENGER>
+            <ZWECK>EINZAHLUNG 03  Gutschrift</ZWECK>
+            <BETRAG>920,29</BETRAG>
+            <WAEHRUNG>EUR</WAEHRUNG>
+            <QUELLE>0</QUELLE>
+        </BUCHUNG>
+        <BUCHUNG>
+            <DATUM>23.12.08</DATUM>
+            <VALUTA>23.12.08</VALUTA>
+            <EMPFAENGER>
+                <NAME>MAX MUSTER</NAME>
+                <BLZ>12030000</BLZ>
+                <KONTONR>0018884058</KONTONR>
+                <BANKNAME>Deutsche Kbank H-Stadt</BANKNAME>
+            </EMPFAENGER>
+            <ZWECK>EINZAHLUNG 04  Gutschrift</ZWECK>
+            <BETRAG>2000,00</BETRAG>
+            <WAEHRUNG>EUR</WAEHRUNG>
+            <QUELLE>0</QUELLE>
+        </BUCHUNG>
+        <BUCHUNG>
+            <DATUM>30.12.08</DATUM>
+            <VALUTA>30.12.08</VALUTA>
+            <EMPFAENGER/>
+            <ZWECK>Abschluss</ZWECK>
+            <BETRAG>162,93</BETRAG>
+            <WAEHRUNG>EUR</WAEHRUNG>
+            <QUELLE>0</QUELLE>
+        </BUCHUNG>
+        <BUCHUNG>
+            <DATUM>05.01.09</DATUM>
+            <VALUTA>05.01.09</VALUTA>
+            <EMPFAENGER>
+                <NAME>MAX MUSTER</NAME>
+                <BLZ>12030000</BLZ>
+                <KONTONR>0018884058</KONTONR>
+                <BANKNAME>Deutsche Kbank H-Stadt</BANKNAME>
+            </EMPFAENGER>
+            <ZWECK>UMBUCHUNG 1 / 09  Überweisung</ZWECK>
+            <BETRAG>-18162,93</BETRAG>
+            <WAEHRUNG>EUR</WAEHRUNG>
+            <QUELLE>0</QUELLE>
+        </BUCHUNG>
+        <BUCHUNG>
+            <DATUM>10.09.09</DATUM>
+            <VALUTA>10.09.09</VALUTA>
+            <EMPFAENGER>
+                <NAME>MAX MUSTER</NAME>
+                <BLZ>12030000</BLZ>
+                <KONTONR>0018884058</KONTONR>
+                <BANKNAME>Deutsche Kbank H-Stadt</BANKNAME>
+            </EMPFAENGER>
+            <ZWECK>EINZAHLUNG 1 /2009  Gutschrift</ZWECK>
+            <BETRAG>14556,27</BETRAG>
+            <WAEHRUNG>EUR</WAEHRUNG>
+            <QUELLE>0</QUELLE>
+        </BUCHUNG>
+        <BUCHUNG>
+            <DATUM>23.09.09</DATUM>
+            <VALUTA>23.09.09</VALUTA>
+            <EMPFAENGER>
+                <NAME>MAX MUSTER</NAME>
+            </EMPFAENGER>
+            <ZWECK>REF20 03MT090922163113  VZ UMBUCHUNG DeDa  AG-IBAN 9001552066500  AG-BIC STOLNL2AXXX  MUR 03MT090922163113  Gutschrift</ZWECK>
+            <BETRAG>10202,62</BETRAG>
+            <WAEHRUNG>EUR</WAEHRUNG>
+            <QUELLE>0</QUELLE>
+        </BUCHUNG>
+        <BUCHUNG>
+            <DATUM>25.09.09</DATUM>
+            <VALUTA>25.09.09</VALUTA>
+            <EMPFAENGER>
+                <NAME>MAX MUSTER</NAME>
+                <BLZ>12030000</BLZ>
+                <KONTONR>0018884058</KONTONR>
+                <BANKNAME>Deutsche Kbank H-Stadt</BANKNAME>
+            </EMPFAENGER>
+            <ZWECK>EINZAHLUNG 3 / 2009  Gutschrift</ZWECK>
+            <BETRAG>613,38</BETRAG>
+            <WAEHRUNG>EUR</WAEHRUNG>
+            <QUELLE>0</QUELLE>
+        </BUCHUNG>
+        <BUCHUNG>
+            <DATUM>30.12.09</DATUM>
+            <VALUTA>30.12.09</VALUTA>
+            <EMPFAENGER/>
+            <ZWECK>Kapitalertragsteuer</ZWECK>
+            <BETRAG>-47,88</BETRAG>
+            <WAEHRUNG>EUR</WAEHRUNG>
+            <QUELLE>0</QUELLE>
+        </BUCHUNG>
+        <BUCHUNG>
+            <DATUM>30.12.09</DATUM>
+            <VALUTA>30.12.09</VALUTA>
+            <EMPFAENGER/>
+            <ZWECK>Solidaritätszuschlag</ZWECK>
+            <BETRAG>-2,63</BETRAG>
+            <WAEHRUNG>EUR</WAEHRUNG>
+            <QUELLE>0</QUELLE>
+        </BUCHUNG>
+        <BUCHUNG>
+            <DATUM>30.12.09</DATUM>
+            <VALUTA>30.12.09</VALUTA>
+            <EMPFAENGER/>
+            <ZWECK>Abschluss</ZWECK>
+            <BETRAG>191,54</BETRAG>
+            <WAEHRUNG>EUR</WAEHRUNG>
+            <QUELLE>0</QUELLE>
+        </BUCHUNG>
+        <BUCHUNG>
+            <DATUM>12.01.10</DATUM>
+            <VALUTA>12.01.10</VALUTA>
+            <EMPFAENGER>
+                <NAME>MAX MUSTER ULMENALLEE 8</NAME>
+                <ZUSATZ>50999 KOELN DE</ZUSATZ>
+            </EMPFAENGER>
+            <ZWECK>REF20 03MT100111121330  VZ AG ATB 1 10  AG-IBAN 9001552066500  AG-BIC STOLNL2AXXX  MUR 03MT100111121330  Gutschrift</ZWECK>
+            <BETRAG>4,84</BETRAG>
+            <WAEHRUNG>EUR</WAEHRUNG>
+            <QUELLE>0</QUELLE>
+        </BUCHUNG>
+        <BUCHUNG>
+            <DATUM>01.02.10</DATUM>
+            <VALUTA>01.02.10</VALUTA>
+            <EMPFAENGER>
+                <NAME>MAX MUSTER</NAME>
+                <BLZ>12030000</BLZ>
+                <KONTONR>0018884058</KONTONR>
+                <BANKNAME>Deutsche Kbank H-Stadt</BANKNAME>
+            </EMPFAENGER>
+            <ZWECK>AG D-Bank 01-10  Überweisung</ZWECK>
+            <BETRAG>-25518,14</BETRAG>
+            <WAEHRUNG>EUR</WAEHRUNG>
+            <QUELLE>0</QUELLE>
+        </BUCHUNG>
+        <BUCHUNG>
+            <DATUM>01.02.10</DATUM>
+            <EMPFAENGER/>
+            <ZWECK>Ausgleichsbuchung</ZWECK>
+            <BETRAG>25518,14</BETRAG>
+            <WAEHRUNG>EUR</WAEHRUNG>
+            <QUELLE>0</QUELLE>
+        </BUCHUNG>
+        <BUCHUNG>
+            <DATUM>01.02.10</DATUM>
+            <VALUTA>01.02.10</VALUTA>
+            <EMPFAENGER>
+                <NAME>MAX MUSTER</NAME>
+                <BLZ>12030000</BLZ>
+                <KONTONR>0018884058</KONTONR>
+                <BANKNAME>Deutsche Kbank H-Stadt</BANKNAME>
+            </EMPFAENGER>
+            <ZWECK>AG D-Bank 01-10  Überweisung</ZWECK>
+            <BETRAG>-25518,14</BETRAG>
+            <WAEHRUNG>EUR</WAEHRUNG>
+            <QUELLE>0</QUELLE>
+        </BUCHUNG>
+        <BUCHUNG>
+            <DATUM>30.12.10</DATUM>
+            <VALUTA>30.12.10</VALUTA>
+            <EMPFAENGER/>
+            <ZWECK>Kapitalertragsteuer</ZWECK>
+            <BETRAG>-13,53</BETRAG>
+            <WAEHRUNG>EUR</WAEHRUNG>
+            <QUELLE>0</QUELLE>
+        </BUCHUNG>
+        <BUCHUNG>
+            <DATUM>30.12.10</DATUM>
+            <VALUTA>30.12.10</VALUTA>
+            <EMPFAENGER/>
+            <ZWECK>Solidaritätszuschlag</ZWECK>
+            <BETRAG>-0,74</BETRAG>
+            <WAEHRUNG>EUR</WAEHRUNG>
+            <QUELLE>0</QUELLE>
+        </BUCHUNG>
+        <BUCHUNG>
+            <DATUM>30.12.10</DATUM>
+            <VALUTA>30.12.10</VALUTA>
+            <EMPFAENGER/>
+            <ZWECK>Abschluss</ZWECK>
+            <BETRAG>54,10</BETRAG>
+            <WAEHRUNG>EUR</WAEHRUNG>
+            <QUELLE>0</QUELLE>
+        </BUCHUNG>
+        <BUCHUNG>
+            <DATUM>30.12.11</DATUM>
+            <VALUTA>30.12.11</VALUTA>
+            <EMPFAENGER/>
+            <ZWECK>Kapitalertragsteuer</ZWECK>
+            <BETRAG>-0,16</BETRAG>
+            <WAEHRUNG>EUR</WAEHRUNG>
+            <QUELLE>0</QUELLE>
+        </BUCHUNG>
+        <BUCHUNG>
+            <DATUM>30.12.11</DATUM>
+            <VALUTA>30.12.11</VALUTA>
+            <EMPFAENGER/>
+            <ZWECK>Abschluss</ZWECK>
+            <BETRAG>0,62</BETRAG>
+            <WAEHRUNG>EUR</WAEHRUNG>
+            <QUELLE>0</QUELLE>
+        </BUCHUNG>
+        <BUCHUNG>
+            <DATUM>28.12.12</DATUM>
+            <VALUTA>30.12.12</VALUTA>
+            <EMPFAENGER/>
+            <ZWECK>Kapitalertragsteuer</ZWECK>
+            <BETRAG>-0,15</BETRAG>
+            <WAEHRUNG>EUR</WAEHRUNG>
+            <QUELLE>0</QUELLE>
+        </BUCHUNG>
+        <BUCHUNG>
+            <DATUM>28.12.12</DATUM>
+            <VALUTA>30.12.12</VALUTA>
+            <EMPFAENGER/>
+            <ZWECK>Abschluss</ZWECK>
+            <BETRAG>0,59</BETRAG>
+            <WAEHRUNG>EUR</WAEHRUNG>
+            <QUELLE>0</QUELLE>
+        </BUCHUNG>
+        <BUCHUNG>
+            <DATUM>02.01.13</DATUM>
+            <VALUTA>02.01.13</VALUTA>
+            <EMPFAENGER>
+                <NAME>MAX MUSTER</NAME>
+                <BLZ>12030000</BLZ>
+                <KONTONR>0018884058</KONTONR>
+                <BANKNAME>Deutsche Kbank H-Stadt</BANKNAME>
+            </EMPFAENGER>
+            <ZWECK>AG GIRO 2013  Dauerauftrag</ZWECK>
+            <BETRAG>-40,73</BETRAG>
+            <WAEHRUNG>EUR</WAEHRUNG>
+            <QUELLE>0</QUELLE>
+        </BUCHUNG>
+        <BUCHUNG>
+            <DATUM>02.01.19</DATUM>
+            <VALUTA>01.01.19</VALUTA>
+            <EMPFAENGER>
+                <NAME>Max Muster</NAME>
+                <BIC>DEFDDEFFXXX</BIC>
+                <IBAN>DE41500105176004514751</IBAN>
+                <BANKNAME>Direktbank A, Stadt 2</BANKNAME>
+            </EMPFAENGER>
+            <ZWECK>Rueckzahlung Sparvertrag  Gutschrift</ZWECK>
+            <BETRAG>751,89</BETRAG>
+            <WAEHRUNG>EUR</WAEHRUNG>
+            <QUELLE>0</QUELLE>
+        </BUCHUNG>
+        <BUCHUNG>
+            <DATUM>30.12.19</DATUM>
+            <VALUTA>30.12.19</VALUTA>
+            <EMPFAENGER/>
+            <ZWECK>Kapitalertragsteuer</ZWECK>
+            <BETRAG>-0,02</BETRAG>
+            <WAEHRUNG>EUR</WAEHRUNG>
+            <QUELLE>0</QUELLE>
+        </BUCHUNG>
+        <BUCHUNG>
+            <DATUM>30.12.19</DATUM>
+            <VALUTA>30.12.19</VALUTA>
+            <EMPFAENGER/>
+            <ZWECK>Abschluss</ZWECK>
+            <BETRAG>0,07</BETRAG>
+            <WAEHRUNG>EUR</WAEHRUNG>
+            <QUELLE>0</QUELLE>
+        </BUCHUNG>
+        <BUCHUNG>
+            <DATUM>27.02.23</DATUM>
+            <EMPFAENGER/>
+            <ZWECK>Ausgleichsbuchung  Hierbei handelt es sich um eine von Moneyplex erzeugte Buchung.</ZWECK>
+            <BETRAG>-751,94</BETRAG>
+            <WAEHRUNG>EUR</WAEHRUNG>
+            <QUELLE>0</QUELLE>
+        </BUCHUNG>
+        <BUCHUNG>
+            <DATUM>06.03.23</DATUM>
+            <VALUTA>06.03.23</VALUTA>
+            <EMPFAENGER>
+                <NAME>Muster</NAME>
+            </EMPFAENGER>
+            <ZWECK>Aufloesung vonDE93500105174113962812  Gutschrift</ZWECK>
+            <BETRAG>1161,10</BETRAG>
+            <WAEHRUNG>EUR</WAEHRUNG>
+            <QUELLE>0</QUELLE>
+        </BUCHUNG>
+        <BUCHUNG>
+            <DATUM>29.12.23</DATUM>
+            <VALUTA>30.12.23</VALUTA>
+            <EMPFAENGER/>
+            <ZWECK>Kapitalertragsteuer</ZWECK>
+            <BETRAG>-2,06</BETRAG>
+            <WAEHRUNG>EUR</WAEHRUNG>
+            <QUELLE>0</QUELLE>
+        </BUCHUNG>
+        <BUCHUNG>
+            <DATUM>29.12.23</DATUM>
+            <VALUTA>30.12.23</VALUTA>
+            <EMPFAENGER/>
+            <ZWECK>Solidaritätszuschlag</ZWECK>
+            <BETRAG>-0,11</BETRAG>
+            <WAEHRUNG>EUR</WAEHRUNG>
+            <QUELLE>0</QUELLE>
+        </BUCHUNG>
+        <BUCHUNG>
+            <DATUM>29.12.23</DATUM>
+            <VALUTA>30.12.23</VALUTA>
+            <EMPFAENGER/>
+            <ZWECK>Kirchensteuer</ZWECK>
+            <BETRAG>-0,18</BETRAG>
+            <WAEHRUNG>EUR</WAEHRUNG>
+            <QUELLE>0</QUELLE>
+        </BUCHUNG>
+        <BUCHUNG>
+            <DATUM>29.12.23</DATUM>
+            <VALUTA>30.12.23</VALUTA>
+            <EMPFAENGER/>
+            <ZWECK>Abschluss</ZWECK>
+            <BETRAG>8,43</BETRAG>
+            <WAEHRUNG>EUR</WAEHRUNG>
+            <QUELLE>0</QUELLE>
+        </BUCHUNG>
+        <BUCHUNG>
+            <DATUM>31.01.24</DATUM>
+            <VALUTA>31.01.24</VALUTA>
+            <EMPFAENGER>
+                <NAME>Max Muster</NAME>
+                <BIC>GENODE99ABC</BIC>
+                <IBAN>DE92500617410200174051</IBAN>
+                <BANKNAME>Raiffeisenbank A, Stadt 1..</BANKNAME>
+            </EMPFAENGER>
+            <ZWECK>AG Giro DeDa 2024 01  Überweisung</ZWECK>
+            <BETRAG>-1167,18</BETRAG>
+            <WAEHRUNG>EUR</WAEHRUNG>
+            <QUELLE>0</QUELLE>
+        </BUCHUNG>
+        <BUCHUNG>
+            <DATUM>02.09.24</DATUM>
+            <VALUTA>02.09.24</VALUTA>
+            <EMPFAENGER>
+                <NAME>Max Muster</NAME>
+            </EMPFAENGER>
+            <ZWECK>Einzahlung DeDa 01 2024  Gutschrift</ZWECK>
+            <BETRAG>1000,00</BETRAG>
+            <WAEHRUNG>EUR</WAEHRUNG>
+            <QUELLE>0</QUELLE>
+        </BUCHUNG>
+        <BUCHUNG>
+            <DATUM>04.09.24</DATUM>
+            <VALUTA>04.09.24</VALUTA>
+            <EMPFAENGER>
+                <NAME>I-DeDa AG.</NAME>
+            </EMPFAENGER>
+            <ZWECK>Vielen Dank für Ihre Nutzungdes E-kontosPrämien sind bis zu 256 Europro Jahr steuerfrei  Gutschrift</ZWECK>
+            <BETRAG>50,00</BETRAG>
+            <WAEHRUNG>EUR</WAEHRUNG>
+            <QUELLE>0</QUELLE>
+        </BUCHUNG>
+        <BUCHUNG>
+            <DATUM>05.09.24</DATUM>
+            <VALUTA>05.09.24</VALUTA>
+            <EMPFAENGER>
+                <NAME>Max Muster</NAME>
+                <BIC>GENODE99ABC</BIC>
+                <IBAN>DE92500617410200174051</IBAN>
+                <BANKNAME>Raiffeisenbank A, Stadt 1..</BANKNAME>
+            </EMPFAENGER>
+            <ZWECK>AG Giro DeDa 2024 02  Überweisung</ZWECK>
+            <BETRAG>-1050,00</BETRAG>
+            <WAEHRUNG>EUR</WAEHRUNG>
+            <QUELLE>0</QUELLE>
+        </BUCHUNG>
+    </KONTOBUCH>
+</KONTO>
+</KONTEN>
