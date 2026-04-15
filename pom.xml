@@ -6,7 +6,7 @@
 
 	<groupId>de.fp3xmlextract</groupId>
 	<artifactId>fp3xmlextract</artifactId>
-	<version>0.0.1</version>
+	<version>${revision}</version>
 	<packaging>jar</packaging>
 
 	<name>fp3xmlextract</name>
@@ -16,15 +16,18 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<java.version>17</java.version>
 
+		<revision>0.1.0</revision>
+
 		<!-- Plugin Versions -->
-		<maven.compiler.plugin.version>3.11.0</maven.compiler.plugin.version>
-		<maven.surefire.plugin.version>3.2.5</maven.surefire.plugin.version>
+		<maven.compiler.plugin.version>3.15.0</maven.compiler.plugin.version>
+		<maven.versions.plugin.version>2.21.0</maven.versions.plugin.version>
+		<maven.surefire.plugin.version>3.5.5</maven.surefire.plugin.version>
 
 		<!-- Dependencies -->
-		<log4j.version>2.24.3</log4j.version>
+		<log4j.version>2.25.4</log4j.version>
 		<commonscsv.version>1.14.1</commonscsv.version>
-		
-		<junit.version>5.10.2</junit.version>
+
+		<junit.version>5.14.3</junit.version>
 	</properties>
 
 	<dependencies>
@@ -66,6 +69,12 @@
 				<configuration>
 					<release>${java.version}</release>
 				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>versions-maven-plugin</artifactId>
+				<version>${maven.versions.plugin.version}</version>
 			</plugin>
 
 			<!-- JUnit 5 Support -->

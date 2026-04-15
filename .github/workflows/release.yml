@@ -1,4 +1,4 @@
-name: Release Build
+name: Release
 
 on:
   push:
@@ -10,12 +10,14 @@ permissions:
   packages: write
 
 jobs:
-  build:
+  release:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Set up Java
         uses: actions/setup-java@v4
@@ -24,50 +26,90 @@ jobs:
           java-version: 17
           cache: maven
 
+      # 🧠 Version aus Tag bestimmen (+patch | +minor | +major)
+      - name: Determine version
+        run: |
+          RAW_TAG=${GITHUB_REF#refs/tags/v}
+
+          if [[ "$RAW_TAG" == *"+"* ]]; then
+            BASE_VERSION=${RAW_TAG%%+*}
+            INCREMENT=${RAW_TAG##*+}
+          else
+            BASE_VERSION=$RAW_TAG
+            INCREMENT="none"
+          fi
+
+          IFS='.' read -r MAJOR MINOR PATCH <<< "$BASE_VERSION"
+
+          case $INCREMENT in
+            patch)
+              PATCH=$((PATCH + 1))
+              ;;
+            minor)
+              MINOR=$((MINOR + 1))
+              PATCH=0
+              ;;
+            major)
+              MAJOR=$((MAJOR + 1))
+              MINOR=0
+              PATCH=0
+              ;;
+            none)
+              ;;
+            *)
+              echo "Invalid increment: $INCREMENT"
+              exit 1
+              ;;
+          esac
+
+          VERSION="$MAJOR.$MINOR.$PATCH"
+
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+          echo "Computed version: $VERSION"
+
+      # 🔧 Maven Version setzen
+      - name: Set Maven version
+        run: mvn -B versions:set -DnewVersion=${VERSION}
+
+      # 🏗️ Build
       - name: Build JAR
         run: mvn -B clean package -DskipTests
 
-      - name: Upload JAR artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: jar
-          path: target/*.jar
+      # 🧾 Changelog generieren
+      - name: Generate Changelog
+        run: |
+          git log $(git describe --tags --abbrev=0 HEAD^)..HEAD \
+          --pretty=format:"- %s" > CHANGELOG_GENERATED.md || echo "Initial release" > CHANGELOG_GENERATED.md
 
-  release:
-    needs: build
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Download JAR
-        uses: actions/download-artifact@v4
-        with:
-          name: jar
-          path: dist
-
+      # 🚀 GitHub Release erstellen
       - name: Create GitHub Release
         run: |
-          TAG=${GITHUB_REF#refs/tags/}
-          gh release create "$TAG" dist/*.jar \
-            --title "$TAG" \
-            --generate-notes
+          gh release create v${VERSION} target/*.jar \
+            --title "v${VERSION}" \
+            --notes-file CHANGELOG_GENERATED.md
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-  publish:
-    needs: build
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Set up Java for deploy
-        uses: actions/setup-java@v4
-        with:
-          distribution: temurin
-          java-version: 17
-
+      # 📦 Deployment zu GitHub Packages
       - name: Deploy to GitHub Packages
         run: mvn -B deploy -DskipTests
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # 🔄 Nächste SNAPSHOT Version setzen
+      - name: Prepare next development version
+        run: |
+          IFS='.' read -r MAJOR MINOR PATCH <<< "$VERSION"
+
+          NEXT_PATCH=$((PATCH + 1))
+          NEXT_VERSION="$MAJOR.$MINOR.$NEXT_PATCH-SNAPSHOT"
+
+          echo "Next version: $NEXT_VERSION"
+
+          mvn -B versions:set -DnewVersion=$NEXT_VERSION
+
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+
+          git commit -am "chore: next development version $NEXT_VERSION" || echo "No changes"
+          git push origin HEAD:main
