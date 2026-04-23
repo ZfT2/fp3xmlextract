@@ -14,6 +14,7 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -36,7 +37,7 @@ public class Fp3xmlextractProperties extends Properties {
 	private static final long serialVersionUID = 1735959545579391865L;
 
 	private static String baseDir;
-	private static final String SUB_PATH = "properties/";
+	private static final String SUB_PATH = "properties";
 
 	private static Collection<Fp3xmlextractProperties> instances = new ArrayList<>();
 	private String fileName;
@@ -60,10 +61,10 @@ public class Fp3xmlextractProperties extends Properties {
 		}
 		
 		if (baseDir == null) {
-			if (new File(SUB_PATH + propertiesFile).exists()) { // für laden aus Eclipse Run
-				baseDir = new File(SUB_PATH + propertiesFile).getAbsoluteFile().getParentFile().getParent() + "/";
+			if (new File(Paths.get(SUB_PATH, propertiesFile).toString()).exists()) { // für laden aus Eclipse Run
+				baseDir = new File(Paths.get(SUB_PATH, propertiesFile).toString()).getAbsoluteFile().getParentFile().getParent();
 			} else { // für laden aus Jar File
-				baseDir = new File(".").getAbsoluteFile().getParentFile().getParent() + "/";
+				baseDir = new File(".").getAbsoluteFile().getParentFile().getParent();
 			}
 		}
 	}
@@ -80,10 +81,10 @@ public class Fp3xmlextractProperties extends Properties {
 		String subPath = SUB_PATH;
 		if (instance == null) {
 			if (intern) {
-				copyFile(baseDir + subPath + propertiesFile);
-				subPath = SUB_PATH + "intern/";
+				copyFile(Paths.get(baseDir, subPath, propertiesFile).toString());
+				subPath = Paths.get(SUB_PATH, "intern").toString();
 			}
-			try (InputStream is = new FileInputStream(baseDir + subPath + propertiesFile);) {
+			try (InputStream is = new FileInputStream(Paths.get(baseDir, subPath, propertiesFile).toString())) {
 				instance = new Fp3xmlextractProperties();
 				instance.load(new InputStreamReader(is, StandardCharsets.UTF_8));
 				instance.setFileName(propertiesFile);
