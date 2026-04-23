@@ -12,6 +12,7 @@ public class BankAccount {
 	private String bankName;
 	private String type;
 	private String bezeichnung;
+	private String parentAccount;
 	private BigDecimal balance;
 	private String namePP;
 
@@ -83,6 +84,14 @@ public class BankAccount {
 
 	public void setBezeichnung(String bezeichnung) {
 		this.bezeichnung = bezeichnung;
+	}
+
+	public String getParentAccount() {
+		return parentAccount;
+	}
+
+	public void setParentAccount(String parentAccount) {
+		this.parentAccount = parentAccount;
 	}
 
 	public BigDecimal getBalance() {

@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.stream.Stream;
 
@@ -15,7 +16,7 @@ import de.zft2.fp3xmlextract.config.Fp3xmlextractProperties;
 import de.zft2.fp3xmlextract.data.BankAccount;
 import de.zft2.fp3xmlextract.exception.ConfigurationException;
 
-public abstract class AccountProcessor {
+public class AccountProcessor {
 	
 	private static Logger log = LogManager.getLogger(AccountProcessor.class);
 
@@ -106,6 +107,24 @@ public abstract class AccountProcessor {
 
 		log.info("created/added default transfer properties with size: {}", propsTransfer.size());
 		return result;
+	}
+
+	public void addParentAccounts(Collection<BankAccount> accountList) {
+		for (Entry<String, Collection<String>> entry : accountNumbersMap.entrySet()) {
+			BankAccount accountFound = null;
+			for (BankAccount account : accountList) {
+				for (String identifier : entry.getValue()) {
+					if (identifier.equalsIgnoreCase(account.getIban()) || identifier.equalsIgnoreCase(account.getNumber())) {
+						if (accountFound != null) {
+							accountFound.setParentAccount(entry.getKey());
+							account.setParentAccount(entry.getKey());
+						} else {
+							accountFound = account;
+						}
+					}
+				}
+			}
+		}
 	}
 
 }

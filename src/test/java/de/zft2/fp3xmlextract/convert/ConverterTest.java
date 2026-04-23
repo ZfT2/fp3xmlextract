@@ -24,9 +24,11 @@ class ConverterTest {
 	private static String filename02;
 	private static String filename03;
 	private static String filename04;
+	private static String filename05;
 
 	private static Converter converter;
 	private static BookingProcessor bookingProcessor;
+	private static AccountProcessor accountProcessor;
 
 	@BeforeAll
 	static void beforeClass() {
@@ -34,11 +36,13 @@ class ConverterTest {
 		filename02 = "src/test/resources/testdata/AlleKontenFL.xml";
 		filename03 = "src/test/resources/testdata/konto_buchungen_steuern_test.xml";
 		filename04 = "src/test/resources/testdata/konto_umbuchung_one_day_difference_test01.xml";
+		filename05 = "src/test/resources/testdata/konto_festgeldkonten_test01.xml";
 
 		try {
 			ConverterConfig converterConfig = new ConverterConfig(false, false); /** default for tests: without SEPA extraction **/
 			converter = new Converter(converterConfig);
 			bookingProcessor = new BookingProcessor();
+			accountProcessor = new AccountProcessor();
 		} catch (ConfigurationException e) {
 			e.printStackTrace();
 		}
@@ -329,5 +333,57 @@ class ConverterTest {
 		assertEquals("Payment-Information-ID-3390", konto.getBookings().get(0).getSepaCustomerRef());
 		assertEquals(SepaTyp.BANK_TRANSFER, konto.getBookings().get(0).getSepaTyp());
 		assertEquals(Typ.REBOOKING_OUT, konto.getBookings().get(0).getTyp());
+	}
+
+	@Test
+	void testConverter_Account_Grouping01() throws Exception {
+
+		Collection<BankAccount> kontenList = converter.convertXmlToCsvEntries(filename05);
+		bookingProcessor.addBookingTypesToAccountBookings(kontenList);
+
+		accountProcessor.addParentAccounts(kontenList);
+
+		assertNotNull(kontenList);
+
+		assertEquals(2, kontenList.size());
+
+		Iterator<BankAccount> iterator = kontenList.iterator();
+
+		BankAccount konto = (BankAccount) iterator.next();
+		assertEquals("724741470", konto.getNumber());
+
+		assertEquals("Festgelder B12-Bank", konto.getParentAccount());
+
+		assertEquals(7, konto.getBookings().size());
+
+		assertBooking(konto.getBookings().get(0), "25.01.23", null, "0,00", "Eröffnungsbuchung", null);
+
+		assertBooking(konto.getBookings().get(1), "25.01.23", "25.01.23", "17500,00", "Umbuchung IBAN DE27305305000724741400 Muster Max",
+				Typ.REBOOKING_IN);
+
+		assertBooking(konto.getBookings().get(2), "31.03.23", "31.03.23", "-56,88",
+				"Umbuchung Abrechnung Abrechnung per 31.03.2023 auf Konto 724741400 Kontoinhaber(in) Max Muster", Typ.REBOOKING_OUT);
+
+		assertBooking(konto.getBookings().get(3), "31.03.23", null, "56,88", "Zinsen", null);
+
+		assertBooking(konto.getBookings().get(4), "27.04.23", "28.04.23", "-24,50",
+				"Umbuchung Abrechnung Abrechnung per 28.04.2023 auf Konto 724741400 Kontoinhaber(in) Max Muster", Typ.REBOOKING_OUT);
+
+		assertBooking(konto.getBookings().get(5), "27.04.23", null, "24,50", "Zinsen", null);
+
+		assertBooking(konto.getBookings().get(6), "28.04.23", null, "-17500,00", "Gesamtkündigung", Typ.REBOOKING_OUT);
+
+		konto = (BankAccount) iterator.next();
+
+		assertEquals("724741460", konto.getNumber());
+		assertEquals("Festgelder B12-Bank", konto.getParentAccount());
+	}
+
+	private void assertBooking(Booking booking, String dateBooking, String dateValue, String amountStr, String purpose, Typ typ) {
+		assertEquals(dateBooking, booking.getDateBooking());
+		assertEquals(dateValue, booking.getDateValue());
+		assertEquals(amountStr, booking.getAmountStr());
+		assertEquals(purpose, booking.getPurpose());
+		assertEquals(typ, booking.getTyp());
 	}
 }

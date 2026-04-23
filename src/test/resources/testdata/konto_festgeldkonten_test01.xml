@@ -1,0 +1,152 @@
+<KONTEN>
+<KONTO>
+    <BEZEICHNUNG>Termineinlage - 724741470</BEZEICHNUNG>
+    <KONTOART>Festgeldkonto</KONTOART>
+    <KONTONR>724741470</KONTONR>
+    <BLZ>30530500</BLZ>
+    <BANKNAME>B12-Bank, N..</BANKNAME>
+    <WAEHRUNG>EUR</WAEHRUNG>
+    <KONTOBUCH>
+        <BUCHUNG>
+            <DATUM>25.01.23</DATUM>
+            <EMPFAENGER/>
+            <ZWECK>Eröffnungsbuchung</ZWECK>
+            <WAEHRUNG>EUR</WAEHRUNG>
+            <QUELLE>0</QUELLE>
+        </BUCHUNG>
+        <BUCHUNG>
+            <DATUM>25.01.23</DATUM>
+            <VALUTA>25.01.23</VALUTA>
+            <EMPFAENGER>
+                <NAME>Muster Max</NAME>
+                <BLZ>30530500</BLZ>
+                <KONTONR>724741400</KONTONR>
+                <BANKNAME>B12-Bank, N..</BANKNAME>
+            </EMPFAENGER>
+            <ZWECK>Umbuchung IBAN DE27305305000724741400 Muster Max  Überweisungsgutschr.</ZWECK>
+            <BETRAG>17500,00</BETRAG>
+            <WAEHRUNG>EUR</WAEHRUNG>
+            <QUELLE>0</QUELLE>
+        </BUCHUNG>
+        <BUCHUNG>
+            <DATUM>31.03.23</DATUM>
+            <VALUTA>31.03.23</VALUTA>
+            <EMPFAENGER>
+                <NAME>Muster Max</NAME>
+                <IBAN>DE27305305000724741400</IBAN>
+                <BANKNAME>B12-Bank, N..</BANKNAME>
+            </EMPFAENGER>
+            <ZWECK>Umbuchung Abrechnung Abrechnung per 31.03.2023 auf Konto 724741400 Kontoinhaber(in) Max Muster  Abschluss</ZWECK>
+            <BETRAG>-56,88</BETRAG>
+            <WAEHRUNG>EUR</WAEHRUNG>
+            <QUELLE>0</QUELLE>
+        </BUCHUNG>
+        <BUCHUNG>
+            <DATUM>31.03.23</DATUM>
+            <EMPFAENGER/>
+            <ZWECK>Zinsen</ZWECK>
+            <BETRAG>56,88</BETRAG>
+            <WAEHRUNG>EUR</WAEHRUNG>
+            <QUELLE>0</QUELLE>
+        </BUCHUNG>
+        <BUCHUNG>
+            <DATUM>27.04.23</DATUM>
+            <VALUTA>28.04.23</VALUTA>
+            <EMPFAENGER>
+                <NAME>Muster Max</NAME>
+                <IBAN>DE27305305000724741400</IBAN>
+                <BANKNAME>B12-Bank, N..</BANKNAME>
+            </EMPFAENGER>
+            <ZWECK>Umbuchung Abrechnung Abrechnung per 28.04.2023 auf Konto 724741400 Kontoinhaber(in) Max Muster  Abschluss</ZWECK>
+            <BETRAG>-24,50</BETRAG>
+            <WAEHRUNG>EUR</WAEHRUNG>
+            <QUELLE>0</QUELLE>
+        </BUCHUNG>
+        <BUCHUNG>
+            <DATUM>27.04.23</DATUM>
+            <EMPFAENGER/>
+            <ZWECK>Zinsen</ZWECK>
+            <BETRAG>24,50</BETRAG>
+            <WAEHRUNG>EUR</WAEHRUNG>
+            <QUELLE>0</QUELLE>
+        </BUCHUNG>
+        <BUCHUNG>
+            <DATUM>28.04.23</DATUM>
+            <EMPFAENGER>
+                <BLZ>30530500</BLZ>
+                <KONTONR>724741400</KONTONR>
+                <BANKNAME>B12-Bank, N..</BANKNAME>
+            </EMPFAENGER>
+            <ZWECK>Gesamtkündigung  Überweisungsgutschr.</ZWECK>
+            <BETRAG>-17500,00</BETRAG>
+            <WAEHRUNG>EUR</WAEHRUNG>
+            <QUELLE>0</QUELLE>
+        </BUCHUNG>
+    </KONTOBUCH>
+</KONTO>
+<KONTO>
+    <BEZEICHNUNG>Termineinlagen - 724741460</BEZEICHNUNG>
+    <KONTOART>Festgeldkonto</KONTOART>
+    <KONTONR>724741460</KONTONR>
+    <BLZ>30530500</BLZ>
+    <BANKNAME>B12-Bank, N..</BANKNAME>
+    <WAEHRUNG>EUR</WAEHRUNG>
+    <KONTOBUCH>
+        <BUCHUNG>
+            <DATUM>28.06.24</DATUM>
+            <EMPFAENGER/>
+            <ZWECK>Eröffnungsbuchung</ZWECK>
+            <WAEHRUNG>EUR</WAEHRUNG>
+            <QUELLE>0</QUELLE>
+        </BUCHUNG>
+        <BUCHUNG>
+            <DATUM>28.06.24</DATUM>
+            <VALUTA>28.06.24</VALUTA>
+            <EMPFAENGER>
+                <BIC>WEFZDED1XXX</BIC>
+                <IBAN>DE27305305000724741400</IBAN>
+                <BANKNAME>B12-Bank, N..</BANKNAME>
+            </EMPFAENGER>
+            <ZWECK>von Kto. 724741400/30530500  Spar/Fest/Termingeld</ZWECK>
+            <BETRAG>5400,00</BETRAG>
+            <WAEHRUNG>EUR</WAEHRUNG>
+            <QUELLE>0</QUELLE>
+        </BUCHUNG>
+        <BUCHUNG>
+            <DATUM>30.12.24</DATUM>
+            <VALUTA>28.12.24</VALUTA>
+            <EMPFAENGER>
+                <NAME>Muster Max</NAME>
+                <BIC>WEFZDED1XXX</BIC>
+                <IBAN>DE27305305000724741400</IBAN>
+                <BANKNAME>B12-Bank, N..</BANKNAME>
+            </EMPFAENGER>
+            <ZWECK>Kto. 724741460 Fälligkeit Sparbriefkonto 6M  Spar/Fest/Termingeld</ZWECK>
+            <BETRAG>-5400,00</BETRAG>
+            <WAEHRUNG>EUR</WAEHRUNG>
+            <QUELLE>0</QUELLE>
+        </BUCHUNG>
+        <BUCHUNG>
+            <DATUM>30.12.24</DATUM>
+            <VALUTA>28.12.24</VALUTA>
+            <EMPFAENGER>
+                <NAME>Muster Max</NAME>
+                <IBAN>DE27305305000724741400</IBAN>
+                <BANKNAME>B12-Bank, N..</BANKNAME>
+            </EMPFAENGER>
+            <ZWECK>Kto. 724741460 Umbuchung Zins Sparbriefkonto 6M  Zinsen</ZWECK>
+            <BETRAG>-64,17</BETRAG>
+            <WAEHRUNG>EUR</WAEHRUNG>
+            <QUELLE>0</QUELLE>
+        </BUCHUNG>
+        <BUCHUNG>
+            <DATUM>30.12.24</DATUM>
+            <EMPFAENGER/>
+            <ZWECK>Zinsen</ZWECK>
+            <BETRAG>64,17</BETRAG>
+            <WAEHRUNG>EUR</WAEHRUNG>
+            <QUELLE>0</QUELLE>
+        </BUCHUNG>
+    </KONTOBUCH>
+</KONTO>
+</KONTEN>
