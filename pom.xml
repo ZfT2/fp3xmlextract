@@ -6,7 +6,7 @@
 
 	<groupId>de.zft2</groupId>
 	<artifactId>fp3xmlextract</artifactId>
-	<version>0.3.1-SNAPSHOT</version>
+	<version>0.4.2-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
 	<name>fp3xmlextract</name>
