@@ -4,16 +4,17 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 class Fp3xmlextractPropertiesTest {
 
-	private static final String DIR = "properties/";
+	private static final Path DIR = Path.of("properties");
 
 	private static String filenameInputCancel;
 	private static String filenameOutputCancel;
@@ -32,12 +33,12 @@ class Fp3xmlextractPropertiesTest {
 	@Test
 	void testProcessCancelProperties() throws Exception {
 
-		Fp3xmlextractProperties propertiesIntern = Fp3xmlextractProperties.getInstance(/* BASE_PATH, */ filenameInputCancel, true);
+		Fp3xmlextractProperties propertiesIntern = Fp3xmlextractProperties.getInstance(filenameInputCancel, true);
 
 		assertTrue(findInFile(propertiesIntern.getBaseDir(), filenameInputCancel, "Sparkarte VISA D-Bank"));
 
-		File fileOutputIntern = new File(propertiesIntern.getBaseDir() + DIR + filenameOutputCancel);
-		assertTrue(fileOutputIntern.exists());
+		Path fileOutputIntern = Path.of(propertiesIntern.getBaseDir()).resolve(DIR).resolve(filenameOutputCancel);
+		assertTrue(Files.exists(fileOutputIntern));
 
 		assertTrue(findInFile(propertiesIntern.getBaseDir(), filenameOutputCancel, "Sparkarte\\u0020VISA\\u0020D-Bank"));
 
@@ -47,27 +48,27 @@ class Fp3xmlextractPropertiesTest {
 	@Test
 	void testProcessTransferProperties() throws Exception {
 
-		Fp3xmlextractProperties propertiesIntern = Fp3xmlextractProperties.getInstance(/* BASE_PATH, */ filenameInputTransfer, true);
+		Fp3xmlextractProperties propertiesIntern = Fp3xmlextractProperties.getInstance(filenameInputTransfer, true);
 
 		assertTrue(findInFile(propertiesIntern.getBaseDir(), filenameInputTransfer, "Sparkonto Plus BN-Bank"));
 
-		File fileOutputIntern = new File(propertiesIntern.getBaseDir() + DIR + filenameOutputTansfer);
-		assertTrue(fileOutputIntern.exists());
+		Path fileOutputIntern = Path.of(propertiesIntern.getBaseDir()).resolve(DIR).resolve(filenameOutputTansfer);
+		assertTrue(Files.exists(fileOutputIntern));
 
 		assertTrue(findInFile(propertiesIntern.getBaseDir(), filenameOutputTansfer, "Sparkonto\\u0020Plus\\u0020BN-Bank"));
 		assertNotNull(propertiesIntern.get("Sparkonto Plus BN-Bank"));
 	}
 
 	private boolean findInFile(String baseDir, String fileName, String propertyStr) throws IOException {
-		BufferedReader br = new BufferedReader(new FileReader(baseDir + DIR + fileName));
-		String line;
-		while ((line = br.readLine()) != null) {
-			if (line.startsWith(propertyStr)) {
-				br.close();
-				return true;
+		Path filePath = Path.of(baseDir).resolve(DIR).resolve(fileName);
+		try (BufferedReader br = Files.newBufferedReader(filePath, StandardCharsets.UTF_8)) {
+			String line;
+			while ((line = br.readLine()) != null) {
+				if (line.startsWith(propertyStr)) {
+					return true;
+				}
 			}
 		}
-		br.close();
 		return false;
 	}
 

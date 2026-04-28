@@ -5,15 +5,16 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
-import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -28,46 +29,48 @@ import de.zft2.fp3xmlextract.exception.ConfigurationException;
 
 public class Fp3xmlextractProperties extends Properties {
 
-	private static Logger log = LogManager.getLogger(Fp3xmlextractProperties.class);
+	private static final Logger log = LogManager.getLogger(Fp3xmlextractProperties.class);
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1735959545579391865L;
 
+	private static final Path SUB_PATH = Paths.get("properties");
+	private static final Path TEST_SUB_PATH = Paths.get("src", "test", "properties");
+	private static final String INTERN_SUB_PATH = "intern";
+
 	private static String baseDir;
-	private static final String SUB_PATH = "properties/";
 
 	private static Collection<Fp3xmlextractProperties> instances = new ArrayList<>();
 	private String fileName;
+	private String resolvedPath;
 
 	private Fp3xmlextractProperties() {
 	}
 
 	private static void initBaseDir(String propertiesFile) {
-		
-		URL divergentBase = Fp3xmlextractProperties.class.getResource("/basePath.properties");
-		if (divergentBase != null) {
-			Properties basePathProperties = new Properties();
-			try {
-				basePathProperties.load(Fp3xmlextractProperties.class.getResourceAsStream("/basePath.properties"));
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			String userProfile = System.getenv("USERPROFILE");
-			baseDir = userProfile + basePathProperties.getProperty("basePath");
-			log.debug("basePath: {}", baseDir);
-		}
-		
-		if (baseDir == null) {
-			if (new File(SUB_PATH + propertiesFile).exists()) { // für laden aus Eclipse Run
-				baseDir = new File(SUB_PATH + propertiesFile).getAbsoluteFile().getParentFile().getParent() + "/";
-			} else { // für laden aus Jar File
-				baseDir = new File(".").getAbsoluteFile().getParentFile().getParent() + "/";
-			}
-		}
+		Path propertiesBaseDir = resolvePropertiesBaseDir(propertiesFile);
+		baseDir = propertiesBaseDir.toString() + File.separator;
+		log.debug("basePath: {}", baseDir);
 	}
-	
+
+	private static Path resolvePropertiesBaseDir(String propertiesFile) {
+		if (Fp3xmlextractProperties.class.getResource("/basePath.properties") != null
+				&& Files.isRegularFile(TEST_SUB_PATH.resolve(propertiesFile))) {
+			return TEST_SUB_PATH.toAbsolutePath().normalize().getParent();
+		}
+		return SUB_PATH.toAbsolutePath().normalize().getParent();
+	}
+
+	private static Path resolvePropertiesFile(String propertiesFile, boolean intern) {
+		Path propertiesDir = resolvePropertiesBaseDir(propertiesFile).resolve(SUB_PATH.getFileName());
+		if (intern) {
+			return propertiesDir.resolve(INTERN_SUB_PATH).resolve(propertiesFile);
+		}
+		return propertiesDir.resolve(propertiesFile);
+	}
+
 	public String getBaseDir() {
 		return baseDir;
 	}
@@ -76,21 +79,21 @@ public class Fp3xmlextractProperties extends Properties {
 		initBaseDir(propertiesFile);
 		log.log(Level.INFO, "Properties base dir: {}", baseDir);
 
-		Fp3xmlextractProperties instance = getInstanceForFile(propertiesFile);
-		String subPath = SUB_PATH;
+		Path propertiesFilePath = resolvePropertiesFile(propertiesFile, intern);
+		Fp3xmlextractProperties instance = getInstanceForFile(propertiesFilePath);
 		if (instance == null) {
 			if (intern) {
-				copyFile(baseDir + subPath + propertiesFile);
-				subPath = SUB_PATH + "intern/";
+				copyFile(resolvePropertiesFile(propertiesFile, false));
 			}
-			try (InputStream is = new FileInputStream(baseDir + subPath + propertiesFile);) {
+			try (InputStream is = new FileInputStream(propertiesFilePath.toFile())) {
 				instance = new Fp3xmlextractProperties();
 				instance.load(new InputStreamReader(is, StandardCharsets.UTF_8));
 				instance.setFileName(propertiesFile);
+				instance.setResolvedPath(propertiesFilePath.toString());
 				instances.add(instance);
 			} catch (FileNotFoundException fnfe) {
 				log.error("FileNotFoundException: ", fnfe);
-				throw new ConfigurationException(propertiesFile, fnfe);
+				throw new ConfigurationException(propertiesFilePath.toString(), fnfe);
 			} catch (IOException e) {
 				log.error("IOException: ", e);
 			}
@@ -102,9 +105,9 @@ public class Fp3xmlextractProperties extends Properties {
 		return this.getProperty(key);
 	}
 
-	private static Fp3xmlextractProperties getInstanceForFile(String propertiesFile) {
+	private static Fp3xmlextractProperties getInstanceForFile(Path propertiesFilePath) {
 		for (Fp3xmlextractProperties instance : instances) {
-			if (instance.getFileName().equalsIgnoreCase(propertiesFile)) {
+			if (instance.getResolvedPath().equalsIgnoreCase(propertiesFilePath.toString())) {
 				return instance;
 			}
 		}
@@ -119,13 +122,27 @@ public class Fp3xmlextractProperties extends Properties {
 		this.fileName = fileName;
 	}
 
-	private static void copyFile(String propertiesFileSrc) {
-		String propertiesFileDest = new File(propertiesFileSrc).getParent() + "/intern/"
-				+ new File(propertiesFileSrc).getName();
+	private String getResolvedPath() {
+		return resolvedPath;
+	}
 
-		try (BufferedReader br = new BufferedReader(new FileReader(propertiesFileSrc));
-				OutputStream os = new FileOutputStream(propertiesFileDest, false);
-				PrintWriter pw = new PrintWriter(new OutputStreamWriter(os, StandardCharsets.UTF_8));) {
+	private void setResolvedPath(String resolvedPath) {
+		this.resolvedPath = resolvedPath;
+	}
+
+	private static void copyFile(Path propertiesFileSrc) {
+		Path propertiesFileDest = propertiesFileSrc.getParent().resolve(INTERN_SUB_PATH).resolve(propertiesFileSrc.getFileName());
+
+		try {
+			Files.createDirectories(propertiesFileDest.getParent());
+		} catch (IOException e) {
+			log.error("IOException (copyFile/createDirectories): ", e);
+			return;
+		}
+
+		try (BufferedReader br = Files.newBufferedReader(propertiesFileSrc, StandardCharsets.UTF_8);
+				OutputStream os = new FileOutputStream(propertiesFileDest.toFile(), false);
+				PrintWriter pw = new PrintWriter(new OutputStreamWriter(os, StandardCharsets.UTF_8))) {
 
 			pw.println("# file automatically created at: "
 					+ new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime())
@@ -151,7 +168,7 @@ public class Fp3xmlextractProperties extends Properties {
 	public synchronized boolean equals(Object other) {
 		return super.equals(other);
 	}
-	
+
 	@Override
 	public synchronized int hashCode() {
 		return entrySet().hashCode();
