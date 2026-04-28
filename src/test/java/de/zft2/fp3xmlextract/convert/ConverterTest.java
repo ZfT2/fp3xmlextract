@@ -25,6 +25,7 @@ class ConverterTest {
 	private static String filename03;
 	private static String filename04;
 	private static String filename05;
+	private static String filename06;
 
 	private static Converter converter;
 	private static BookingProcessor bookingProcessor;
@@ -37,6 +38,7 @@ class ConverterTest {
 		filename03 = "src/test/resources/testdata/konto_buchungen_steuern_test.xml";
 		filename04 = "src/test/resources/testdata/konto_umbuchung_one_day_difference_test01.xml";
 		filename05 = "src/test/resources/testdata/konto_festgeldkonten_test01.xml";
+		filename06 = "src/test/resources/testdata/konto_stornobuchung_test.xml";
 
 		try {
 			ConverterConfig converterConfig = new ConverterConfig(false, false); /** default for tests: without SEPA extraction **/
@@ -338,6 +340,7 @@ class ConverterTest {
 	@Test
 	void testConverter_Account_Grouping01() throws Exception {
 
+		converter.getConfig().setRemoveSepaFieldsFromPurpose(true);
 		Collection<BankAccount> kontenList = converter.convertXmlToCsvEntries(filename05);
 		bookingProcessor.addBookingTypesToAccountBookings(kontenList);
 
@@ -379,11 +382,47 @@ class ConverterTest {
 		assertEquals("Festgelder B12-Bank", konto.getParentAccount());
 	}
 
+	@Test
+	void testConverter_Account_Cancel_Booking01() throws Exception {
+
+		converter.getConfig().setRemoveSepaFieldsFromPurpose(false);
+		Collection<BankAccount> kontenList = converter.convertXmlToCsvEntries(filename06);
+		bookingProcessor.addBookingTypesToAccountBookings(kontenList);
+
+		assertNotNull(kontenList);
+
+		assertEquals(1, kontenList.size());
+
+		Iterator<BankAccount> iterator = kontenList.iterator();
+
+		BankAccount konto = (BankAccount) iterator.next();
+		assertEquals("200174051", konto.getNumber());
+
+		assertEquals(1, konto.getBookings().size());
+
+		Booking booking = konto.getBookings().get(0);
+
+		assertBooking(booking, "24.02.25", "24.02.25", "15000,00",
+				"Storno der Buchung des Auftragsbetrages 15000.00 EUR vom 24.02.2025 SVWZ: Einzahlung DiBa 01 2025 TAN1:841399 IBAN: DE71500105170990651720 BIC: INGDDEFFXXX  STORNO  EndtoEnd: NOTPROVIDED",
+				null);
+		assertBookingRecipient(booking, "Max Muster", "DE92500617410200174051", "GENODE99ABC", null, null);
+
+	}
+
 	private void assertBooking(Booking booking, String dateBooking, String dateValue, String amountStr, String purpose, Typ typ) {
 		assertEquals(dateBooking, booking.getDateBooking());
 		assertEquals(dateValue, booking.getDateValue());
 		assertEquals(amountStr, booking.getAmountStr());
 		assertEquals(purpose, booking.getPurpose());
 		assertEquals(typ, booking.getTyp());
+	}
+
+	private void assertBookingRecipient(Booking booking, String crossReceiverName, String crossAccountIBAN, String crossAccountBIC, String crossAccountNumber,
+			String crossBlz) {
+		assertEquals(crossReceiverName, booking.getCrossReceiverName());
+		assertEquals(crossAccountIBAN, booking.getCrossAccountIBAN());
+		assertEquals(crossAccountBIC, booking.getCrossAccountBIC());
+		assertEquals(crossAccountNumber, booking.getCrossAccountNumber());
+		assertEquals(crossBlz, booking.getCrossBlz());
 	}
 }

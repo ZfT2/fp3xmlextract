@@ -109,6 +109,30 @@ public class AccountProcessor {
 		return result;
 	}
 
+	boolean isCrossBookingOnSameAccount(BankAccount account, String crossIdentifier) {
+
+		if (accountNumbersMap.get(account.getNamePP()) != null && accountNumbersMap.get(account.getNamePP()).contains(crossIdentifier)) {
+			return true;
+		}
+
+		String accountIdentifier = account.getIban() != null ? account.getIban() : account.getNumber();
+		if (accountIdentifier != null) {
+			if (accountIdentifier.equalsIgnoreCase(crossIdentifier)) {
+				return true;
+			}
+
+			String numberWithZeros = accountIdentifier.length() > 12 ? accountIdentifier.substring(12) : accountIdentifier;
+
+			numberWithZeros = numberWithZeros.length() < 10 ? String.format("%010d", Integer.parseInt(numberWithZeros)) : numberWithZeros;
+			crossIdentifier = crossIdentifier.length() < 10 ? String.format("%010d", Integer.parseInt(crossIdentifier)) : crossIdentifier;
+
+			if (numberWithZeros.endsWith(crossIdentifier)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	public void addParentAccounts(Collection<BankAccount> accountList) {
 		for (Entry<String, Collection<String>> entry : accountNumbersMap.entrySet()) {
 			BankAccount accountFound = null;

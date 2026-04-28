@@ -47,13 +47,13 @@ public class BookingProcessor extends AccountProcessor {
 		}
 	}
 
-	public void addBookingTypesToAccountBookings(Collection<BankAccount> kontenList) {
-		for (BankAccount konto : kontenList) {
-			addBookingTypes(konto.getBookings());
+	public void addBookingTypesToAccountBookings(Collection<BankAccount> accountList) {
+		for (BankAccount account : accountList) {
+			addBookingTypes(account.getBookings(), account);
 		}
 	}
 	
-	public void addBookingTypes(Collection<Booking> records) {
+	public void addBookingTypes(Collection<Booking> records, BankAccount account) {
 
 		for (Booking booking : records) {
 			if (booking.getCrossAccountIBAN() != null) {
@@ -63,14 +63,14 @@ public class BookingProcessor extends AccountProcessor {
 							findAccountNamePP(booking.getCrossAccountIBAN().substring(12).replaceFirst("^0+(?!$)", "")));
 				}
 			}
-			determineBookingTyp(booking);
+			determineBookingTyp(booking, account);
 		}
 	}
 
-	private void determineBookingTyp(Booking booking) {
+	private void determineBookingTyp(Booking booking, BankAccount account) {
 		if (booking.getAmount() == null) {
 			booking.setTyp(Typ.UNKNOWN);
-		} else if (isNotEmpty(booking.getCrossAccountNamePP())){
+		} else if (isNotEmpty(booking.getCrossAccountNamePP()) && !isCrossBookingOnSameAccount(account, booking.getCrossAccountIBAN())) {
 			booking.setTyp(booking.getAmount().compareTo(BigDecimal.ZERO) <= 0 ? Typ.REBOOKING_OUT : Typ.REBOOKING_IN);
 		} else if (matchesBookingType(booking.getPurpose(), propsBookingTypes.getProp("INTEREST").split(";"), false)
 				|| matchesBookingType(booking.getPurpose(), propsBookingTypes.getProp("INTEREST_WHOLE_WORD").split(";"), true)) {
@@ -106,7 +106,7 @@ public class BookingProcessor extends AccountProcessor {
 				if (account.getNamePP() == null) {
 					account.setNamePP(account.getBezeichnung());
 				}
-				addBookingTypes(account.getBookings());
+				addBookingTypes(account.getBookings(), account);
 			}
 		}
 		

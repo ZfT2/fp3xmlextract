@@ -228,17 +228,6 @@ public class Converter extends AccountProcessor {
 			String crossBankName = extractElementText(elementBuchung, TAG_BANKNAME, null);
 			String crossAccountNumber = extractElementText(elementBuchung, TAG_KONTONR, null);
 			String crossBlz = extractElementText(elementBuchung, "BLZ", null);
-			
-			try {
-				// Gegenbuchungen auf gleiches Konto verhindern (bei Sammelüberweisungen?)
-				if (!config.isWithCancelBookings() && crossIban != null && isCrossBookingOnSameAccount(account, crossIban)) {
-					crossIban = null;
-				}
-			} catch (NumberFormatException nfe) {
-				log.error("Account number {} / cross number {} could not be parsed for comparisation!", account.getIban(), crossIban, nfe);
-			} catch (Exception e) {
-				log.error("General error in cross number comparisation! Iban: {} , crossIban: {}", account.getIban(), crossIban, e);
-			}
 
 			String dateValueStr = extractElementText(elementBuchung, "VALUTA", null);
 
@@ -261,31 +250,6 @@ public class Converter extends AccountProcessor {
 		}
 		return records;
 	}
-	
-	boolean isCrossBookingOnSameAccount(BankAccount account, String crossIdentifier) {
-
-		if (accountNumbersMap.get(account.getNamePP()) != null && accountNumbersMap.get(account.getNamePP()).contains(crossIdentifier)) {
-			return true;
-		}
-
-		String accountIdentifier = account.getIban() != null ? account.getIban() : account.getNumber();
-		if (accountIdentifier != null) {
-			if (accountIdentifier.equalsIgnoreCase(crossIdentifier)) {
-				return true;
-			}
-
-			String numberWithZeros = accountIdentifier.length() > 12 ? accountIdentifier.substring(12) : accountIdentifier;
-
-			numberWithZeros = numberWithZeros.length() < 10 ? String.format("%010d", Integer.parseInt(numberWithZeros)) : numberWithZeros;
-			crossIdentifier = crossIdentifier.length() < 10 ? String.format("%010d", Integer.parseInt(crossIdentifier)) : crossIdentifier;
-
-			if (numberWithZeros.endsWith(crossIdentifier)) {
-				return true;
-			}
-		}
-		return false;
-	}
-
 
 	private void addAdditionalBookingCounterpartDetails(Booking booking, String crossReceiverName, String crossBankName, String crossAccountNumber, String crossBlz) {
 		booking.setCrossReceiverName(crossReceiverName);
