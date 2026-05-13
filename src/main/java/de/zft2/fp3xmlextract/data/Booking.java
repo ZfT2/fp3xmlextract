@@ -41,7 +41,10 @@ public class Booking {
 	
 	public enum SepaTyp {
 
-		BANK_TRANSFER("Überweisung", new String[] { "GUTSCHRIFT", "EINZELÜBERWEISUNG", "DTA ÜBERWEISUNG", "SEPA Gutschrift", "SEPA Gutschrift Bank", "Überweisungsgutschr.", "UEBERWEISUNGSGUTSCHRIFT", "UEBERWEISUNG", "GUTSCHR. UEBERWEISUNG", "Überweisungsauftrag", "SDIREKT-UEBERWEISUNG" }),
+		BANK_TRANSFER("Überweisung",
+				new String[] { "Überweisung", "EINZELÜBERWEISUNG", "DTA ÜBERWEISUNG", "UEBERWEISUNG", "SEPA-Überweisung", "SEPA Gutschrift",
+						"SEPA Gutschrift Bank", "Überweisungsgutschr.", "UEBERWEISUNGSGUTSCHRIFT", "GUTSCHRIFT", "GUTSCHR. UEBERWEISUNG", "Überweisungsauftrag",
+						"SDIREKT-UEBERWEISUNG" }),
 		BANK_TRANSFER_ONLINE("Überweisung (Online)", new String[] { "ONLINE-UEBERWEISUNG", "Online Einzelüberweisung", "Online SEPA-Überweisung" }),
 		BANK_TRANSFER_EU("EU Überweisung", new String[] { "EU UEBERWEISUNGSAUFTRAG" }),
 		DIRECT_DEBIT("SEPA Lastschrift", new String[] { "LASTSCHRIFT", "BASISLASTSCHRIFT", "FOLGELASTSCHRIFT" }),
