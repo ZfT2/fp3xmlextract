@@ -31,4 +31,5 @@ logs/
 .m2/
 
 #Files in Folders
+src/test/properties/import/intern/*.properties
 src/test/properties/intern/*.properties

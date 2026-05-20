@@ -36,8 +36,8 @@ public class Fp3xmlextractProperties extends Properties {
 	 */
 	private static final long serialVersionUID = 1735959545579391865L;
 
-	private static final Path SUB_PATH = Paths.get("properties");
-	private static final Path TEST_SUB_PATH = Paths.get("src", "test", "properties");
+	private static final Path SUB_PATH = Paths.get("properties", "import");
+	private static final Path TEST_BASE_PATH = Paths.get("src", "test");
 	private static final String INTERN_SUB_PATH = "intern";
 
 	private static String baseDir;
@@ -57,14 +57,14 @@ public class Fp3xmlextractProperties extends Properties {
 
 	private static Path resolvePropertiesBaseDir(String propertiesFile) {
 		if (Fp3xmlextractProperties.class.getResource("/basePath.properties") != null
-				&& Files.isRegularFile(TEST_SUB_PATH.resolve(propertiesFile))) {
-			return TEST_SUB_PATH.toAbsolutePath().normalize().getParent();
+				&& Files.isRegularFile(TEST_BASE_PATH.resolve(SUB_PATH).resolve(propertiesFile))) {
+			return TEST_BASE_PATH.toAbsolutePath().normalize();
 		}
-		return SUB_PATH.toAbsolutePath().normalize().getParent();
+		return Paths.get("").toAbsolutePath().normalize();
 	}
 
 	private static Path resolvePropertiesFile(String propertiesFile, boolean intern) {
-		Path propertiesDir = resolvePropertiesBaseDir(propertiesFile).resolve(SUB_PATH.getFileName());
+		Path propertiesDir = resolvePropertiesBaseDir(propertiesFile).resolve(SUB_PATH);
 		if (intern) {
 			return propertiesDir.resolve(INTERN_SUB_PATH).resolve(propertiesFile);
 		}

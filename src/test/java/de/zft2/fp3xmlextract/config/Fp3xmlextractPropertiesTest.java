@@ -14,7 +14,7 @@ import org.junit.jupiter.api.Test;
 
 class Fp3xmlextractPropertiesTest {
 
-	private static final Path DIR = Path.of("properties");
+	private static final Path DIR = Path.of("properties", "import");
 
 	private static String filenameInputCancel;
 	private static String filenameOutputCancel;
