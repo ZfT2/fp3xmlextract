@@ -74,6 +74,8 @@ jobs:
       # 🏗️ Build
       - name: Build JAR
         run: mvn -B clean package -DskipTests
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       # 🧾 Changelog generieren
       - name: Generate Changelog

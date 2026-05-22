@@ -104,11 +104,11 @@
 		</repository>
 	</distributionManagement>
 
-	<!-- Optional: für Nutzung als Dependency -->
+	<!-- GitHub Packages: dependencies from ZfT2 repositories -->
 	<repositories>
 		<repository>
 			<id>github</id>
-			<url>https://maven.pkg.github.com/ZfT2/fp3xmlextract</url>
+			<url>https://maven.pkg.github.com/zft2/*</url>
 		</repository>
 	</repositories>
 
