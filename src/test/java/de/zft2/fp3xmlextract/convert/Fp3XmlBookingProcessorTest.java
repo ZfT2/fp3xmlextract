@@ -12,11 +12,11 @@ import java.util.List;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import de.zft2.fp3xmlextract.data.BankAccount;
-import de.zft2.fp3xmlextract.data.Booking;
-import de.zft2.fp3xmlextract.exception.ConfigurationException;
+import de.zft2.core.exception.ConfigurationException;
+import de.zft2.fp3xmlextract.data.Fp3XmlBankAccount;
+import de.zft2.fp3xmlextract.data.Fp3XmlBooking;
 
-class BookingProcessorTest {
+class Fp3XmlBookingProcessorTest {
 
 	private static String filenameSameDayNoDiff01;
 	private static String filenameSameDayNoDiff02;
@@ -45,7 +45,7 @@ class BookingProcessorTest {
 	private static String filenameSameDayNoDiffTwoRebookings02;
 
 	private static Converter converter;
-	private static BookingProcessor bookingProcessor;
+	private static Fp3XmlBookingProcessor bookingProcessor;
 
 	private static final int DAYS_REBOOKING = 6;
 
@@ -80,7 +80,7 @@ class BookingProcessorTest {
 		try {
 			ConverterConfig config = new ConverterConfig(true, false);
 			converter = new Converter(config);
-			bookingProcessor = new BookingProcessor();
+			bookingProcessor = new Fp3XmlBookingProcessor();
 		} catch (ConfigurationException e) {
 			e.printStackTrace();
 		}
@@ -90,7 +90,7 @@ class BookingProcessorTest {
 	@Test
 	void testRemoveDoubleRebookings_01() throws Exception {
 
-		Collection<BankAccount> kontenList = converter.convertXmlToCsvEntries(filenameSameDayNoDiff01);
+		Collection<Fp3XmlBankAccount> kontenList = converter.convertXmlToCsvEntries(filenameSameDayNoDiff01);
 		bookingProcessor.addBookingTypesToAccountBookings(kontenList);
 		bookingProcessor.generateCrossBookings(kontenList, true, DAYS_REBOOKING);
 
@@ -98,7 +98,7 @@ class BookingProcessorTest {
 
 		assertEquals(2, kontenList.size());
 
-		List<Booking> bookings = new ArrayList<Booking>(checkKontoHBank(getKontoFromResultList(kontenList, "Girokonto H-Bank")).getBookings());
+		List<Fp3XmlBooking> bookings = new ArrayList<Fp3XmlBooking>(checkKontoHBank(getKontoFromResultList(kontenList, "Girokonto H-Bank")).getBookings());
 		bookings.addAll(checkKontoJBank(getKontoFromResultList(kontenList, "Tagesgeld J-Bank")).getBookings());
 
 		assertEquals(2, bookings.size());
@@ -124,7 +124,7 @@ class BookingProcessorTest {
 	@Test
 	void testBookingProcessorUmbuchungOnSameDay_01() throws Exception {
 
-		Collection<BankAccount> kontenList = converter.convertXmlToCsvEntries(filenameSameDayNoDiff01);
+		Collection<Fp3XmlBankAccount> kontenList = converter.convertXmlToCsvEntries(filenameSameDayNoDiff01);
 		bookingProcessor.addBookingTypesToAccountBookings(kontenList);
 		bookingProcessor.generateCrossBookings(kontenList, true, DAYS_REBOOKING);
 
@@ -132,7 +132,7 @@ class BookingProcessorTest {
 
 		assertEquals(2, kontenList.size());
 
-		BankAccount konto = checkKontoHBank(getKontoFromResultList(kontenList, "Girokonto H-Bank"));
+		Fp3XmlBankAccount konto = checkKontoHBank(getKontoFromResultList(kontenList, "Girokonto H-Bank"));
 		assertEquals(1, konto.getBookings().size());
 
 		assertTrue(konto.getBookings().stream().anyMatch(booking -> checkBookingInList(booking, "04.10.24",
@@ -149,7 +149,7 @@ class BookingProcessorTest {
 	@Test
 	void testBookingProcessorUmbuchungOnSameDay_02() throws Exception {
 
-		Collection<BankAccount> kontenList = converter.convertXmlToCsvEntries(filenameSameDayNoDiff02);
+		Collection<Fp3XmlBankAccount> kontenList = converter.convertXmlToCsvEntries(filenameSameDayNoDiff02);
 		bookingProcessor.addBookingTypesToAccountBookings(kontenList);
 		bookingProcessor.generateCrossBookings(kontenList, true, DAYS_REBOOKING);
 
@@ -158,7 +158,7 @@ class BookingProcessorTest {
 		assertEquals(2, kontenList.size());
 
 		// Konto (Basis)
-		BankAccount konto = checkKontoSK(getKontoFromResultList(kontenList, "Girokonto SK K-Stadt"));
+		Fp3XmlBankAccount konto = checkKontoSK(getKontoFromResultList(kontenList, "Girokonto SK K-Stadt"));
 		assertEquals(1, konto.getBookings().size());
 
 		assertTrue(konto.getBookings().stream().anyMatch(booking -> checkBookingInList(booking, "22.03.06",
@@ -175,7 +175,7 @@ class BookingProcessorTest {
 	@Test
 	void testBookingProcessorUmbuchungOnSameDay_03() throws Exception {
 
-		Collection<BankAccount> kontenList = converter.convertXmlToCsvEntries(filenameSameDayNoDiff03);
+		Collection<Fp3XmlBankAccount> kontenList = converter.convertXmlToCsvEntries(filenameSameDayNoDiff03);
 		bookingProcessor.addBookingTypesToAccountBookings(kontenList);
 		bookingProcessor.generateCrossBookings(kontenList, true, DAYS_REBOOKING);
 
@@ -184,12 +184,12 @@ class BookingProcessorTest {
 		assertEquals(2, kontenList.size());
 
 		// Konto (Basis)
-		BankAccount konto = checkKontoCB(getKontoFromResultList(kontenList, "Girokonto C-Bank"));
+		Fp3XmlBankAccount konto = checkKontoCB(getKontoFromResultList(kontenList, "Girokonto C-Bank"));
 		assertEquals(1, konto.getBookings().size());
 
 		assertTrue(konto.getBookings().stream()
 				.anyMatch(booking -> checkBookingInList(booking, "06.03.06", "Einzahlung COMB (C-Bank)", "-100,00", "7004277541", "Umbuchung (Ausgang)")));
-		List<Booking> bookingAllStatistics = new ArrayList<Booking>();
+		List<Fp3XmlBooking> bookingAllStatistics = new ArrayList<Fp3XmlBooking>();
 		bookingAllStatistics.addAll(konto.getBookings());
 
 		// Konto (Gegenkonto)
@@ -207,7 +207,7 @@ class BookingProcessorTest {
 	@Test
 	void testBookingProcessorUmbuchungWithOneDayDiffference_01() throws Exception {
 
-		Collection<BankAccount> kontenList = converter.convertXmlToCsvEntries(filenameOneDayDiff01);
+		Collection<Fp3XmlBankAccount> kontenList = converter.convertXmlToCsvEntries(filenameOneDayDiff01);
 		bookingProcessor.addBookingTypesToAccountBookings(kontenList);
 		bookingProcessor.generateCrossBookings(kontenList, true, DAYS_REBOOKING);
 
@@ -216,7 +216,7 @@ class BookingProcessorTest {
 		assertEquals(3, kontenList.size());
 
 		// Konto (Basis)
-		BankAccount konto = checkKontoHBank(getKontoFromResultList(kontenList, "Girokonto H-Bank"));
+		Fp3XmlBankAccount konto = checkKontoHBank(getKontoFromResultList(kontenList, "Girokonto H-Bank"));
 		assertEquals(1, konto.getBookings().size());
 
 		assertTrue(konto.getBookings().stream().anyMatch(booking -> checkBookingInList(booking, "22.05.24",
@@ -243,7 +243,7 @@ class BookingProcessorTest {
 	@Test
 	void testBookingProcessorUmbuchungWithOneDayDiffference_02() throws Exception {
 
-		Collection<BankAccount> kontenList = converter.convertXmlToCsvEntries(filenameOneDayDiff02);
+		Collection<Fp3XmlBankAccount> kontenList = converter.convertXmlToCsvEntries(filenameOneDayDiff02);
 		bookingProcessor.addBookingTypesToAccountBookings(kontenList);
 		bookingProcessor.generateCrossBookings(kontenList, true, DAYS_REBOOKING);
 
@@ -252,7 +252,7 @@ class BookingProcessorTest {
 		assertEquals(3, kontenList.size());
 
 		// Konto (Basis)
-		BankAccount konto = checkKontoDBank(getKontoFromResultList(kontenList, "Girokonto D-Bank"));
+		Fp3XmlBankAccount konto = checkKontoDBank(getKontoFromResultList(kontenList, "Girokonto D-Bank"));
 		assertEquals(2, konto.getBookings().size());
 
 		assertTrue(konto.getBookings().stream().anyMatch(booking -> checkBookingInList(booking, "29.09.11",
@@ -290,7 +290,7 @@ class BookingProcessorTest {
 	@Test
 	void testBookingProcessorUmbuchungWithOneDayDiffference_03() throws Exception {
 
-		Collection<BankAccount> kontenList = converter.convertXmlToCsvEntries(filenameOneDayDiff03);
+		Collection<Fp3XmlBankAccount> kontenList = converter.convertXmlToCsvEntries(filenameOneDayDiff03);
 		bookingProcessor.addBookingTypesToAccountBookings(kontenList);
 		bookingProcessor.generateCrossBookings(kontenList, true, DAYS_REBOOKING);
 
@@ -299,7 +299,7 @@ class BookingProcessorTest {
 		assertEquals(3, kontenList.size());
 
 		// Konto (Basis)
-		BankAccount konto = checkKontoDBank(getKontoFromResultList(kontenList, "Girokonto D-Bank"));
+		Fp3XmlBankAccount konto = checkKontoDBank(getKontoFromResultList(kontenList, "Girokonto D-Bank"));
 		assertEquals(1, konto.getBookings().size());
 
 		assertTrue(konto.getBookings().stream().anyMatch(booking -> checkBookingInList(booking, "21.04.09",
@@ -326,7 +326,7 @@ class BookingProcessorTest {
 	@Test
 	void testBookingProcessorUmbuchungWithOneDayDiffference_04() throws Exception {
 
-		Collection<BankAccount> kontenList = converter.convertXmlToCsvEntries(filenameOneDayDiff04);
+		Collection<Fp3XmlBankAccount> kontenList = converter.convertXmlToCsvEntries(filenameOneDayDiff04);
 		bookingProcessor.addBookingTypesToAccountBookings(kontenList);
 		bookingProcessor.generateCrossBookings(kontenList, true, DAYS_REBOOKING);
 
@@ -335,7 +335,7 @@ class BookingProcessorTest {
 		assertEquals(3, kontenList.size());
 
 		// Konto (Basis)
-		BankAccount konto = checkKontoDBank(getKontoFromResultList(kontenList, "Girokonto D-Bank"));
+		Fp3XmlBankAccount konto = checkKontoDBank(getKontoFromResultList(kontenList, "Girokonto D-Bank"));
 		assertEquals(1, konto.getBookings().size());
 
 		assertTrue(konto.getBookings().stream()
@@ -362,7 +362,7 @@ class BookingProcessorTest {
 	@Test
 	void testBookingProcessorUmbuchungWithOneDayDiffference_05() throws Exception {
 
-		Collection<BankAccount> kontenList = converter.convertXmlToCsvEntries(filenameOneDayDiff05);
+		Collection<Fp3XmlBankAccount> kontenList = converter.convertXmlToCsvEntries(filenameOneDayDiff05);
 		bookingProcessor.addBookingTypesToAccountBookings(kontenList);
 		bookingProcessor.generateCrossBookings(kontenList, true, DAYS_REBOOKING);
 
@@ -371,7 +371,7 @@ class BookingProcessorTest {
 		assertEquals(3, kontenList.size());
 
 		// Konto (Basis)
-		BankAccount konto = checkKontoHBank(getKontoFromResultList(kontenList, "Girokonto H-Bank"));
+		Fp3XmlBankAccount konto = checkKontoHBank(getKontoFromResultList(kontenList, "Girokonto H-Bank"));
 		assertEquals(1, konto.getBookings().size());
 
 		assertTrue(konto.getBookings().stream().anyMatch(booking -> checkBookingInList(booking, "03.04.24",
@@ -402,7 +402,7 @@ class BookingProcessorTest {
 	@Test
 	void testBookingProcessorUmbuchungWithOneDayDiffference_06() throws Exception {
 
-		Collection<BankAccount> kontenList = converter.convertXmlToCsvEntries(filenameOneDayDiff06);
+		Collection<Fp3XmlBankAccount> kontenList = converter.convertXmlToCsvEntries(filenameOneDayDiff06);
 		bookingProcessor.addBookingTypesToAccountBookings(kontenList);
 		bookingProcessor.generateCrossBookings(kontenList, true, DAYS_REBOOKING);
 
@@ -411,7 +411,7 @@ class BookingProcessorTest {
 		assertEquals(3, kontenList.size());
 
 		// Konto (Basis)
-		BankAccount konto = checkKontoDBank(getKontoFromResultList(kontenList, "Girokonto D-Bank"));
+		Fp3XmlBankAccount konto = checkKontoDBank(getKontoFromResultList(kontenList, "Girokonto D-Bank"));
 		assertEquals(1, konto.getBookings().size());
 
 		assertTrue(konto.getBookings().stream().anyMatch(booking -> checkBookingInList(booking, "09.07.09", "18884058  UEBERWEISUNG  UEBERWEISUNGSGUTSCHRIFT",
@@ -436,7 +436,7 @@ class BookingProcessorTest {
 	@Test
 	void testBookingProcessorUmbuchungWithOneDayDiffference_07() throws Exception {
 
-		Collection<BankAccount> kontenList = converter.convertXmlToCsvEntries(filenameOneDayDiff07);
+		Collection<Fp3XmlBankAccount> kontenList = converter.convertXmlToCsvEntries(filenameOneDayDiff07);
 		bookingProcessor.addBookingTypesToAccountBookings(kontenList);
 		bookingProcessor.generateCrossBookings(kontenList, true, DAYS_REBOOKING);
 
@@ -445,7 +445,7 @@ class BookingProcessorTest {
 		assertEquals(3, kontenList.size());
 
 		// Konto (Basis)
-		BankAccount konto = checkKontoDBank(getKontoFromResultList(kontenList, "Girokonto D-Bank"));
+		Fp3XmlBankAccount konto = checkKontoDBank(getKontoFromResultList(kontenList, "Girokonto D-Bank"));
 		assertEquals(1, konto.getBookings().size());
 
 		assertTrue(konto.getBookings().stream().anyMatch(
@@ -472,7 +472,7 @@ class BookingProcessorTest {
 	@Test
 	void testBookingProcessorUmbuchungWithTwoDaysDiffference_01() throws Exception {
 
-		Collection<BankAccount> kontenList = converter.convertXmlToCsvEntries(filenameTwoDaysDiff01);
+		Collection<Fp3XmlBankAccount> kontenList = converter.convertXmlToCsvEntries(filenameTwoDaysDiff01);
 		bookingProcessor.addBookingTypesToAccountBookings(kontenList);
 		bookingProcessor.generateCrossBookings(kontenList, true, DAYS_REBOOKING);
 
@@ -481,7 +481,7 @@ class BookingProcessorTest {
 		assertEquals(3, kontenList.size());
 
 		// Konto (Basis)
-		BankAccount konto = checkKontoSK(getKontoFromResultList(kontenList, "Girokonto SK K-Stadt"));
+		Fp3XmlBankAccount konto = checkKontoSK(getKontoFromResultList(kontenList, "Girokonto SK K-Stadt"));
 		assertEquals(1, konto.getBookings().size());
 
 		assertTrue(konto.getBookings().stream()
@@ -512,7 +512,7 @@ class BookingProcessorTest {
 	@Test
 	void testBookingProcessorUmbuchungWithThreeDaysDiffference_01() throws Exception {
 
-		Collection<BankAccount> kontenList = converter.convertXmlToCsvEntries(filenameThreeDaysDiff01);
+		Collection<Fp3XmlBankAccount> kontenList = converter.convertXmlToCsvEntries(filenameThreeDaysDiff01);
 		bookingProcessor.addBookingTypesToAccountBookings(kontenList);
 		bookingProcessor.generateCrossBookings(kontenList, true, DAYS_REBOOKING);
 
@@ -521,7 +521,7 @@ class BookingProcessorTest {
 		assertEquals(3, kontenList.size());
 
 		// Konto (Basis)
-		BankAccount konto = checkKontoDBank(getKontoFromResultList(kontenList, "Girokonto D-Bank"));
+		Fp3XmlBankAccount konto = checkKontoDBank(getKontoFromResultList(kontenList, "Girokonto D-Bank"));
 		assertEquals(1, konto.getBookings().size());
 
 		assertTrue(konto.getBookings().stream().anyMatch(booking -> checkBookingInList(booking, "12.04.19", "Purpose: RINP  Vers. PKV Abschlag  DAUERAUFTRAG",
@@ -552,7 +552,7 @@ class BookingProcessorTest {
 	@Test
 	void testBookingProcessorUmbuchungWithCancellation_01() throws Exception {
 
-		Collection<BankAccount> kontenList = converter.convertXmlToCsvEntries(filenameCancellation01);
+		Collection<Fp3XmlBankAccount> kontenList = converter.convertXmlToCsvEntries(filenameCancellation01);
 		bookingProcessor.addBookingTypesToAccountBookings(kontenList);
 
 		bookingProcessor.revertCancellationRebookings(kontenList);
@@ -564,7 +564,7 @@ class BookingProcessorTest {
 		assertEquals(2, kontenList.size());
 
 		// Konto (Basis)
-		BankAccount konto = checkKontoHBank(getKontoFromResultList(kontenList, "Girokonto H-Bank"));
+		Fp3XmlBankAccount konto = checkKontoHBank(getKontoFromResultList(kontenList, "Girokonto H-Bank"));
 		assertEquals(3, konto.getBookings().size());
 
 		assertTrue(konto.getBookings().stream().anyMatch(booking -> checkBookingInList(booking, "15.01.24",
@@ -587,7 +587,7 @@ class BookingProcessorTest {
 	@Test
 	void testBookingProcessorUmbuchungWithCancellation_02() throws Exception {
 
-		Collection<BankAccount> kontenList = converter.convertXmlToCsvEntries(filenameCancellation02);
+		Collection<Fp3XmlBankAccount> kontenList = converter.convertXmlToCsvEntries(filenameCancellation02);
 		bookingProcessor.addBookingTypesToAccountBookings(kontenList);
 
 		bookingProcessor.revertCancellationRebookings(kontenList);
@@ -599,7 +599,7 @@ class BookingProcessorTest {
 		assertEquals(2, kontenList.size());
 
 		// Konto (Basis)
-		BankAccount konto = checkKontoHBank(getKontoFromResultList(kontenList, "Girokonto H-Bank"));
+		Fp3XmlBankAccount konto = checkKontoHBank(getKontoFromResultList(kontenList, "Girokonto H-Bank"));
 		assertEquals(4, konto.getBookings().size());
 
 		assertTrue(konto.getBookings().stream().anyMatch(booking -> checkBookingInList(booking, "20.02.25",
@@ -625,7 +625,7 @@ class BookingProcessorTest {
 	@Test
 	void testBookingProcessorUmbuchungWithCancellation_03() throws Exception {
 
-		Collection<BankAccount> kontenList = converter.convertXmlToCsvEntries(filenameCancellation03);
+		Collection<Fp3XmlBankAccount> kontenList = converter.convertXmlToCsvEntries(filenameCancellation03);
 		bookingProcessor.addBookingTypesToAccountBookings(kontenList);
 
 		bookingProcessor.revertCancellationRebookings(kontenList);
@@ -637,7 +637,7 @@ class BookingProcessorTest {
 		assertEquals(4, kontenList.size());
 
 		// Konto (Basis)
-		BankAccount konto = checkKontoDBank(getKontoFromResultList(kontenList, "Girokonto D-Bank"));
+		Fp3XmlBankAccount konto = checkKontoDBank(getKontoFromResultList(kontenList, "Girokonto D-Bank"));
 		assertEquals(5, konto.getBookings().size());
 
 		assertTrue(konto.getBookings().stream().anyMatch(booking -> checkBookingInList(booking, "25.07.14",
@@ -675,7 +675,7 @@ class BookingProcessorTest {
 	@Test
 	void testBookingProcessorUmbuchungWithCancellation_04() throws Exception {
 
-		Collection<BankAccount> kontenList = converter.convertXmlToCsvEntries(filenameCancellation04);
+		Collection<Fp3XmlBankAccount> kontenList = converter.convertXmlToCsvEntries(filenameCancellation04);
 		bookingProcessor.addBookingTypesToAccountBookings(kontenList);
 
 		bookingProcessor.revertCancellationRebookings(kontenList);
@@ -687,7 +687,7 @@ class BookingProcessorTest {
 		assertEquals(2, kontenList.size());
 
 		// Konto (Basis)
-		BankAccount konto = checkKontoDBank(getKontoFromResultList(kontenList, "Girokonto D-Bank"));
+		Fp3XmlBankAccount konto = checkKontoDBank(getKontoFromResultList(kontenList, "Girokonto D-Bank"));
 		assertEquals(3, konto.getBookings().size());
 
 		assertTrue(konto.getBookings().stream().anyMatch(booking -> checkBookingInList(booking, "18.09.08",
@@ -719,13 +719,13 @@ class BookingProcessorTest {
 	@Test
 	void testBookingProcessorUmbuchungSixAccounts() throws Exception {
 
-		Collection<BankAccount> kontenList = converter.convertXmlToCsvEntries(filenameSixAccounts);
+		Collection<Fp3XmlBankAccount> kontenList = converter.convertXmlToCsvEntries(filenameSixAccounts);
 		bookingProcessor.addBookingTypesToAccountBookings(kontenList);
 		bookingProcessor.generateCrossBookings(kontenList, true, DAYS_REBOOKING);
 
 		assertEquals(7, kontenList.size());
 
-		BankAccount konto = checkKontoDBank(getKontoFromResultList(kontenList, "Girokonto D-Bank"));
+		Fp3XmlBankAccount konto = checkKontoDBank(getKontoFromResultList(kontenList, "Girokonto D-Bank"));
 		assertEquals(4, konto.getBookings().size());
 
 		konto = checkKontoDeba(getKontoFromResultList(kontenList, "Tagesgeld I DeDa"));
@@ -772,7 +772,7 @@ class BookingProcessorTest {
 	@Test
 	void testBookingProcessorUmbuchungOnSameDayTwoRebookings_01() throws Exception {
 
-		Collection<BankAccount> kontenList = converter.convertXmlToCsvEntries(filenameSameDayNoDiffTwoRebookings01);
+		Collection<Fp3XmlBankAccount> kontenList = converter.convertXmlToCsvEntries(filenameSameDayNoDiffTwoRebookings01);
 		bookingProcessor.addBookingTypesToAccountBookings(kontenList);
 		bookingProcessor.generateCrossBookings(kontenList, true, DAYS_REBOOKING);
 
@@ -781,7 +781,7 @@ class BookingProcessorTest {
 		assertEquals(2, kontenList.size());
 
 		// Konto (Basis)
-		BankAccount konto = checkKontoSK(getKontoFromResultList(kontenList, "Girokonto SK K-Stadt"));
+		Fp3XmlBankAccount konto = checkKontoSK(getKontoFromResultList(kontenList, "Girokonto SK K-Stadt"));
 		assertEquals(2, konto.getBookings().size());
 
 		assertTrue(konto.getBookings().stream().anyMatch(booking -> checkBookingInList(booking, "27.01.06",
@@ -802,7 +802,7 @@ class BookingProcessorTest {
 	@Test
 	void testBookingProcessorUmbuchungOnSameDayTwoRebookings_01_WithoutTransferAccount() throws Exception {
 
-		Collection<BankAccount> kontenList = converter.convertXmlToCsvEntries(filenameSameDayNoDiffTwoRebookings01);
+		Collection<Fp3XmlBankAccount> kontenList = converter.convertXmlToCsvEntries(filenameSameDayNoDiffTwoRebookings01);
 		bookingProcessor.addBookingTypesToAccountBookings(kontenList);
 		bookingProcessor.generateCrossBookings(kontenList, false, DAYS_REBOOKING);
 
@@ -811,7 +811,7 @@ class BookingProcessorTest {
 		assertEquals(2, kontenList.size());
 
 		// Konto (Basis)
-		BankAccount konto = checkKontoSK(getKontoFromResultList(kontenList, "Girokonto SK K-Stadt"));
+		Fp3XmlBankAccount konto = checkKontoSK(getKontoFromResultList(kontenList, "Girokonto SK K-Stadt"));
 		assertEquals(2, konto.getBookings().size());
 
 		assertTrue(konto.getBookings().stream().anyMatch(booking -> checkBookingInList(booking, "27.01.06",
@@ -836,7 +836,7 @@ class BookingProcessorTest {
 	@Test
 	void testBookingProcessorUmbuchungOnSameDayTwoRebookings_02_WithoutTransferAccount() throws Exception {
 
-		Collection<BankAccount> kontenList = converter.convertXmlToCsvEntries(filenameSameDayNoDiffTwoRebookings02);
+		Collection<Fp3XmlBankAccount> kontenList = converter.convertXmlToCsvEntries(filenameSameDayNoDiffTwoRebookings02);
 		bookingProcessor.addBookingTypesToAccountBookings(kontenList);
 		bookingProcessor.generateCrossBookings(kontenList, false, DAYS_REBOOKING);
 
@@ -845,7 +845,7 @@ class BookingProcessorTest {
 		assertEquals(2, kontenList.size());
 
 		// Konto (Basis)
-		BankAccount konto = checkKontoSK(getKontoFromResultList(kontenList, "Girokonto SK K-Stadt"));
+		Fp3XmlBankAccount konto = checkKontoSK(getKontoFromResultList(kontenList, "Girokonto SK K-Stadt"));
 		assertEquals(2, konto.getBookings().size());
 
 		assertTrue(konto.getBookings().stream()
@@ -864,7 +864,7 @@ class BookingProcessorTest {
 
 	}
 
-	private void checkBooking(Booking booking, String date, String purpose, String amountStr, String crossAccountIBAN, String typStr) {
+	private void checkBooking(Fp3XmlBooking booking, String date, String purpose, String amountStr, String crossAccountIBAN, String typStr) {
 		assertEquals(date, booking.getDate());
 		assertEquals(purpose, booking.getPurpose());
 		assertEquals(amountStr, booking.getAmountStr());
@@ -872,14 +872,14 @@ class BookingProcessorTest {
 		assertEquals(typStr, booking.getTyp().toString());
 	}
 
-	private boolean checkBookingInList(Booking booking, String date, String purpose, String amountStr, String crossAccountIBAN, String typStr) {
+	private boolean checkBookingInList(Fp3XmlBooking booking, String date, String purpose, String amountStr, String crossAccountIBAN, String typStr) {
 		return date.equalsIgnoreCase(booking.getDate()) && purpose.equalsIgnoreCase(booking.getPurpose()) && amountStr.equalsIgnoreCase(booking.getAmountStr())
 				&& (crossAccountIBAN == null || crossAccountIBAN.equalsIgnoreCase(booking.getCrossAccountIBAN()))
 				&& (typStr == null || typStr.equalsIgnoreCase(booking.getTyp().toString()));
 	}
 
-	private BankAccount getKontoFromResultList(Collection<BankAccount> kontenList, String kontoName) {
-		for (BankAccount konto : kontenList) {
+	private Fp3XmlBankAccount getKontoFromResultList(Collection<Fp3XmlBankAccount> kontenList, String kontoName) {
+		for (Fp3XmlBankAccount konto : kontenList) {
 			if (konto.getNamePP().equalsIgnoreCase(kontoName)) {
 				return konto;
 			}
@@ -887,100 +887,100 @@ class BookingProcessorTest {
 		return null;
 	}
 
-	private BankAccount checkKontoTransfer(BankAccount konto) {
+	private Fp3XmlBankAccount checkKontoTransfer(Fp3XmlBankAccount konto) {
 		assertEquals("DE00000000", konto.getIban());
 		assertEquals("0000", konto.getNumber());
 		return konto;
 	}
 
-	private BankAccount checkKontoJBank(BankAccount konto) {
+	private Fp3XmlBankAccount checkKontoJBank(Fp3XmlBankAccount konto) {
 		assertEquals("DE55500150010006290050", konto.getIban());
 		assertEquals("6290050", konto.getNumber());
 		return konto;
 	}
 
-	private BankAccount checkKontoHBank(BankAccount konto) {
+	private Fp3XmlBankAccount checkKontoHBank(Fp3XmlBankAccount konto) {
 		assertEquals("DE92500617410200174051", konto.getIban());
 		assertEquals("200174051", konto.getNumber());
 		return konto;
 	}
 
-	private BankAccount checkKontoDBank(BankAccount konto) {
+	private Fp3XmlBankAccount checkKontoDBank(Fp3XmlBankAccount konto) {
 		assertEquals("DE30120300000018884058", konto.getIban());
 		assertEquals("18884058", konto.getNumber());
 		return konto;
 	}
 
-	private BankAccount checkKontoDSpar1(BankAccount konto) {
+	private Fp3XmlBankAccount checkKontoDSpar1(Fp3XmlBankAccount konto) {
 		assertEquals("DE32120300006000510084", konto.getIban());
 		assertEquals("6000510084", konto.getNumber());
 		return konto;
 	}
 
-	private BankAccount checkKontoDSpar25(BankAccount konto) {
+	private Fp3XmlBankAccount checkKontoDSpar25(Fp3XmlBankAccount konto) {
 		assertEquals("DE40120300006000510554", konto.getIban());
 		assertEquals("6000510554", konto.getNumber());
 		return konto;
 	}
 
-	private BankAccount checkKontoDSparkarte(BankAccount konto) {
+	private Fp3XmlBankAccount checkKontoDSparkarte(Fp3XmlBankAccount konto) {
 		assertNull(konto.getIban());
 		assertEquals("4748430003203674", konto.getNumber());
 		return konto;
 	}
 
-	private BankAccount checkKontoDeba(BankAccount konto) {
+	private Fp3XmlBankAccount checkKontoDeba(Fp3XmlBankAccount konto) {
 		assertEquals("DE71500105170990651720", konto.getIban());
 		assertEquals("0990651720", konto.getNumber());
 		return konto;
 	}
 
-	private BankAccount checkKontoAK(BankAccount konto) {
+	private Fp3XmlBankAccount checkKontoAK(Fp3XmlBankAccount konto) {
 		assertNull(konto.getIban());
 		assertEquals("10052517", konto.getNumber());
 		return konto;
 	}
 
-	private BankAccount checkKontoMK(BankAccount konto) {
+	private Fp3XmlBankAccount checkKontoMK(Fp3XmlBankAccount konto) {
 		assertEquals("DE79701308000004751027", konto.getIban());
 		assertEquals("4751027", konto.getNumber());
 		return konto;
 	}
 
-	private BankAccount checkKontoGa(BankAccount konto) {
+	private Fp3XmlBankAccount checkKontoGa(Fp3XmlBankAccount konto) {
 		assertEquals("DE49507504004000545165", konto.getIban());
 		assertEquals("4000545165", konto.getNumber());
 		return konto;
 	}
 
-	private BankAccount checkKontoSK(BankAccount konto) {
+	private Fp3XmlBankAccount checkKontoSK(Fp3XmlBankAccount konto) {
 		assertNull(konto.getIban());
 		assertEquals("1061525816", konto.getNumber());
 		return konto;
 	}
 
-	private BankAccount checkKontoCB(BankAccount konto) {
+	private Fp3XmlBankAccount checkKontoCB(Fp3XmlBankAccount konto) {
 		assertEquals("DE96370400440100657000", konto.getIban());
 		assertEquals("100657000", konto.getNumber());
 		return konto;
 	}
 
-	private BankAccount checkKontoVW(BankAccount konto) {
+	private Fp3XmlBankAccount checkKontoVW(Fp3XmlBankAccount konto) {
 		assertEquals("DE89270200001201854647", konto.getIban());
 		return konto;
 	}
 
-	private BankAccount checkKontoDeDa(BankAccount konto) {
+	private Fp3XmlBankAccount checkKontoDeDa(Fp3XmlBankAccount konto) {
 		assertEquals("DE71500105170990651720", konto.getIban());
 		return konto;
 	}
 
-	private BankAccount checkKontoVT(BankAccount konto) {
+	private Fp3XmlBankAccount checkKontoVT(Fp3XmlBankAccount konto) {
 		assertEquals("DE98501234000126541100", konto.getIban());
 		return konto;
 	}
 
-	private BankAccount checkKontoBM(BankAccount konto) {
+	private Fp3XmlBankAccount checkKontoBM(Fp3XmlBankAccount konto) {
 		assertEquals("7004277541", konto.getNumber());
 		assertNull(konto.getIban());
 		return konto;

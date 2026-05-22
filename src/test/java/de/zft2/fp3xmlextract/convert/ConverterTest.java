@@ -12,11 +12,12 @@ import java.util.Iterator;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import de.zft2.fp3xmlextract.data.BankAccount;
-import de.zft2.fp3xmlextract.data.Booking;
-import de.zft2.fp3xmlextract.data.Booking.SepaTyp;
-import de.zft2.fp3xmlextract.data.Booking.Typ;
-import de.zft2.fp3xmlextract.exception.ConfigurationException;
+import de.zft2.core.dto.Booking.Typ;
+import de.zft2.core.exception.ConfigurationException;
+import de.zft2.core.process.AccountProcessor;
+import de.zft2.fp3xmlextract.data.Fp3XmlBankAccount;
+import de.zft2.fp3xmlextract.data.Fp3XmlBooking;
+import de.zft2.fp3xmlextract.data.Fp3XmlBooking.SepaTyp;
 
 class ConverterTest {
 
@@ -28,8 +29,8 @@ class ConverterTest {
 	private static String filename06;
 
 	private static Converter converter;
-	private static BookingProcessor bookingProcessor;
-	private static AccountProcessor accountProcessor;
+	private static Fp3XmlBookingProcessor bookingProcessor;
+	private static AccountProcessor<Fp3XmlBankAccount> accountProcessor;
 
 	@BeforeAll
 	static void beforeClass() {
@@ -43,8 +44,8 @@ class ConverterTest {
 		try {
 			ConverterConfig converterConfig = new ConverterConfig(false, false); /** default for tests: without SEPA extraction **/
 			converter = new Converter(converterConfig);
-			bookingProcessor = new BookingProcessor();
-			accountProcessor = new AccountProcessor();
+			bookingProcessor = new Fp3XmlBookingProcessor();
+			accountProcessor = new AccountProcessor<Fp3XmlBankAccount>();
 		} catch (ConfigurationException e) {
 			e.printStackTrace();
 		}
@@ -53,19 +54,19 @@ class ConverterTest {
 	@Test
 	void testConverter01() throws Exception {
 
-		Collection<BankAccount> kontenList = converter.convertXmlToCsvEntries(filename01);
+		Collection<Fp3XmlBankAccount> kontenList = converter.convertXmlToCsvEntries(filename01);
 
 		assertNotNull(kontenList);
 
-		Iterator<BankAccount> iterator = kontenList.iterator();
+		Iterator<Fp3XmlBankAccount> iterator = kontenList.iterator();
 
-		BankAccount konto = (BankAccount) iterator.next();
+		Fp3XmlBankAccount konto = (Fp3XmlBankAccount) iterator.next();
 		assertEquals("DE30120300000018884058", konto.getIban());
 		assertEquals("18884058", konto.getNumber());
 		assertEquals(5, konto.getBookings().size());
 		assertEquals("24.08.06", konto.getBookings().get(0).getDate());
 
-		konto = (BankAccount) iterator.next();
+		konto = (Fp3XmlBankAccount) iterator.next();
 		assertEquals("DE71500105170990651720", konto.getIban());
 		assertEquals("0990651720", konto.getNumber());
 		assertEquals(43, konto.getBookings().size());
@@ -76,15 +77,15 @@ class ConverterTest {
 	@Test
 	void testConverter02() throws Exception {
 
-		Collection<BankAccount> kontenList = converter.convertXmlToCsvEntries(filename02);
+		Collection<Fp3XmlBankAccount> kontenList = converter.convertXmlToCsvEntries(filename02);
 
 		assertNotNull(kontenList);
 
 		assertEquals(2, kontenList.size());
 
-		Iterator<BankAccount> iterator = kontenList.iterator();
+		Iterator<Fp3XmlBankAccount> iterator = kontenList.iterator();
 
-		BankAccount konto = (BankAccount) iterator.next();
+		Fp3XmlBankAccount konto = (Fp3XmlBankAccount) iterator.next();
 		assertEquals(null, konto.getIban());
 		assertEquals("1002522291", konto.getNumber());
 		assertEquals(7, konto.getBookings().size());
@@ -95,16 +96,16 @@ class ConverterTest {
 	@Test
 	void testConverter03() throws Exception {
 
-		Collection<BankAccount> kontenList = converter.convertXmlToCsvEntries(filename03);
+		Collection<Fp3XmlBankAccount> kontenList = converter.convertXmlToCsvEntries(filename03);
 		bookingProcessor.addBookingTypesToAccountBookings(kontenList);
 
 		assertNotNull(kontenList);
 
 		assertEquals(1, kontenList.size());
 
-		Iterator<BankAccount> iterator = kontenList.iterator();
+		Iterator<Fp3XmlBankAccount> iterator = kontenList.iterator();
 
-		BankAccount konto = (BankAccount) iterator.next();
+		Fp3XmlBankAccount konto = (Fp3XmlBankAccount) iterator.next();
 		assertEquals("DE41500105176004514751", konto.getIban());
 		assertEquals("6004514751", konto.getNumber());
 
@@ -141,7 +142,7 @@ class ConverterTest {
 		boolean result;
 		String crossIban;
 
-		BankAccount bankAccount = new BankAccount();
+		Fp3XmlBankAccount bankAccount = new Fp3XmlBankAccount();
 
 		bankAccount.setIban("1234567890");
 		crossIban = "1234567890";
@@ -199,28 +200,28 @@ class ConverterTest {
 	@Test
 	void testAddAdditionalBookingSepaInformation() {
 
-		Booking booking = new Booking("01.01.25", "02.01.25",
+		Fp3XmlBooking booking = new Fp3XmlBooking("01.01.25", "02.01.25",
 				"Kundenref.: Payment-Information-ID-4265  EndtoEnd: NOTPROVIDED  Auszahlung 011 KT Direktbank TAN1:493284 IBAN: DE92500617410200174051 BIC: GENODE99ABC  Überweisungsauftrag",
 				BigDecimal.ONE, null, null, null);
 		converter.addAdditionalBookingSepaInformation(booking, true);
 		assertEquals("Auszahlung 011 KT Direktbank TAN1:493284 IBAN: DE92500617410200174051 BIC: GENODE99ABC", booking.getPurpose());
 
-		booking = new Booking("29.02.24", "29.02.24", "ABSCHLUSS PER 29.02.2024  Abschluss", BigDecimal.ONE, null, null, null);
+		booking = new Fp3XmlBooking("29.02.24", "29.02.24", "ABSCHLUSS PER 29.02.2024  Abschluss", BigDecimal.ONE, null, null, null);
 		converter.addAdditionalBookingSepaInformation(booking, true);
 		assertEquals("ABSCHLUSS PER 29.02.2024", booking.getPurpose());
 
-		booking = new Booking("01.01.25", "02.01.25", "EndtoEnd: NOTPROVIDED  Einzahlung 016 KT Direktbank  Überweisungsgutschr.", BigDecimal.ONE, null, null,
+		booking = new Fp3XmlBooking("01.01.25", "02.01.25", "EndtoEnd: NOTPROVIDED  Einzahlung 016 KT Direktbank  Überweisungsgutschr.", BigDecimal.ONE, null, null,
 				null);
 		converter.addAdditionalBookingSepaInformation(booking, true);
 		assertEquals("Einzahlung 016 KT Direktbank", booking.getPurpose());
 
-		booking = new Booking("01.01.25", "02.01.25",
+		booking = new Fp3XmlBooking("01.01.25", "02.01.25",
 				"Auszahlung 043 KT Direktbank TAN1:404689 IBAN: DE92500617410200174051 BIC: GENODE99ABC  Überweisungsauftrag  Kundenref.: Payment-Information-ID-219  EndtoEnd: NOTPROVIDED",
 				BigDecimal.ONE, null, null, null);
 		converter.addAdditionalBookingSepaInformation(booking, true);
 		assertEquals("Auszahlung 043 KT Direktbank TAN1:404689 IBAN: DE92500617410200174051 BIC: GENODE99ABC", booking.getPurpose());
 
-		booking = new Booking("30.06.21", "30.06.21",
+		booking = new Fp3XmlBooking("30.06.21", "30.06.21",
 				"Abrechnung 30.06.2021  siehe AnlageAbrechnung 30.06.2021Information zur AbrechnungKontostand am 30.06.2021  329,38 +Abrechnungszeitraum vom 01.04.2021 bis 30.06.2021Zinsen für eingeräumte Kontoüberziehung  0,37- 6,6500 v.H. Kred-Zins  bis 29.06.2021Abrechnung 30.06.2021  0,37-Sollzinssätze am 30.06.2021 6,6500 v.H. für eingeräumte Kontoüberziehung(aktuell eingeräumte Kontoüberziehung  13.500,00) 6,6500 v.H. für geduldete Kontoüberziehungüber die eingeräumte Kontoüberziehung hinausEs handelt sich hierbei um eine umsatzsteuerfreie Leistung.Kontostand/Rechnungsabschluss am 30.06.2021  329,01 +Rechnungsnummer: 20210630-BY111-00105192218  ABSCHLUSS",
 				BigDecimal.ONE, null, null, null);
 		converter.addAdditionalBookingSepaInformation(booking, true);
@@ -228,26 +229,26 @@ class ConverterTest {
 				"Abrechnung 30.06.2021  siehe AnlageAbrechnung 30.06.2021Information zur AbrechnungKontostand am 30.06.2021  329,38 +Abrechnungszeitraum vom 01.04.2021 bis 30.06.2021Zinsen für eingeräumte Kontoüberziehung  0,37- 6,6500 v.H. Kred-Zins  bis 29.06.2021Abrechnung 30.06.2021  0,37-Sollzinssätze am 30.06.2021 6,6500 v.H. für eingeräumte Kontoüberziehung(aktuell eingeräumte Kontoüberziehung  13.500,00) 6,6500 v.H. für geduldete Kontoüberziehungüber die eingeräumte Kontoüberziehung hinausEs handelt sich hierbei um eine umsatzsteuerfreie Leistung.Kontostand/Rechnungsabschluss am 30.06.2021  329,01 +Rechnungsnummer: 20210630-BY111-00105192218",
 				booking.getPurpose());
 
-		booking = new Booking("01.01.25", "02.01.25",
+		booking = new Fp3XmlBooking("01.01.25", "02.01.25",
 				"EndtoEnd: 126561176 - MUSTER, MAX MUSTER,GEOR  126561176 - MUSTER, MAX MUSTER,MAX  VL; GVC: SEPA Credit Transfer (Einzelbuchung-Haben)",
 				BigDecimal.ONE, null, null, null);
 		converter.addAdditionalBookingSepaInformation(booking, true);
 		assertEquals("126561176 - MUSTER, MAX MUSTER,MAX  VL; GVC: SEPA Credit Transfer (Einzelbuchung-Haben)", booking.getPurpose());
 
-		booking = new Booking("01.01.25", "02.01.25", "LASTSCHRIFT  3,1005688853E+026  13980917/1834681103", BigDecimal.ONE, null, null, null);
+		booking = new Fp3XmlBooking("01.01.25", "02.01.25", "LASTSCHRIFT  3,1005688853E+026  13980917/1834681103", BigDecimal.ONE, null, null, null);
 		converter.addAdditionalBookingSepaInformation(booking, true);
 		assertEquals("3,1005688853E+026  13980917/1834681103", booking.getPurpose());
 
-		booking = new Booking("31.10.07", "31.10.07", "LASTSCHRIFT  206010331970 000007135488  NR.4240536407/31.10.2007  RECHNUNG VOM 31.10.07", BigDecimal.ONE,
+		booking = new Fp3XmlBooking("31.10.07", "31.10.07", "LASTSCHRIFT  206010331970 000007135488  NR.4240536407/31.10.2007  RECHNUNG VOM 31.10.07", BigDecimal.ONE,
 				null, null, null);
 		converter.addAdditionalBookingSepaInformation(booking, true);
 		assertEquals("206010331970 000007135488  NR.4240536407/31.10.2007  RECHNUNG VOM 31.10.07", booking.getPurpose());
 
-		booking = new Booking("01.01.25", "02.01.25", "SONSTIGER EINZUG  EC 67007699 23.11 09.01 CE1", BigDecimal.ONE, null, null, null);
+		booking = new Fp3XmlBooking("01.01.25", "02.01.25", "SONSTIGER EINZUG  EC 67007699 23.11 09.01 CE1", BigDecimal.ONE, null, null, null);
 		converter.addAdditionalBookingSepaInformation(booking, true);
 		assertEquals("EC 67007699 23.11 09.01 CE1", booking.getPurpose());
 
-		booking = new Booking("15.05.15", "15.05.15",
+		booking = new Fp3XmlBooking("15.05.15", "15.05.15",
 				"KREF+Payment-Information-ID  -3683  SVWZ+4748430003203674 Max  Muster  DATUM 15.05.2015, 12.00 UHR  1.TAN 130162  ONLINE-UEBERWEISUNG",
 				BigDecimal.ONE, null, null, null);
 		converter.addAdditionalBookingSepaInformation(booking, true);
@@ -258,16 +259,16 @@ class ConverterTest {
 	@Test
 	void testConverter_SEPA_Fields_WITHOUT_extraction() throws Exception {
 
-		Collection<BankAccount> kontenList = converter.convertXmlToCsvEntries(filename04);
+		Collection<Fp3XmlBankAccount> kontenList = converter.convertXmlToCsvEntries(filename04);
 		bookingProcessor.addBookingTypesToAccountBookings(kontenList);
 
 		assertNotNull(kontenList);
 
 		assertEquals(2, kontenList.size());
 
-		Iterator<BankAccount> iterator = kontenList.iterator();
+		Iterator<Fp3XmlBankAccount> iterator = kontenList.iterator();
 
-		BankAccount konto = (BankAccount) iterator.next();
+		Fp3XmlBankAccount konto = (Fp3XmlBankAccount) iterator.next();
 		assertEquals("DE92500617410200174051", konto.getIban());
 		assertEquals("200174051", konto.getNumber());
 
@@ -280,7 +281,7 @@ class ConverterTest {
 		assertEquals(SepaTyp.BANK_TRANSFER, konto.getBookings().get(0).getSepaTyp());
 		assertEquals(Typ.REBOOKING_IN, konto.getBookings().get(0).getTyp());
 
-		konto = (BankAccount) iterator.next();
+		konto = (Fp3XmlBankAccount) iterator.next();
 		assertEquals("DE55500150010006290050", konto.getIban());
 		assertEquals("6290050", konto.getNumber());
 
@@ -302,16 +303,16 @@ class ConverterTest {
 		ConverterConfig converterConfig = new ConverterConfig(false, true);
 		converter.setConfig(converterConfig);
 
-		Collection<BankAccount> kontenList = converter.convertXmlToCsvEntries(filename04);
+		Collection<Fp3XmlBankAccount> kontenList = converter.convertXmlToCsvEntries(filename04);
 		bookingProcessor.addBookingTypesToAccountBookings(kontenList);
 
 		assertNotNull(kontenList);
 
 		assertEquals(2, kontenList.size());
 
-		Iterator<BankAccount> iterator = kontenList.iterator();
+		Iterator<Fp3XmlBankAccount> iterator = kontenList.iterator();
 
-		BankAccount konto = (BankAccount) iterator.next();
+		Fp3XmlBankAccount konto = (Fp3XmlBankAccount) iterator.next();
 		assertEquals("DE92500617410200174051", konto.getIban());
 		assertEquals("200174051", konto.getNumber());
 
@@ -324,7 +325,7 @@ class ConverterTest {
 		assertEquals(SepaTyp.BANK_TRANSFER, konto.getBookings().get(0).getSepaTyp());
 		assertEquals(Typ.REBOOKING_IN, konto.getBookings().get(0).getTyp());
 
-		konto = (BankAccount) iterator.next();
+		konto = (Fp3XmlBankAccount) iterator.next();
 		assertEquals("DE55500150010006290050", konto.getIban());
 		assertEquals("6290050", konto.getNumber());
 
@@ -341,7 +342,7 @@ class ConverterTest {
 	void testConverter_Account_Grouping01() throws Exception {
 
 		converter.getConfig().setRemoveSepaFieldsFromPurpose(true);
-		Collection<BankAccount> kontenList = converter.convertXmlToCsvEntries(filename05);
+		Collection<Fp3XmlBankAccount> kontenList = converter.convertXmlToCsvEntries(filename05);
 		bookingProcessor.addBookingTypesToAccountBookings(kontenList);
 
 		accountProcessor.addParentAccounts(kontenList);
@@ -350,9 +351,9 @@ class ConverterTest {
 
 		assertEquals(2, kontenList.size());
 
-		Iterator<BankAccount> iterator = kontenList.iterator();
+		Iterator<Fp3XmlBankAccount> iterator = kontenList.iterator();
 
-		BankAccount konto = (BankAccount) iterator.next();
+		Fp3XmlBankAccount konto = (Fp3XmlBankAccount) iterator.next();
 		assertEquals("724741470", konto.getNumber());
 
 		assertEquals("Festgelder B12-Bank", konto.getParentAccount());
@@ -376,7 +377,7 @@ class ConverterTest {
 
 		assertBooking(konto.getBookings().get(6), "28.04.23", null, "-17500,00", "Gesamtkündigung", Typ.REBOOKING_OUT);
 
-		konto = (BankAccount) iterator.next();
+		konto = (Fp3XmlBankAccount) iterator.next();
 
 		assertEquals("724741460", konto.getNumber());
 		assertEquals("Festgelder B12-Bank", konto.getParentAccount());
@@ -386,21 +387,21 @@ class ConverterTest {
 	void testConverter_Account_Cancel_Booking01() throws Exception {
 
 		converter.getConfig().setRemoveSepaFieldsFromPurpose(false);
-		Collection<BankAccount> kontenList = converter.convertXmlToCsvEntries(filename06);
+		Collection<Fp3XmlBankAccount> kontenList = converter.convertXmlToCsvEntries(filename06);
 		bookingProcessor.addBookingTypesToAccountBookings(kontenList);
 
 		assertNotNull(kontenList);
 
 		assertEquals(1, kontenList.size());
 
-		Iterator<BankAccount> iterator = kontenList.iterator();
+		Iterator<Fp3XmlBankAccount> iterator = kontenList.iterator();
 
-		BankAccount konto = (BankAccount) iterator.next();
+		Fp3XmlBankAccount konto = (Fp3XmlBankAccount) iterator.next();
 		assertEquals("200174051", konto.getNumber());
 
 		assertEquals(1, konto.getBookings().size());
 
-		Booking booking = konto.getBookings().get(0);
+		Fp3XmlBooking booking = konto.getBookings().get(0);
 
 		assertBooking(booking, "24.02.25", "24.02.25", "15000,00",
 				"Storno der Buchung des Auftragsbetrages 15000.00 EUR vom 24.02.2025 SVWZ: Einzahlung DiBa 01 2025 TAN1:841399 IBAN: DE71500105170990651720 BIC: INGDDEFFXXX  STORNO  EndtoEnd: NOTPROVIDED",
@@ -409,7 +410,7 @@ class ConverterTest {
 
 	}
 
-	private void assertBooking(Booking booking, String dateBooking, String dateValue, String amountStr, String purpose, Typ typ) {
+	private void assertBooking(Fp3XmlBooking booking, String dateBooking, String dateValue, String amountStr, String purpose, Typ typ) {
 		assertEquals(dateBooking, booking.getDateBooking());
 		assertEquals(dateValue, booking.getDateValue());
 		assertEquals(amountStr, booking.getAmountStr());
@@ -417,7 +418,7 @@ class ConverterTest {
 		assertEquals(typ, booking.getTyp());
 	}
 
-	private void assertBookingRecipient(Booking booking, String crossReceiverName, String crossAccountIBAN, String crossAccountBIC, String crossAccountNumber,
+	private void assertBookingRecipient(Fp3XmlBooking booking, String crossReceiverName, String crossAccountIBAN, String crossAccountBIC, String crossAccountNumber,
 			String crossBlz) {
 		assertEquals(crossReceiverName, booking.getCrossReceiverName());
 		assertEquals(crossAccountIBAN, booking.getCrossAccountIBAN());

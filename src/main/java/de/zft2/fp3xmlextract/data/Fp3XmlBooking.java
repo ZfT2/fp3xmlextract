@@ -6,39 +6,8 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
-public class Booking {
+public class Fp3XmlBooking implements de.zft2.core.dto.Booking {
 
-	public enum Typ {
-
-		REBOOKING_IN("Umbuchung (Eingang)"), 
-		REBOOKING_OUT("Umbuchung (Ausgang)"), 
-		INTEREST("Zinsen"),
-		INTEREST_CHARGE("Zinsbelastung"), 
-		TAX("Steuern"), 
-		TAX_REFUND("Steuerrückerstattung"),
-		DIVIDENDS("Dividende"),
-		UNKNOWN(null);
-
-		public static Typ forString(String strValue) {
-			for (Typ x : values()) {
-				if (x.translation.equals(strValue))
-					return x;
-			}
-			return null;
-		}
-
-		private final String translation;
-
-		private Typ(String translation) {
-			this.translation = translation;
-		}
-
-		@Override
-		public final String toString() {
-			return translation;
-		}
-	}
-	
 	public enum SepaTyp {
 
 		BANK_TRANSFER("Überweisung",
@@ -50,12 +19,12 @@ public class Booking {
 		DIRECT_DEBIT("SEPA Lastschrift", new String[] { "LASTSCHRIFT", "BASISLASTSCHRIFT", "FOLGELASTSCHRIFT" }),
 		DIRECT_DEBIT_OTHER("SEPA Lastschrift (sonstige)", new String[] { "SONSTIGER EINZUG" }),
 		STANDING_ORDER("Dauerauftrag", new String[] { "DAUERAUFTRAG", "Dauerauftragsgutschr", "RINP" }),
-		REBOOKING("Umbuchung", new String[] { "Umbuchung" }), 
+		REBOOKING("Umbuchung", new String[] { "Umbuchung" }),
 		ACCOUNT_COMPLETION("Abschluss", new String[] { "Abschluss", "Kontoabschluß" }),
-		INTEREST("Zins", new String[] { "ZINSEN", "HABENZINSEN" }), 
+		INTEREST("Zins", new String[] { "ZINSEN", "HABENZINSEN" }),
 		TAX_CAPITALGAINS("Steuern (Kapitalertragsteuer)", new String[] { "Kapitalertragsteuer" }),
 		TAX_SOLIDARITY_SURCHARGE("Steuern (Solidaritätszuschlag)", new String[] { "Solidaritätszuschlag", "Solidaritaetszuschlag" }),
-		TAX_CHURCH("Steuern (Kirchensteuer)", new String[] { "Kirchensteuer" }), 
+		TAX_CHURCH("Steuern (Kirchensteuer)", new String[] { "Kirchensteuer" }),
 		CANCELLATION("Storno", new String[] { "Storno" });
 
 		public static SepaTyp forString(String strValue) {
@@ -83,8 +52,11 @@ public class Booking {
 		}
 	}
 
-	/** 0 1 2 3 4 5 6 7 8 9
-	new String[] { datum, datumBuchung, datumWert, verwendungszweck, betrag, gegenKontoIban, gegenKontoBic, "Typ", "NamePP", "Filename" } **/
+	/**
+	 * 0 1 2 3 4 5 6 7 8 9 new String[] { datum, datumBuchung, datumWert,
+	 * verwendungszweck, betrag, gegenKontoIban, gegenKontoBic, "Typ", "NamePP",
+	 * "Filename" }
+	 **/
 
 	private String date;
 	private String dateBooking;
@@ -98,7 +70,7 @@ public class Booking {
 	private String crossAccountNumber;
 	private String crossBlz;
 	private String category;
-	
+
 	private String sepaCustomerRef;
 	private String sepaCreditorId;
 	private String sepaEndToEnd;
@@ -106,16 +78,16 @@ public class Booking {
 	private String sepaPersonId;
 	private String sepaPurpose;
 	private SepaTyp sepaTyp;
-	
+
 	private Typ typ;
 	private String crossAccountNamePP;
 	private String fileName;
 	private String accountNamePP; // for full booking list
-	
-	private Booking crossBooking;
-	
-	public Booking(String dateBooking, String dateValue, String purpose, BigDecimal amount,
-			String crossAccountIBAN, String crossAccountBIC, String accountNamePP) {
+
+	private de.zft2.core.dto.Booking crossBooking;
+
+	public Fp3XmlBooking(String dateBooking, String dateValue, String purpose, BigDecimal amount, String crossAccountIBAN, String crossAccountBIC,
+			String accountNamePP) {
 		this.date = dateValue != null ? dateValue : dateBooking;
 		this.dateBooking = dateBooking;
 		this.dateValue = dateValue;
@@ -125,21 +97,24 @@ public class Booking {
 		this.crossAccountBIC = crossAccountBIC;
 		this.accountNamePP = accountNamePP;
 	}
-	
-	public Booking(Booking bookingToCopy) {
-		this.date = bookingToCopy.date;
-		this.dateBooking = bookingToCopy.dateBooking;
-		this.dateValue = bookingToCopy.dateValue;
-		this.purpose = bookingToCopy.purpose;
-		this.amount = bookingToCopy.amount;
-		this.crossAccountIBAN = bookingToCopy.crossAccountIBAN;
-		this.crossAccountBIC = bookingToCopy.crossAccountBIC;
-		this.crossReceiverName = bookingToCopy.crossReceiverName;
-		this.crossBankName = bookingToCopy.crossBankName;
-		this.typ = bookingToCopy.typ;
-		this.crossAccountNamePP = bookingToCopy.crossAccountNamePP;
-		this.fileName = bookingToCopy.fileName;
-		this.accountNamePP = bookingToCopy.accountNamePP;
+
+	public Fp3XmlBooking(de.zft2.core.dto.Booking bookingToCopy) {
+		this.date = bookingToCopy.getDate();
+		this.purpose = bookingToCopy.getPurpose();
+		this.amount = bookingToCopy.getAmount();
+		this.crossAccountIBAN = bookingToCopy.getCrossAccountIBAN();
+		this.crossAccountBIC = bookingToCopy.getCrossAccountBIC();
+		this.crossAccountNamePP = bookingToCopy.getCrossAccountNamePP();
+		this.accountNamePP = bookingToCopy.getAccountNamePP();
+
+		if (bookingToCopy instanceof Fp3XmlBooking fp3XmlBooking) {
+			this.dateBooking = fp3XmlBooking.dateBooking;
+			this.dateValue = fp3XmlBooking.dateValue;
+			this.crossReceiverName = fp3XmlBooking.crossReceiverName;
+			this.crossBankName = fp3XmlBooking.crossBankName;
+			this.typ = fp3XmlBooking.typ;
+			this.fileName = fp3XmlBooking.fileName;
+		}
 	}
 
 	public String getDate() {
@@ -326,23 +301,23 @@ public class Booking {
 		this.accountNamePP = accountNamePP;
 	}
 
-	public Booking getCrossBooking() {
+	public de.zft2.core.dto.Booking getCrossBooking() {
 		return crossBooking;
 	}
 
-	public void setCrossBooking(Booking crossBooking) {
+	public void setCrossBooking(de.zft2.core.dto.Booking crossBooking) {
 		this.crossBooking = crossBooking;
 	}
 
 	public String getAmountStr() {
 		return String.format("%.2f", amount.setScale(2, RoundingMode.DOWN));
 	}
-	
+
 	public String getTypStr() {
 		return typ != null ? typ.toString() : null;
 	}
-	
-	public static int compareBookingByAccountThenDate(Booking b1, Booking b2) {
+
+	public static int compareBookingByAccountThenDate(Fp3XmlBooking b1, Fp3XmlBooking b2) {
 		int value1 = b1.getCrossAccountNamePP().compareTo(b2.getCrossAccountNamePP());
 		if (value1 == 0) {
 			int value2 = b1.getAccountNamePP().compareTo(b2.getAccountNamePP());
@@ -355,13 +330,10 @@ public class Booking {
 		}
 		return value1;
 	}
-	
-	
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(accountNamePP, amount, crossAccountBIC, crossAccountIBAN, crossAccountNamePP, date, dateBooking,
-				dateValue, fileName, purpose, typ);
+		return Objects.hash(accountNamePP, amount, crossAccountBIC, crossAccountIBAN, crossAccountNamePP, date, dateBooking, dateValue, fileName, purpose, typ);
 	}
 
 	@Override
@@ -372,13 +344,11 @@ public class Booking {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Booking other = (Booking) obj;
+		Fp3XmlBooking other = (Fp3XmlBooking) obj;
 		return Objects.equals(accountNamePP, other.accountNamePP) && Objects.equals(amount, other.amount)
-				&& Objects.equals(crossAccountBIC, other.crossAccountBIC)
-				&& Objects.equals(crossAccountIBAN, other.crossAccountIBAN)
+				&& Objects.equals(crossAccountBIC, other.crossAccountBIC) && Objects.equals(crossAccountIBAN, other.crossAccountIBAN)
 				&& Objects.equals(crossAccountNamePP, other.crossAccountNamePP) && Objects.equals(date, other.date)
-				&& Objects.equals(dateBooking, other.dateBooking) && Objects.equals(dateValue, other.dateValue)
-				&& Objects.equals(fileName, other.fileName) && Objects.equals(purpose, other.purpose)
-				&& typ == other.typ;
+				&& Objects.equals(dateBooking, other.dateBooking) && Objects.equals(dateValue, other.dateValue) && Objects.equals(fileName, other.fileName)
+				&& Objects.equals(purpose, other.purpose) && typ == other.typ;
 	}
 }

@@ -24,12 +24,13 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-import de.zft2.fp3xmlextract.data.BankAccount;
-import de.zft2.fp3xmlextract.data.Booking;
-import de.zft2.fp3xmlextract.data.Booking.SepaTyp;
-import de.zft2.fp3xmlextract.exception.ConfigurationException;
+import de.zft2.core.exception.ConfigurationException;
+import de.zft2.core.process.AccountProcessor;
+import de.zft2.fp3xmlextract.data.Fp3XmlBankAccount;
+import de.zft2.fp3xmlextract.data.Fp3XmlBooking;
+import de.zft2.fp3xmlextract.data.Fp3XmlBooking.SepaTyp;
 
-public class Converter extends AccountProcessor {
+public class Converter extends AccountProcessor<Fp3XmlBankAccount> {
 
 	private static Logger log = LogManager.getLogger(Converter.class);
 	
@@ -67,14 +68,14 @@ public class Converter extends AccountProcessor {
 		setConfig(config);
 	}
 
-	public Collection<Booking> convertFp3ToCsvEntries(String fp3File)
+	public Collection<Fp3XmlBooking> convertFp3ToCsvEntries(String fp3File)
 			throws ParserConfigurationException, SAXException, IOException {
 
 		Document doc = getDocument(fp3File);
 
 		NodeList list = doc.getElementsByTagName("b2");
 
-		ArrayList<Booking> records = new ArrayList<>();
+		ArrayList<Fp3XmlBooking> records = new ArrayList<>();
 
 		for (int temp = 0; temp < list.getLength(); temp++) {
 
@@ -106,7 +107,7 @@ public class Converter extends AccountProcessor {
 					log.printf(Level.INFO, "Element: %s DatumBuchung: %-8s DatumWert: %-8s Verwendungszweck: %-175s Betrag: %10s GegenkontoIban: %-22s GegenkontoBic: %-11s", 
 							node.getNodeName(), dateBooking, dateValueStr, purpose, amountStr, crossIban, gegenKontoBic);
 					
-					records.add(new Booking(dateBooking, dateValueStr, purpose, new BigDecimal(amountStr.replaceAll("\\.+", "").replaceAll(",+", ".")), crossIban,
+					records.add(new Fp3XmlBooking(dateBooking, dateValueStr, purpose, new BigDecimal(amountStr.replaceAll("\\.+", "").replaceAll(",+", ".")), crossIban,
 							gegenKontoBic, ""));
 				}
 			}
@@ -114,11 +115,11 @@ public class Converter extends AccountProcessor {
 		return records;
 	}
 
-	public Collection<BankAccount> convertXmlToCsvEntries(String xmlFile) throws ParserConfigurationException, SAXException, IOException {
+	public Collection<Fp3XmlBankAccount> convertXmlToCsvEntries(String xmlFile) throws ParserConfigurationException, SAXException, IOException {
 
 		Document doc = getDocument(xmlFile);
 
-		Collection<BankAccount> accountList = new ArrayList<>();
+		Collection<Fp3XmlBankAccount> accountList = new ArrayList<>();
 
 		NodeList listKonten = doc.getElementsByTagName(TAG_KONTO);
 
@@ -132,7 +133,7 @@ public class Converter extends AccountProcessor {
 
 			Element element = (Element) node;
 
-			BankAccount account = new BankAccount();
+			Fp3XmlBankAccount account = new Fp3XmlBankAccount();
 
 			String iban = extractNodeText(element, TAG_IBAN);
 			account.setIban(iban);
@@ -153,7 +154,7 @@ public class Converter extends AccountProcessor {
 			account.setBankName(bankName);
 			
 			String bezeichnung =  extractNodeText(element, TAG_BEZEICHNUNG);
-			account.setBezeichnung(bezeichnung);
+			account.setAccountName(bezeichnung);
 			
 			String balance =  extractNodeText(element, TAG_KONTOSTAND);
 			account.setBalance(balance != null ? new BigDecimal(balance.replaceAll("\\.+", "").replaceAll(",+", ".")): null);
@@ -164,13 +165,13 @@ public class Converter extends AccountProcessor {
 			if (propsSkip.get(account.getIdentifier()) == null && first != null) {
 
 				final String accountNamePP = findAccountNamePP(account.getIdentifier());
-				account.setNamePP(accountNamePP != null ? accountNamePP : account.getBezeichnung());
+				account.setNamePP(accountNamePP != null ? accountNamePP : account.getAccountName());
 
 				log.trace("\n\nElement: {} IBAN: {} KONTONR: {}", node.getNodeName(), iban, account.getNumber());
 
 				NodeList listBuchungen = first.getChildNodes();
 
-				List<Booking> records = extractBookings(node, account, listBuchungen);
+				List<Fp3XmlBooking> records = extractBookings(node, account, listBuchungen);
 
 				if (account != null && !records.isEmpty()) {
 					account.setBookings(records);
@@ -194,9 +195,9 @@ public class Converter extends AccountProcessor {
 	}
 
 
-	private List<Booking> extractBookings(Node node, BankAccount account, NodeList listBuchungen) {
+	private List<Fp3XmlBooking> extractBookings(Node node, Fp3XmlBankAccount account, NodeList listBuchungen) {
 		
-		ArrayList<Booking> records = new ArrayList<>();
+		ArrayList<Fp3XmlBooking> records = new ArrayList<>();
 		
 		for (int tempB = 0; tempB < listBuchungen.getLength(); tempB++) {
 
@@ -238,7 +239,7 @@ public class Converter extends AccountProcessor {
 			log.printf(Level.TRACE, "Element: %s DatumBuchung: %-8s DatumWert: %-8s Verwendungszweck: %-175s Betrag: %10s GegenkontoIban: %-22s GegenkontoBic: %-11s", 
 					node.getNodeName(), dateBooking, dateValueStr, purpose, amountStr, crossIban, crossBic);
 			
-			Booking booking = new Booking(dateBooking, dateValueStr, purpose, new BigDecimal(amountStr.replaceAll("\\.+", "").replaceAll(",+", ".")), crossIban,
+			Fp3XmlBooking booking = new Fp3XmlBooking(dateBooking, dateValueStr, purpose, new BigDecimal(amountStr.replaceAll("\\.+", "").replaceAll(",+", ".")), crossIban,
 					crossBic, account.getNamePP());
 			
 			addAdditionalBookingCounterpartDetails(booking, crossReceiverName, crossBankName, crossAccountNumber, crossBlz);
@@ -251,18 +252,18 @@ public class Converter extends AccountProcessor {
 		return records;
 	}
 
-	private void addAdditionalBookingCounterpartDetails(Booking booking, String crossReceiverName, String crossBankName, String crossAccountNumber, String crossBlz) {
+	private void addAdditionalBookingCounterpartDetails(Fp3XmlBooking booking, String crossReceiverName, String crossBankName, String crossAccountNumber, String crossBlz) {
 		booking.setCrossReceiverName(crossReceiverName);
 		booking.setCrossBankName(crossBankName);
 		booking.setCrossAccountNumber(crossAccountNumber);
 		booking.setCrossBlz(crossBlz);
 	}
 	
-	private void addAdditionalBookingCategory(Booking booking, String category) {
+	private void addAdditionalBookingCategory(Fp3XmlBooking booking, String category) {
 		booking.setCategory(category);
 	}
 
-	void addAdditionalBookingSepaInformation(Booking booking, boolean removeFromPurpose) {
+	void addAdditionalBookingSepaInformation(Fp3XmlBooking booking, boolean removeFromPurpose) {
 		if (booking.getPurpose() == null)
 			return;
 
@@ -280,7 +281,7 @@ public class Converter extends AccountProcessor {
 		}
 	}
 
-	private void setSepaFields(Booking booking, boolean removeFromPurpose, StringBuilder remainingPurpose, String sepaField) {
+	private void setSepaFields(Fp3XmlBooking booking, boolean removeFromPurpose, StringBuilder remainingPurpose, String sepaField) {
 		if (sepaField.startsWith("Kundenref.:") || sepaField.startsWith("KREF+")) {
 			booking.setSepaCustomerRef(sepaField.replace("Kundenref.: ", "").replace("KREF+", ""));
 		} else if (sepaField.startsWith("EndtoEnd:") || sepaField.startsWith("EREF+")) {
@@ -298,7 +299,7 @@ public class Converter extends AccountProcessor {
 		}
 	}
 
-	private void setSepaTyp(Booking booking, boolean removeFromPurpose, StringBuilder remainingPurpose, String sepaField) {
+	private void setSepaTyp(Fp3XmlBooking booking, boolean removeFromPurpose, StringBuilder remainingPurpose, String sepaField) {
 		SepaTyp sepaTyp = SepaTyp.forString(sepaField);
 		if (sepaTyp != null) {
 			booking.setSepaTyp(sepaTyp);

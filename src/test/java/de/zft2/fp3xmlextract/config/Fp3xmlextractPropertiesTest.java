@@ -12,6 +12,8 @@ import java.nio.file.Path;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import de.zft2.core.config.ImportProperties;
+
 class Fp3xmlextractPropertiesTest {
 
 	private static final Path DIR = Path.of("properties", "import");
@@ -33,7 +35,7 @@ class Fp3xmlextractPropertiesTest {
 	@Test
 	void testProcessCancelProperties() throws Exception {
 
-		Fp3xmlextractProperties propertiesIntern = Fp3xmlextractProperties.getInstance(filenameInputCancel, true);
+		ImportProperties propertiesIntern = ImportProperties.getInstance(filenameInputCancel, true);
 
 		assertTrue(findInFile(propertiesIntern.getBaseDir(), filenameInputCancel, "Sparkarte VISA D-Bank"));
 
@@ -48,7 +50,7 @@ class Fp3xmlextractPropertiesTest {
 	@Test
 	void testProcessTransferProperties() throws Exception {
 
-		Fp3xmlextractProperties propertiesIntern = Fp3xmlextractProperties.getInstance(filenameInputTransfer, true);
+		ImportProperties propertiesIntern = ImportProperties.getInstance(filenameInputTransfer, true);
 
 		assertTrue(findInFile(propertiesIntern.getBaseDir(), filenameInputTransfer, "Sparkonto Plus BN-Bank"));
 

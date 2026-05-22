@@ -3,7 +3,9 @@ package de.zft2.fp3xmlextract.data;
 import java.math.BigDecimal;
 import java.util.List;
 
-public class BankAccount {
+import de.zft2.core.dto.Account;
+
+public class Fp3XmlBankAccount implements Account<Fp3XmlBooking> {
 
 	private String iban;
 	private String bic;
@@ -11,12 +13,12 @@ public class BankAccount {
 	private String blz;
 	private String bankName;
 	private String type;
-	private String bezeichnung;
+	private String accountName;
 	private String parentAccount;
 	private BigDecimal balance;
 	private String namePP;
 
-	private List<Booking> bookings;
+	private List<Fp3XmlBooking> bookings;
 
 	public String getIdentifier() {
 		String identifier = null;
@@ -78,12 +80,12 @@ public class BankAccount {
 		this.type = type;
 	}
 
-	public String getBezeichnung() {
-		return bezeichnung;
+	public String getAccountName() {
+		return accountName;
 	}
 
-	public void setBezeichnung(String bezeichnung) {
-		this.bezeichnung = bezeichnung;
+	public void setAccountName(String accountName) {
+		this.accountName = accountName;
 	}
 
 	public String getParentAccount() {
@@ -110,12 +112,12 @@ public class BankAccount {
 		this.namePP = namePP;
 	}
 
-	public List<Booking> getBookings() {
+	public List<Fp3XmlBooking> getBookings() {
 		return bookings;
 	}
 
-	public void setBookings(List<Booking> bookings) {
+	public void setBookings(List<Fp3XmlBooking> bookings) {
 		this.bookings = bookings;
-	}
 
+	}
 }

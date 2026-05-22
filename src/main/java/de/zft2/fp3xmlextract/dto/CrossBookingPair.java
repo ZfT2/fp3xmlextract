@@ -1,33 +1,33 @@
 package de.zft2.fp3xmlextract.dto;
 
-import de.zft2.fp3xmlextract.data.Booking;
+import de.zft2.fp3xmlextract.data.Fp3XmlBooking;
 
 public class CrossBookingPair {
 
 	private String baseKontoNamePP;
-	private Booking baseBooking;
+	private Fp3XmlBooking baseBooking;
 
 	private String crossKontoNamePP;
-	private Booking crossBooking;
+	private Fp3XmlBooking crossBooking;
 
 	public CrossBookingPair(String baseKontoNamePP, String crossKontoNamePP) {
 		this.baseKontoNamePP = baseKontoNamePP;
 		this.crossKontoNamePP = crossKontoNamePP;
 	}
 
-	public Booking getBaseBooking() {
+	public Fp3XmlBooking getBaseBooking() {
 		return baseBooking;
 	}
 
-	public Booking getCrossBooking() {
+	public Fp3XmlBooking getCrossBooking() {
 		return crossBooking;
 	}
 
-	public void setBaseBooking(Booking baseBooking) {
+	public void setBaseBooking(Fp3XmlBooking baseBooking) {
 		this.baseBooking = baseBooking;
 	}
 
-	public void setCrossBooking(Booking crossBooking) {
+	public void setCrossBooking(Fp3XmlBooking crossBooking) {
 		this.crossBooking = crossBooking;
 	}
 

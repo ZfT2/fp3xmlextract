@@ -26,6 +26,8 @@
 		<!-- Dependencies -->
 		<log4j.version>2.25.4</log4j.version>
 		<commonscsv.version>1.14.1</commonscsv.version>
+		
+		<bookingcore.version>0.1.1</bookingcore.version>
 
 		<junit.version>5.14.3</junit.version>
 	</properties>
@@ -44,6 +46,12 @@
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-csv</artifactId>
 			<version>${commonscsv.version}</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>de.zft2</groupId>
+			<artifactId>booking-core</artifactId>
+			<version>${bookingcore.version}</version>
 		</dependency>
 
 		<!-- Tests -->
