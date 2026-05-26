@@ -3,7 +3,6 @@ package de.zft2.fp3xmlextract.data;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
 public class Fp3XmlBooking implements de.zft2.core.dto.Booking {
@@ -58,9 +57,9 @@ public class Fp3XmlBooking implements de.zft2.core.dto.Booking {
 	 * "Filename" }
 	 **/
 
-	private String date;
-	private String dateBooking;
-	private String dateValue;
+	private LocalDate date;
+	private LocalDate dateBooking;
+	private LocalDate dateValue;
 	private String purpose;
 	private BigDecimal amount;
 	private String crossAccountIBAN;
@@ -86,7 +85,7 @@ public class Fp3XmlBooking implements de.zft2.core.dto.Booking {
 
 	private de.zft2.core.dto.Booking crossBooking;
 
-	public Fp3XmlBooking(String dateBooking, String dateValue, String purpose, BigDecimal amount, String crossAccountIBAN, String crossAccountBIC,
+	public Fp3XmlBooking(LocalDate dateBooking, LocalDate dateValue, String purpose, BigDecimal amount, String crossAccountIBAN, String crossAccountBIC,
 			String accountNamePP) {
 		this.date = dateValue != null ? dateValue : dateBooking;
 		this.dateBooking = dateBooking;
@@ -117,27 +116,27 @@ public class Fp3XmlBooking implements de.zft2.core.dto.Booking {
 		}
 	}
 
-	public String getDate() {
+	public LocalDate getDate() {
 		return date;
 	}
 
-	public void setDate(String date) {
+	public void setDate(LocalDate date) {
 		this.date = date;
 	}
 
-	public String getDateBooking() {
+	public LocalDate getDateBooking() {
 		return dateBooking;
 	}
 
-	public void setDateBooking(String dateBooking) {
+	public void setDateBooking(LocalDate dateBooking) {
 		this.dateBooking = dateBooking;
 	}
 
-	public String getDateValue() {
+	public LocalDate getDateValue() {
 		return dateValue;
 	}
 
-	public void setDateValue(String dateValue) {
+	public void setDateValue(LocalDate dateValue) {
 		this.dateValue = dateValue;
 	}
 
@@ -317,19 +316,19 @@ public class Fp3XmlBooking implements de.zft2.core.dto.Booking {
 		return typ != null ? typ.toString() : null;
 	}
 
-	public static int compareBookingByAccountThenDate(Fp3XmlBooking b1, Fp3XmlBooking b2) {
-		int value1 = b1.getCrossAccountNamePP().compareTo(b2.getCrossAccountNamePP());
-		if (value1 == 0) {
-			int value2 = b1.getAccountNamePP().compareTo(b2.getAccountNamePP());
-			if (value2 == 0) {
-				return LocalDate.parse(b1.getDate(), DateTimeFormatter.ofPattern("dd.MM.uu"))
-						.compareTo(LocalDate.parse(b2.getDate(), DateTimeFormatter.ofPattern("dd.MM.uu")));
-			} else {
-				return value2;
-			}
-		}
-		return value1;
-	}
+//	public static int compareBookingByAccountThenDate(Fp3XmlBooking b1, Fp3XmlBooking b2) {
+//		int value1 = b1.getCrossAccountNamePP().compareTo(b2.getCrossAccountNamePP());
+//		if (value1 == 0) {
+//			int value2 = b1.getAccountNamePP().compareTo(b2.getAccountNamePP());
+//			if (value2 == 0) {
+//				return LocalDate.parse(b1.getDate(), DateTimeFormatter.ofPattern("dd.MM.uu"))
+//						.compareTo(LocalDate.parse(b2.getDate(), DateTimeFormatter.ofPattern("dd.MM.uu")));
+//			} else {
+//				return value2;
+//			}
+//		}
+//		return value1;
+//	}
 
 	@Override
 	public int hashCode() {

@@ -13,10 +13,11 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import de.zft2.core.exception.ConfigurationException;
+import de.zft2.core.util.CoreBookingUtil;
 import de.zft2.fp3xmlextract.data.Fp3XmlBankAccount;
 import de.zft2.fp3xmlextract.data.Fp3XmlBooking;
 
-class Fp3XmlBookingProcessorTest {
+class Fp3XmlBookingProcessorTest extends CoreBookingUtil {
 
 	private static String filenameSameDayNoDiff01;
 	private static String filenameSameDayNoDiff02;
@@ -865,7 +866,7 @@ class Fp3XmlBookingProcessorTest {
 	}
 
 	private void checkBooking(Fp3XmlBooking booking, String date, String purpose, String amountStr, String crossAccountIBAN, String typStr) {
-		assertEquals(date, booking.getDate());
+		assertEquals(asLocalDate(date), booking.getDate());
 		assertEquals(purpose, booking.getPurpose());
 		assertEquals(amountStr, booking.getAmountStr());
 		assertEquals(crossAccountIBAN, booking.getCrossAccountIBAN());
@@ -873,7 +874,8 @@ class Fp3XmlBookingProcessorTest {
 	}
 
 	private boolean checkBookingInList(Fp3XmlBooking booking, String date, String purpose, String amountStr, String crossAccountIBAN, String typStr) {
-		return date.equalsIgnoreCase(booking.getDate()) && purpose.equalsIgnoreCase(booking.getPurpose()) && amountStr.equalsIgnoreCase(booking.getAmountStr())
+		return asLocalDate(date).equals(booking.getDate()) && purpose.equalsIgnoreCase(booking.getPurpose())
+				&& amountStr.equalsIgnoreCase(booking.getAmountStr())
 				&& (crossAccountIBAN == null || crossAccountIBAN.equalsIgnoreCase(booking.getCrossAccountIBAN()))
 				&& (typStr == null || typStr.equalsIgnoreCase(booking.getTyp().toString()));
 	}

@@ -15,11 +15,12 @@ import org.junit.jupiter.api.Test;
 import de.zft2.core.dto.Booking.Typ;
 import de.zft2.core.exception.ConfigurationException;
 import de.zft2.core.process.AccountProcessor;
+import de.zft2.core.util.CoreBookingUtil;
 import de.zft2.fp3xmlextract.data.Fp3XmlBankAccount;
 import de.zft2.fp3xmlextract.data.Fp3XmlBooking;
 import de.zft2.fp3xmlextract.data.Fp3XmlBooking.SepaTyp;
 
-class ConverterTest {
+class ConverterTest extends CoreBookingUtil {
 
 	private static String filename01;
 	private static String filename02;
@@ -64,13 +65,13 @@ class ConverterTest {
 		assertEquals("DE30120300000018884058", konto.getIban());
 		assertEquals("18884058", konto.getNumber());
 		assertEquals(5, konto.getBookings().size());
-		assertEquals("24.08.06", konto.getBookings().get(0).getDate());
+		assertEquals("24.08.06", fromLocalDate(konto.getBookings().get(0).getDate()));
 
 		konto = (Fp3XmlBankAccount) iterator.next();
 		assertEquals("DE71500105170990651720", konto.getIban());
 		assertEquals("0990651720", konto.getNumber());
 		assertEquals(43, konto.getBookings().size());
-		assertEquals("30.12.03", konto.getBookings().get(0).getDate());
+		assertEquals("30.12.03", fromLocalDate(konto.getBookings().get(0).getDate()));
 
 	}
 
@@ -89,7 +90,7 @@ class ConverterTest {
 		assertEquals(null, konto.getIban());
 		assertEquals("1002522291", konto.getNumber());
 		assertEquals(7, konto.getBookings().size());
-		assertEquals("01.04.19", konto.getBookings().get(0).getDate());
+		assertEquals("01.04.19", fromLocalDate(konto.getBookings().get(0).getDate()));
 
 	}
 
@@ -111,17 +112,17 @@ class ConverterTest {
 
 		assertEquals(3, konto.getBookings().size());
 
-		assertEquals("31.12.23", konto.getBookings().get(0).getDate());
+		assertEquals("31.12.23", fromLocalDate(konto.getBookings().get(0).getDate()));
 		assertEquals("-0,62", konto.getBookings().get(0).getAmountStr());
 		assertEquals("Kapitalertragsteuer", konto.getBookings().get(0).getPurpose());
 		assertEquals(Typ.TAX, konto.getBookings().get(0).getTyp());
 
-		assertEquals("31.12.23", konto.getBookings().get(1).getDate());
+		assertEquals("31.12.23", fromLocalDate(konto.getBookings().get(1).getDate()));
 		assertEquals("-0,03", konto.getBookings().get(1).getAmountStr());
 		assertEquals("Solidaritaetszuschlag", konto.getBookings().get(1).getPurpose());
 		assertEquals(Typ.TAX, konto.getBookings().get(1).getTyp());
 
-		assertEquals("31.12.23", konto.getBookings().get(2).getDate());
+		assertEquals("31.12.23", fromLocalDate(konto.getBookings().get(2).getDate()));
 		assertEquals("-0,05", konto.getBookings().get(2).getAmountStr());
 		assertEquals("Kirchensteuer", konto.getBookings().get(2).getPurpose());
 		assertEquals(Typ.TAX, konto.getBookings().get(2).getTyp());
@@ -200,28 +201,29 @@ class ConverterTest {
 	@Test
 	void testAddAdditionalBookingSepaInformation() {
 
-		Fp3XmlBooking booking = new Fp3XmlBooking("01.01.25", "02.01.25",
+		Fp3XmlBooking booking = new Fp3XmlBooking(asLocalDate("01.01.25"), asLocalDate("02.01.25"),
 				"Kundenref.: Payment-Information-ID-4265  EndtoEnd: NOTPROVIDED  Auszahlung 011 KT Direktbank TAN1:493284 IBAN: DE92500617410200174051 BIC: GENODE99ABC  Überweisungsauftrag",
 				BigDecimal.ONE, null, null, null);
 		converter.addAdditionalBookingSepaInformation(booking, true);
 		assertEquals("Auszahlung 011 KT Direktbank TAN1:493284 IBAN: DE92500617410200174051 BIC: GENODE99ABC", booking.getPurpose());
 
-		booking = new Fp3XmlBooking("29.02.24", "29.02.24", "ABSCHLUSS PER 29.02.2024  Abschluss", BigDecimal.ONE, null, null, null);
+		booking = new Fp3XmlBooking(asLocalDate("29.02.24"), asLocalDate("29.02.24"), "ABSCHLUSS PER 29.02.2024  Abschluss", BigDecimal.ONE, null, null, null);
 		converter.addAdditionalBookingSepaInformation(booking, true);
 		assertEquals("ABSCHLUSS PER 29.02.2024", booking.getPurpose());
 
-		booking = new Fp3XmlBooking("01.01.25", "02.01.25", "EndtoEnd: NOTPROVIDED  Einzahlung 016 KT Direktbank  Überweisungsgutschr.", BigDecimal.ONE, null, null,
+		booking = new Fp3XmlBooking(asLocalDate("01.01.25"), asLocalDate("02.01.25"),
+				"EndtoEnd: NOTPROVIDED  Einzahlung 016 KT Direktbank  Überweisungsgutschr.", BigDecimal.ONE, null, null,
 				null);
 		converter.addAdditionalBookingSepaInformation(booking, true);
 		assertEquals("Einzahlung 016 KT Direktbank", booking.getPurpose());
 
-		booking = new Fp3XmlBooking("01.01.25", "02.01.25",
+		booking = new Fp3XmlBooking(asLocalDate("01.01.25"), asLocalDate("02.01.25"),
 				"Auszahlung 043 KT Direktbank TAN1:404689 IBAN: DE92500617410200174051 BIC: GENODE99ABC  Überweisungsauftrag  Kundenref.: Payment-Information-ID-219  EndtoEnd: NOTPROVIDED",
 				BigDecimal.ONE, null, null, null);
 		converter.addAdditionalBookingSepaInformation(booking, true);
 		assertEquals("Auszahlung 043 KT Direktbank TAN1:404689 IBAN: DE92500617410200174051 BIC: GENODE99ABC", booking.getPurpose());
 
-		booking = new Fp3XmlBooking("30.06.21", "30.06.21",
+		booking = new Fp3XmlBooking(asLocalDate("30.06.21"), asLocalDate("30.06.21"),
 				"Abrechnung 30.06.2021  siehe AnlageAbrechnung 30.06.2021Information zur AbrechnungKontostand am 30.06.2021  329,38 +Abrechnungszeitraum vom 01.04.2021 bis 30.06.2021Zinsen für eingeräumte Kontoüberziehung  0,37- 6,6500 v.H. Kred-Zins  bis 29.06.2021Abrechnung 30.06.2021  0,37-Sollzinssätze am 30.06.2021 6,6500 v.H. für eingeräumte Kontoüberziehung(aktuell eingeräumte Kontoüberziehung  13.500,00) 6,6500 v.H. für geduldete Kontoüberziehungüber die eingeräumte Kontoüberziehung hinausEs handelt sich hierbei um eine umsatzsteuerfreie Leistung.Kontostand/Rechnungsabschluss am 30.06.2021  329,01 +Rechnungsnummer: 20210630-BY111-00105192218  ABSCHLUSS",
 				BigDecimal.ONE, null, null, null);
 		converter.addAdditionalBookingSepaInformation(booking, true);
@@ -229,26 +231,29 @@ class ConverterTest {
 				"Abrechnung 30.06.2021  siehe AnlageAbrechnung 30.06.2021Information zur AbrechnungKontostand am 30.06.2021  329,38 +Abrechnungszeitraum vom 01.04.2021 bis 30.06.2021Zinsen für eingeräumte Kontoüberziehung  0,37- 6,6500 v.H. Kred-Zins  bis 29.06.2021Abrechnung 30.06.2021  0,37-Sollzinssätze am 30.06.2021 6,6500 v.H. für eingeräumte Kontoüberziehung(aktuell eingeräumte Kontoüberziehung  13.500,00) 6,6500 v.H. für geduldete Kontoüberziehungüber die eingeräumte Kontoüberziehung hinausEs handelt sich hierbei um eine umsatzsteuerfreie Leistung.Kontostand/Rechnungsabschluss am 30.06.2021  329,01 +Rechnungsnummer: 20210630-BY111-00105192218",
 				booking.getPurpose());
 
-		booking = new Fp3XmlBooking("01.01.25", "02.01.25",
+		booking = new Fp3XmlBooking(asLocalDate("01.01.25"), asLocalDate("02.01.25"),
 				"EndtoEnd: 126561176 - MUSTER, MAX MUSTER,GEOR  126561176 - MUSTER, MAX MUSTER,MAX  VL; GVC: SEPA Credit Transfer (Einzelbuchung-Haben)",
 				BigDecimal.ONE, null, null, null);
 		converter.addAdditionalBookingSepaInformation(booking, true);
 		assertEquals("126561176 - MUSTER, MAX MUSTER,MAX  VL; GVC: SEPA Credit Transfer (Einzelbuchung-Haben)", booking.getPurpose());
 
-		booking = new Fp3XmlBooking("01.01.25", "02.01.25", "LASTSCHRIFT  3,1005688853E+026  13980917/1834681103", BigDecimal.ONE, null, null, null);
+		booking = new Fp3XmlBooking(asLocalDate("01.01.25"), asLocalDate("02.01.25"), "LASTSCHRIFT  3,1005688853E+026  13980917/1834681103", BigDecimal.ONE,
+				null, null, null);
 		converter.addAdditionalBookingSepaInformation(booking, true);
 		assertEquals("3,1005688853E+026  13980917/1834681103", booking.getPurpose());
 
-		booking = new Fp3XmlBooking("31.10.07", "31.10.07", "LASTSCHRIFT  206010331970 000007135488  NR.4240536407/31.10.2007  RECHNUNG VOM 31.10.07", BigDecimal.ONE,
+		booking = new Fp3XmlBooking(asLocalDate("31.10.07"), asLocalDate("31.10.07"),
+				"LASTSCHRIFT  206010331970 000007135488  NR.4240536407/31.10.2007  RECHNUNG VOM 31.10.07", BigDecimal.ONE,
 				null, null, null);
 		converter.addAdditionalBookingSepaInformation(booking, true);
 		assertEquals("206010331970 000007135488  NR.4240536407/31.10.2007  RECHNUNG VOM 31.10.07", booking.getPurpose());
 
-		booking = new Fp3XmlBooking("01.01.25", "02.01.25", "SONSTIGER EINZUG  EC 67007699 23.11 09.01 CE1", BigDecimal.ONE, null, null, null);
+		booking = new Fp3XmlBooking(asLocalDate("01.01.25"), asLocalDate("02.01.25"), "SONSTIGER EINZUG  EC 67007699 23.11 09.01 CE1", BigDecimal.ONE, null,
+				null, null);
 		converter.addAdditionalBookingSepaInformation(booking, true);
 		assertEquals("EC 67007699 23.11 09.01 CE1", booking.getPurpose());
 
-		booking = new Fp3XmlBooking("15.05.15", "15.05.15",
+		booking = new Fp3XmlBooking(asLocalDate("15.05.15"), asLocalDate("15.05.15"),
 				"KREF+Payment-Information-ID  -3683  SVWZ+4748430003203674 Max  Muster  DATUM 15.05.2015, 12.00 UHR  1.TAN 130162  ONLINE-UEBERWEISUNG",
 				BigDecimal.ONE, null, null, null);
 		converter.addAdditionalBookingSepaInformation(booking, true);
@@ -274,7 +279,7 @@ class ConverterTest {
 
 		assertEquals(1, konto.getBookings().size());
 
-		assertEquals("22.05.24", konto.getBookings().get(0).getDate());
+		assertEquals("22.05.24", fromLocalDate(konto.getBookings().get(0).getDate()));
 		assertEquals("100,00", konto.getBookings().get(0).getAmountStr());
 		assertEquals("EndtoEnd: NOTPROVIDED  Auszahlung 022 KT Direktbank  UEBERWEISUNG", konto.getBookings().get(0).getPurpose());
 		assertEquals("NOTPROVIDED", konto.getBookings().get(0).getSepaEndToEnd());
@@ -285,7 +290,7 @@ class ConverterTest {
 		assertEquals("DE55500150010006290050", konto.getIban());
 		assertEquals("6290050", konto.getNumber());
 
-		assertEquals("21.05.24", konto.getBookings().get(0).getDate());
+		assertEquals("21.05.24", fromLocalDate(konto.getBookings().get(0).getDate()));
 		assertEquals("-100,00", konto.getBookings().get(0).getAmountStr());
 		assertEquals(
 				"Kundenref.: Payment-Information-ID-3390  EndtoEnd: NOTPROVIDED  Auszahlung 022 KT Direktbank TAN1:446213 IBAN: DE92500617410200174051 BIC: GENODE99ABC  Überweisungsauftrag",
@@ -318,7 +323,7 @@ class ConverterTest {
 
 		assertEquals(1, konto.getBookings().size());
 
-		assertEquals("22.05.24", konto.getBookings().get(0).getDate());
+		assertEquals("22.05.24", fromLocalDate(konto.getBookings().get(0).getDate()));
 		assertEquals("100,00", konto.getBookings().get(0).getAmountStr());
 		assertEquals("Auszahlung 022 KT Direktbank", konto.getBookings().get(0).getPurpose());
 		assertEquals("NOTPROVIDED", konto.getBookings().get(0).getSepaEndToEnd());
@@ -329,7 +334,7 @@ class ConverterTest {
 		assertEquals("DE55500150010006290050", konto.getIban());
 		assertEquals("6290050", konto.getNumber());
 
-		assertEquals("21.05.24", konto.getBookings().get(0).getDate());
+		assertEquals("21.05.24", fromLocalDate(konto.getBookings().get(0).getDate()));
 		assertEquals("-100,00", konto.getBookings().get(0).getAmountStr());
 		assertEquals("Auszahlung 022 KT Direktbank TAN1:446213 IBAN: DE92500617410200174051 BIC: GENODE99ABC", konto.getBookings().get(0).getPurpose());
 		assertEquals("NOTPROVIDED", konto.getBookings().get(0).getSepaEndToEnd());
@@ -411,8 +416,8 @@ class ConverterTest {
 	}
 
 	private void assertBooking(Fp3XmlBooking booking, String dateBooking, String dateValue, String amountStr, String purpose, Typ typ) {
-		assertEquals(dateBooking, booking.getDateBooking());
-		assertEquals(dateValue, booking.getDateValue());
+		assertEquals(dateBooking, fromLocalDate(booking.getDateBooking()));
+		assertEquals(dateValue, fromLocalDate(booking.getDateValue()));
 		assertEquals(amountStr, booking.getAmountStr());
 		assertEquals(purpose, booking.getPurpose());
 		assertEquals(typ, booking.getTyp());

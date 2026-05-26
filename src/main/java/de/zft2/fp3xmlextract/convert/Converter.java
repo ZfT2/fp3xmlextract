@@ -6,6 +6,9 @@ import java.io.RandomAccessFile;
 import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -88,13 +91,16 @@ public class Converter extends AccountProcessor<Fp3XmlBankAccount> {
 				if (element.getElementsByTagName("m21").item(0) != null) {
 					String purpose = ((Element) element.getElementsByTagName("m21").item(0)).getAttribute("u");
 					String amountStr = ((Element) element.getElementsByTagName("m24").item(0)).getAttribute("u");
-					String dateBooking = ((Element) element.getElementsByTagName("m27").item(0)).getAttribute("u");
+					String dateBookingStr = ((Element) element.getElementsByTagName("m27").item(0)).getAttribute("u");
 					String crossIban = ((Element) element.getElementsByTagName("m28").item(0)).getAttribute("u");
-					String dateValueStr = null;
+					LocalDate dateBooking = null;
+					LocalDate dateValue = null;
 
-					if (dateBooking.split("\n").length > 1) {
-						dateValueStr = dateBooking.split("\n")[1];
-						dateBooking = dateBooking.split("\n")[0];
+					if (dateBookingStr.split("\n").length > 1) {
+						dateValue = parseLocalDate(dateBookingStr.split("\n")[1]);
+						dateBooking = parseLocalDate(dateBookingStr.split("\n")[0]);
+					} else {
+						dateBooking = parseLocalDate(dateBookingStr);
 					}
 					purpose = purpose.replace("\n", " ");
 
@@ -105,9 +111,10 @@ public class Converter extends AccountProcessor<Fp3XmlBankAccount> {
 					}
 
 					log.printf(Level.INFO, "Element: %s DatumBuchung: %-8s DatumWert: %-8s Verwendungszweck: %-175s Betrag: %10s GegenkontoIban: %-22s GegenkontoBic: %-11s", 
-							node.getNodeName(), dateBooking, dateValueStr, purpose, amountStr, crossIban, gegenKontoBic);
+							node.getNodeName(), dateBookingStr, dateValue, purpose, amountStr, crossIban, gegenKontoBic);
 					
-					records.add(new Fp3XmlBooking(dateBooking, dateValueStr, purpose, new BigDecimal(amountStr.replaceAll("\\.+", "").replaceAll(",+", ".")), crossIban,
+					records.add(new Fp3XmlBooking(dateBooking, dateValue, purpose, new BigDecimal(amountStr.replaceAll("\\.+", "").replaceAll(",+", ".")),
+							crossIban,
 							gegenKontoBic, ""));
 				}
 			}
@@ -213,7 +220,7 @@ public class Converter extends AccountProcessor<Fp3XmlBankAccount> {
 			
 			String amountStr = extractElementText(elementBuchung, "BETRAG", "0");
 			
-			String dateBooking = elementBuchung.getElementsByTagName("DATUM").item(0).getTextContent();
+			LocalDate dateBooking = parseLocalDate(elementBuchung.getElementsByTagName("DATUM").item(0).getTextContent());
 			
 			String crossIban = null;
 			if(elementBuchung.getElementsByTagName(TAG_IBAN).item(0) != null) {
@@ -230,16 +237,17 @@ public class Converter extends AccountProcessor<Fp3XmlBankAccount> {
 			String crossAccountNumber = extractElementText(elementBuchung, TAG_KONTONR, null);
 			String crossBlz = extractElementText(elementBuchung, "BLZ", null);
 
-			String dateValueStr = extractElementText(elementBuchung, "VALUTA", null);
+			LocalDate dateValue = parseLocalDate(extractElementText(elementBuchung, "VALUTA", null));
 
 			purpose = purpose.replace("\n", " ");
 			
 			String category = extractElementText(elementBuchung, "KATEGORIE", null);
 
 			log.printf(Level.TRACE, "Element: %s DatumBuchung: %-8s DatumWert: %-8s Verwendungszweck: %-175s Betrag: %10s GegenkontoIban: %-22s GegenkontoBic: %-11s", 
-					node.getNodeName(), dateBooking, dateValueStr, purpose, amountStr, crossIban, crossBic);
+					node.getNodeName(), dateBooking, dateValue, purpose, amountStr, crossIban, crossBic);
 			
-			Fp3XmlBooking booking = new Fp3XmlBooking(dateBooking, dateValueStr, purpose, new BigDecimal(amountStr.replaceAll("\\.+", "").replaceAll(",+", ".")), crossIban,
+			Fp3XmlBooking booking = new Fp3XmlBooking(dateBooking, dateValue, purpose, new BigDecimal(amountStr.replaceAll("\\.+", "").replaceAll(",+", ".")),
+					crossIban,
 					crossBic, account.getNamePP());
 			
 			addAdditionalBookingCounterpartDetails(booking, crossReceiverName, crossBankName, crossAccountNumber, crossBlz);
@@ -320,6 +328,17 @@ public class Converter extends AccountProcessor<Fp3XmlBankAccount> {
 		} else {
 			return defaultValue;
 		}
+	}
+
+	private LocalDate parseLocalDate(String dateStr) {
+		if (dateStr != null) {
+			try {
+				return LocalDate.parse(dateStr, DateTimeFormatter.ofPattern("dd.MM.uu"));
+			} catch (DateTimeParseException dtpe) {
+				log.warn("Could not parse date: {}", dateStr, dtpe);
+			}
+		}
+		return null;
 	}
 
 	private Document getDocument(String fileName) throws ParserConfigurationException, SAXException, IOException {
