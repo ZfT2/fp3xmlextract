@@ -171,8 +171,8 @@ public class Converter extends AccountProcessor<Fp3XmlBankAccount> {
 			Node first = element.getElementsByTagName("KONTOBUCH").item(0);
 			if (propsSkip.get(account.getIdentifier()) == null && first != null) {
 
-				final String accountNamePP = findAccountNamePP(account.getIdentifier());
-				account.setNamePP(accountNamePP != null ? accountNamePP : account.getAccountName());
+				final String configuredAccountName = findAccountNamePP(account.getIdentifier());
+				account.setNamePP(configuredAccountName != null ? configuredAccountName : account.getAccountName());
 
 				log.trace("\n\nElement: {} IBAN: {} KONTONR: {}", node.getNodeName(), iban, account.getNumber());
 

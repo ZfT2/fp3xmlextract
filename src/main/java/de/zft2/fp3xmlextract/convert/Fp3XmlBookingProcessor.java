@@ -30,14 +30,14 @@ public class Fp3XmlBookingProcessor extends BookingProcessor<Fp3XmlBooking, Fp3X
 		bookingForTransfer.setCrossAccountIBAN(crossBookingToTransfer.getCrossAccountIBAN());
 		bookingForTransfer.setCrossAccountBIC(crossBookingToTransfer.getCrossAccountBIC());
 		bookingForTransfer.setTyp(crossBookingToTransfer.getTyp());
-		bookingForTransfer.setCrossAccountNamePP(crossBookingToTransfer.getCrossAccountNamePP());
+		bookingForTransfer.setCrossAccountName(crossBookingToTransfer.getCrossAccountName());
 
 		Fp3XmlBooking crossBookingForTransfer = new Fp3XmlBooking(crossBookingToTransfer);
 		crossBookingForTransfer.setAmount(booking.getAmount());
 		crossBookingForTransfer.setCrossAccountIBAN(booking.getCrossAccountIBAN());
 		crossBookingForTransfer.setCrossAccountBIC(booking.getCrossAccountBIC());
 		crossBookingForTransfer.setTyp(booking.getTyp());
-		crossBookingForTransfer.setCrossAccountNamePP(booking.getCrossAccountNamePP());
+		crossBookingForTransfer.setCrossAccountName(booking.getCrossAccountName());
 
 		accountTansfer.getBookings().add(bookingForTransfer);
 		accountTansfer.getBookings().add(crossBookingForTransfer);
@@ -45,12 +45,12 @@ public class Fp3XmlBookingProcessor extends BookingProcessor<Fp3XmlBooking, Fp3X
 		// modify original
 		booking.setCrossAccountIBAN(accountTansfer.getIban());
 		booking.setCrossAccountBIC(accountTansfer.getBic());
-		booking.setCrossAccountNamePP(accountTansfer.getNamePP());
+		booking.setCrossAccountName(accountTansfer.getNamePP());
 		booking.setCrossBooking(crossBookingToTransfer);
 
 		crossBookingToTransfer.setCrossAccountIBAN(accountTansfer.getIban());
 		crossBookingToTransfer.setCrossAccountBIC(accountTansfer.getBic());
-		crossBookingToTransfer.setCrossAccountNamePP(accountTansfer.getNamePP());
+		crossBookingToTransfer.setCrossAccountName(accountTansfer.getNamePP());
 		crossBookingToTransfer.setCrossBooking(booking);
 	}
 

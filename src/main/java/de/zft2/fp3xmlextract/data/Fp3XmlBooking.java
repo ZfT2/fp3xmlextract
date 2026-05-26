@@ -79,14 +79,14 @@ public class Fp3XmlBooking implements de.zft2.core.dto.Booking {
 	private SepaTyp sepaTyp;
 
 	private Typ typ;
-	private String crossAccountNamePP;
+	private String crossAccountName;
 	private String fileName;
-	private String accountNamePP; // for full booking list
+	private String accountName; // for full booking list
 
 	private de.zft2.core.dto.Booking crossBooking;
 
 	public Fp3XmlBooking(LocalDate dateBooking, LocalDate dateValue, String purpose, BigDecimal amount, String crossAccountIBAN, String crossAccountBIC,
-			String accountNamePP) {
+			String accountName) {
 		this.date = dateValue != null ? dateValue : dateBooking;
 		this.dateBooking = dateBooking;
 		this.dateValue = dateValue;
@@ -94,25 +94,36 @@ public class Fp3XmlBooking implements de.zft2.core.dto.Booking {
 		this.amount = amount;
 		this.crossAccountIBAN = crossAccountIBAN;
 		this.crossAccountBIC = crossAccountBIC;
-		this.accountNamePP = accountNamePP;
+		this.accountName = accountName;
 	}
 
 	public Fp3XmlBooking(de.zft2.core.dto.Booking bookingToCopy) {
 		this.date = bookingToCopy.getDate();
+		this.dateBooking = bookingToCopy.getDateBooking();
+		this.dateValue = bookingToCopy.getDateValue();
 		this.purpose = bookingToCopy.getPurpose();
 		this.amount = bookingToCopy.getAmount();
+		this.typ = bookingToCopy.getTyp();
 		this.crossAccountIBAN = bookingToCopy.getCrossAccountIBAN();
 		this.crossAccountBIC = bookingToCopy.getCrossAccountBIC();
-		this.crossAccountNamePP = bookingToCopy.getCrossAccountNamePP();
-		this.accountNamePP = bookingToCopy.getAccountNamePP();
+		this.crossAccountName = bookingToCopy.getCrossAccountName();
+		this.accountName = bookingToCopy.getAccountName();
+		this.crossReceiverName = bookingToCopy.getCrossReceiverName();
+		this.crossBankName = bookingToCopy.getCrossBankName();
+		this.crossAccountNumber = bookingToCopy.getCrossAccountNumber();
+		this.crossBlz = bookingToCopy.getCrossBlz();
+		this.sepaCustomerRef = bookingToCopy.getSepaCustomerRef();
+		this.sepaCreditorId = bookingToCopy.getSepaCreditorId();
+		this.sepaEndToEnd = bookingToCopy.getSepaEndToEnd();
+		this.sepaMandate = bookingToCopy.getSepaMandate();
+		this.sepaPersonId = bookingToCopy.getSepaPersonId();
+		this.sepaPurpose = bookingToCopy.getSepaPurpose();
+		this.crossBooking = bookingToCopy.getCrossBooking();
 
 		if (bookingToCopy instanceof Fp3XmlBooking fp3XmlBooking) {
-			this.dateBooking = fp3XmlBooking.dateBooking;
-			this.dateValue = fp3XmlBooking.dateValue;
-			this.crossReceiverName = fp3XmlBooking.crossReceiverName;
-			this.crossBankName = fp3XmlBooking.crossBankName;
-			this.typ = fp3XmlBooking.typ;
 			this.fileName = fp3XmlBooking.fileName;
+			this.sepaTyp = fp3XmlBooking.sepaTyp;
+			this.category = fp3XmlBooking.category;
 		}
 	}
 
@@ -276,12 +287,12 @@ public class Fp3XmlBooking implements de.zft2.core.dto.Booking {
 		this.typ = typ;
 	}
 
-	public String getCrossAccountNamePP() {
-		return crossAccountNamePP;
+	public String getCrossAccountName() {
+		return crossAccountName;
 	}
 
-	public void setCrossAccountNamePP(String crossAccountNamePP) {
-		this.crossAccountNamePP = crossAccountNamePP;
+	public void setCrossAccountName(String crossAccountName) {
+		this.crossAccountName = crossAccountName;
 	}
 
 	public String getFileName() {
@@ -292,12 +303,12 @@ public class Fp3XmlBooking implements de.zft2.core.dto.Booking {
 		this.fileName = fileName;
 	}
 
-	public String getAccountNamePP() {
-		return accountNamePP;
+	public String getAccountName() {
+		return accountName;
 	}
 
-	public void setAccountNamePP(String accountNamePP) {
-		this.accountNamePP = accountNamePP;
+	public void setAccountName(String accountName) {
+		this.accountName = accountName;
 	}
 
 	public de.zft2.core.dto.Booking getCrossBooking() {
@@ -317,9 +328,9 @@ public class Fp3XmlBooking implements de.zft2.core.dto.Booking {
 	}
 
 //	public static int compareBookingByAccountThenDate(Fp3XmlBooking b1, Fp3XmlBooking b2) {
-//		int value1 = b1.getCrossAccountNamePP().compareTo(b2.getCrossAccountNamePP());
+//		int value1 = b1.getCrossAccountName().compareTo(b2.getCrossAccountName());
 //		if (value1 == 0) {
-//			int value2 = b1.getAccountNamePP().compareTo(b2.getAccountNamePP());
+//			int value2 = b1.getAccountName().compareTo(b2.getAccountName());
 //			if (value2 == 0) {
 //				return LocalDate.parse(b1.getDate(), DateTimeFormatter.ofPattern("dd.MM.uu"))
 //						.compareTo(LocalDate.parse(b2.getDate(), DateTimeFormatter.ofPattern("dd.MM.uu")));
@@ -332,7 +343,7 @@ public class Fp3XmlBooking implements de.zft2.core.dto.Booking {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(accountNamePP, amount, crossAccountBIC, crossAccountIBAN, crossAccountNamePP, date, dateBooking, dateValue, fileName, purpose, typ);
+		return Objects.hash(accountName, amount, crossAccountBIC, crossAccountIBAN, crossAccountName, date, dateBooking, dateValue, fileName, purpose, typ);
 	}
 
 	@Override
@@ -344,9 +355,9 @@ public class Fp3XmlBooking implements de.zft2.core.dto.Booking {
 		if (getClass() != obj.getClass())
 			return false;
 		Fp3XmlBooking other = (Fp3XmlBooking) obj;
-		return Objects.equals(accountNamePP, other.accountNamePP) && Objects.equals(amount, other.amount)
+		return Objects.equals(accountName, other.accountName) && Objects.equals(amount, other.amount)
 				&& Objects.equals(crossAccountBIC, other.crossAccountBIC) && Objects.equals(crossAccountIBAN, other.crossAccountIBAN)
-				&& Objects.equals(crossAccountNamePP, other.crossAccountNamePP) && Objects.equals(date, other.date)
+				&& Objects.equals(crossAccountName, other.crossAccountName) && Objects.equals(date, other.date)
 				&& Objects.equals(dateBooking, other.dateBooking) && Objects.equals(dateValue, other.dateValue) && Objects.equals(fileName, other.fileName)
 				&& Objects.equals(purpose, other.purpose) && typ == other.typ;
 	}
