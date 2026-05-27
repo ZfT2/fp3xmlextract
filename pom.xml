@@ -27,7 +27,7 @@
 		<log4j.version>2.25.4</log4j.version>
 		<commonscsv.version>1.14.1</commonscsv.version>
 		
-		<bookingcore.version>0.2.0</bookingcore.version>
+		<bookingcore.version>0.2.1</bookingcore.version>
 
 		<junit.version>5.14.3</junit.version>
 	</properties>

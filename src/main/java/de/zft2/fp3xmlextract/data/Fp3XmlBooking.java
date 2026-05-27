@@ -5,7 +5,10 @@ import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.Objects;
 
-public class Fp3XmlBooking implements de.zft2.core.dto.Booking {
+import de.zft2.core.dto.Counterpart;
+import de.zft2.core.dto.DefaultCounterpart;
+
+public class Fp3XmlBooking implements de.zft2.core.dto.BookingDetails {
 
 	public enum SepaTyp {
 
@@ -99,26 +102,24 @@ public class Fp3XmlBooking implements de.zft2.core.dto.Booking {
 
 	public Fp3XmlBooking(de.zft2.core.dto.Booking bookingToCopy) {
 		this.date = bookingToCopy.getDate();
-		this.dateBooking = bookingToCopy.getDateBooking();
-		this.dateValue = bookingToCopy.getDateValue();
 		this.purpose = bookingToCopy.getPurpose();
 		this.amount = bookingToCopy.getAmount();
 		this.typ = bookingToCopy.getTyp();
-		this.crossAccountIBAN = bookingToCopy.getCrossAccountIBAN();
-		this.crossAccountBIC = bookingToCopy.getCrossAccountBIC();
+		setCounterpart(bookingToCopy.getCounterpart());
 		this.crossAccountName = bookingToCopy.getCrossAccountName();
 		this.accountName = bookingToCopy.getAccountName();
-		this.crossReceiverName = bookingToCopy.getCrossReceiverName();
-		this.crossBankName = bookingToCopy.getCrossBankName();
-		this.crossAccountNumber = bookingToCopy.getCrossAccountNumber();
-		this.crossBlz = bookingToCopy.getCrossBlz();
-		this.sepaCustomerRef = bookingToCopy.getSepaCustomerRef();
-		this.sepaCreditorId = bookingToCopy.getSepaCreditorId();
-		this.sepaEndToEnd = bookingToCopy.getSepaEndToEnd();
-		this.sepaMandate = bookingToCopy.getSepaMandate();
-		this.sepaPersonId = bookingToCopy.getSepaPersonId();
-		this.sepaPurpose = bookingToCopy.getSepaPurpose();
 		this.crossBooking = bookingToCopy.getCrossBooking();
+
+		if (bookingToCopy instanceof de.zft2.core.dto.BookingDetails bookingDetails) {
+			this.dateBooking = bookingDetails.getDateBooking();
+			this.dateValue = bookingDetails.getDateValue();
+			this.sepaCustomerRef = bookingDetails.getSepaCustomerRef();
+			this.sepaCreditorId = bookingDetails.getSepaCreditorId();
+			this.sepaEndToEnd = bookingDetails.getSepaEndToEnd();
+			this.sepaMandate = bookingDetails.getSepaMandate();
+			this.sepaPersonId = bookingDetails.getSepaPersonId();
+			this.sepaPurpose = bookingDetails.getSepaPurpose();
+		}
 
 		if (bookingToCopy instanceof Fp3XmlBooking fp3XmlBooking) {
 			this.fileName = fp3XmlBooking.fileName;
@@ -177,6 +178,21 @@ public class Fp3XmlBooking implements de.zft2.core.dto.Booking {
 
 	public String getCrossAccountBIC() {
 		return crossAccountBIC;
+	}
+
+	@Override
+	public Counterpart getCounterpart() {
+		return DefaultCounterpart.ofNullable(crossReceiverName, crossAccountIBAN, crossAccountBIC, crossAccountNumber, crossBlz, crossBankName);
+	}
+
+	@Override
+	public void setCounterpart(Counterpart counterpart) {
+		crossReceiverName = counterpart != null ? counterpart.getName() : null;
+		crossAccountIBAN = counterpart != null ? counterpart.getIban() : null;
+		crossAccountBIC = counterpart != null ? counterpart.getBic() : null;
+		crossAccountNumber = counterpart != null ? counterpart.getAccountNumber() : null;
+		crossBlz = counterpart != null ? counterpart.getBlz() : null;
+		crossBankName = counterpart != null ? counterpart.getBankName() : null;
 	}
 
 	public void setCrossAccountBIC(String crossAccountBIC) {

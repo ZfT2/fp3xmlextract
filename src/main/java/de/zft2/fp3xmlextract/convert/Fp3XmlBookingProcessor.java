@@ -6,6 +6,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import de.zft2.core.dto.Account;
+import de.zft2.core.dto.Counterpart;
+import de.zft2.core.dto.DefaultCounterpart;
 import de.zft2.core.exception.ConfigurationException;
 import de.zft2.core.process.BookingProcessor;
 import de.zft2.fp3xmlextract.data.Fp3XmlBankAccount;
@@ -27,15 +29,13 @@ public class Fp3XmlBookingProcessor extends BookingProcessor<Fp3XmlBooking, Fp3X
 
 		Fp3XmlBooking bookingForTransfer = new Fp3XmlBooking(booking);
 		bookingForTransfer.setAmount(crossBookingToTransfer.getAmount());
-		bookingForTransfer.setCrossAccountIBAN(crossBookingToTransfer.getCrossAccountIBAN());
-		bookingForTransfer.setCrossAccountBIC(crossBookingToTransfer.getCrossAccountBIC());
+		setCounterpartAccount(bookingForTransfer, crossBookingToTransfer.getCounterpart());
 		bookingForTransfer.setTyp(crossBookingToTransfer.getTyp());
 		bookingForTransfer.setCrossAccountName(crossBookingToTransfer.getCrossAccountName());
 
 		Fp3XmlBooking crossBookingForTransfer = new Fp3XmlBooking(crossBookingToTransfer);
 		crossBookingForTransfer.setAmount(booking.getAmount());
-		crossBookingForTransfer.setCrossAccountIBAN(booking.getCrossAccountIBAN());
-		crossBookingForTransfer.setCrossAccountBIC(booking.getCrossAccountBIC());
+		setCounterpartAccount(crossBookingForTransfer, booking.getCounterpart());
 		crossBookingForTransfer.setTyp(booking.getTyp());
 		crossBookingForTransfer.setCrossAccountName(booking.getCrossAccountName());
 
@@ -43,15 +43,21 @@ public class Fp3XmlBookingProcessor extends BookingProcessor<Fp3XmlBooking, Fp3X
 		accountTansfer.getBookings().add(crossBookingForTransfer);
 
 		// modify original
-		booking.setCrossAccountIBAN(accountTansfer.getIban());
-		booking.setCrossAccountBIC(accountTansfer.getBic());
+		setCounterpartAccount(booking, accountTansfer.getIban(), accountTansfer.getBic());
 		booking.setCrossAccountName(accountTansfer.getNamePP());
 		booking.setCrossBooking(crossBookingToTransfer);
 
-		crossBookingToTransfer.setCrossAccountIBAN(accountTansfer.getIban());
-		crossBookingToTransfer.setCrossAccountBIC(accountTansfer.getBic());
+		setCounterpartAccount(crossBookingToTransfer, accountTansfer.getIban(), accountTansfer.getBic());
 		crossBookingToTransfer.setCrossAccountName(accountTansfer.getNamePP());
 		crossBookingToTransfer.setCrossBooking(booking);
+	}
+
+	private void setCounterpartAccount(de.zft2.core.dto.Booking booking, Counterpart sourceCounterpart) {
+		setCounterpartAccount(booking, Counterpart.ibanOf(sourceCounterpart), Counterpart.bicOf(sourceCounterpart));
+	}
+
+	private void setCounterpartAccount(de.zft2.core.dto.Booking booking, String iban, String bic) {
+		booking.setCounterpart(DefaultCounterpart.withAccount(booking.getCounterpart(), iban, bic));
 	}
 
 	public void generateCrossBookings(Collection<Fp3XmlBankAccount> accountList, boolean withTransferAccount, int daysRebooking) {
