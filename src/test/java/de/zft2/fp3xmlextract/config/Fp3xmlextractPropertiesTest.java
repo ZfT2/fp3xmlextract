@@ -26,10 +26,10 @@ class Fp3xmlextractPropertiesTest {
 
 	@BeforeAll
 	static void beforeClass() {
-		filenameInputCancel = "cancel.properties";
-		filenameOutputCancel = "intern/cancel.properties";
-		filenameInputTransfer = "transfer.properties";
-		filenameOutputTansfer = "intern/transfer.properties";
+		filenameInputCancel = "accountCancel.properties";
+		filenameOutputCancel = "intern/accountCancel.properties";
+		filenameInputTransfer = "accountTransfer.properties";
+		filenameOutputTansfer = "intern/accountTransfer.properties";
 	}
 
 	@Test
