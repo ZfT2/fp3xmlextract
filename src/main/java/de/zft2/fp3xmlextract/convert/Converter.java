@@ -243,7 +243,7 @@ public class Converter extends AccountProcessor<Fp3XmlBankAccount> {
 
 			LocalDate dateValue = parseLocalDate(extractElementText(elementBuchung, "VALUTA", null));
 
-			String waehrung = extractNodeText(elementBuchung, TAG_WAEHRUNG);
+			String waehrung = extractElementText(elementBuchung, TAG_WAEHRUNG, null);
 
 			purpose = purpose.replace("\n", " ");
 			
