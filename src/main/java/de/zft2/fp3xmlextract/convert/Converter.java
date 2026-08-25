@@ -45,6 +45,7 @@ public class Converter extends AccountProcessor<Fp3XmlBankAccount> {
 	private static final String TAG_BANKNAME = "BANKNAME";
 	private static final String TAG_BEZEICHNUNG = "BEZEICHNUNG";
 	private static final String TAG_KONTOSTAND = "KONTOSTAND";
+	private static final String TAG_WAEHRUNG = "WAEHRUNG";
 	
 	private ConverterConfig config;
 	
@@ -166,6 +167,9 @@ public class Converter extends AccountProcessor<Fp3XmlBankAccount> {
 			String balance =  extractNodeText(element, TAG_KONTOSTAND);
 			account.setBalance(balance != null ? new BigDecimal(balance.replaceAll("\\.+", "").replaceAll(",+", ".")): null);
 			
+			String waehrung = extractNodeText(element, TAG_WAEHRUNG);
+			account.setBaseCurrency(waehrung);
+
 			//account.setBankName(element.getElementsByTagName("BANKNAME").item(0) != null ? element.getElementsByTagName("BANKNAME").item(0).getTextContent() : null); // f. PayPal
 			
 			Node first = element.getElementsByTagName("KONTOBUCH").item(0);
@@ -239,6 +243,8 @@ public class Converter extends AccountProcessor<Fp3XmlBankAccount> {
 
 			LocalDate dateValue = parseLocalDate(extractElementText(elementBuchung, "VALUTA", null));
 
+			String waehrung = extractNodeText(elementBuchung, TAG_WAEHRUNG);
+
 			purpose = purpose.replace("\n", " ");
 			
 			String category = extractElementText(elementBuchung, "KATEGORIE", null);
@@ -250,6 +256,8 @@ public class Converter extends AccountProcessor<Fp3XmlBankAccount> {
 					crossIban,
 					crossBic, account.getNamePP());
 			
+			booking.setCurrency(waehrung);
+
 			addAdditionalBookingCounterpartDetails(booking, crossReceiverName, crossBankName, crossAccountNumber, crossBlz);
 			addAdditionalBookingCategory(booking, category);
 			

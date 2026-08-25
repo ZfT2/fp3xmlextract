@@ -16,6 +16,7 @@ public class Fp3XmlBankAccount implements Account<Fp3XmlBooking> {
 	private String accountName;
 	private String parentAccount;
 	private BigDecimal balance;
+	private String baseCurrency;
 	private String namePP;
 
 	private List<Fp3XmlBooking> bookings;
@@ -102,6 +103,14 @@ public class Fp3XmlBankAccount implements Account<Fp3XmlBooking> {
 
 	public void setBalance(BigDecimal balance) {
 		this.balance = balance;
+	}
+
+	public String getBaseCurrency() {
+		return baseCurrency;
+	}
+
+	public void setBaseCurrency(String baseCurrency) {
+		this.baseCurrency = baseCurrency;
 	}
 
 	public String getNamePP() {

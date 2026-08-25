@@ -65,6 +65,7 @@ public class Fp3XmlBooking implements de.zft2.core.dto.BookingDetails {
 	private LocalDate dateValue;
 	private String purpose;
 	private BigDecimal amount;
+	private String currency;
 	private String crossAccountIBAN;
 	private String crossAccountBIC;
 	private String crossReceiverName;
@@ -125,6 +126,7 @@ public class Fp3XmlBooking implements de.zft2.core.dto.BookingDetails {
 			this.fileName = fp3XmlBooking.fileName;
 			this.sepaTyp = fp3XmlBooking.sepaTyp;
 			this.category = fp3XmlBooking.category;
+			this.currency = fp3XmlBooking.currency;
 		}
 	}
 
@@ -166,6 +168,14 @@ public class Fp3XmlBooking implements de.zft2.core.dto.BookingDetails {
 
 	public void setAmount(BigDecimal amount) {
 		this.amount = amount;
+	}
+
+	public String getCurrency() {
+		return currency;
+	}
+
+	public void setCurrency(String currency) {
+		this.currency = currency;
 	}
 
 	public String getCrossAccountIBAN() {
