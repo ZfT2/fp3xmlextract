@@ -79,7 +79,7 @@ class Fp3XmlBookingProcessorTest extends CoreBookingUtil {
 		filenameSameDayNoDiffTwoRebookings02 = "src/test/resources/testdata/konto_umbuchung_same_day_two_test_02.xml";
 
 		try {
-			ConverterConfig config = new ConverterConfig(true, false);
+			ConverterConfig config = new ConverterConfig(false, true, false);
 			converter = new Converter(config);
 			bookingProcessor = new Fp3XmlBookingProcessor();
 		} catch (ConfigurationException e) {

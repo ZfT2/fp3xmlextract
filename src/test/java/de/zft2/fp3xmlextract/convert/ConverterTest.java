@@ -28,6 +28,9 @@ class ConverterTest extends CoreBookingUtil {
 	private static String filename04;
 	private static String filename05;
 	private static String filename06;
+	private static String filename07;
+	private static String filename08;
+	private static String filename09;
 
 	private static Converter converter;
 	private static Fp3XmlBookingProcessor bookingProcessor;
@@ -41,9 +44,12 @@ class ConverterTest extends CoreBookingUtil {
 		filename04 = "src/test/resources/testdata/konto_umbuchung_one_day_difference_test01.xml";
 		filename05 = "src/test/resources/testdata/konto_festgeldkonten_test01.xml";
 		filename06 = "src/test/resources/testdata/konto_stornobuchung_test.xml";
+		filename07 = "src/test/resources/testdata/konto_and_empty_account_test.xml";
+		filename08 = "src/test/resources/testdata/konto_empty_account_book_test.xml";
+		filename09 = "src/test/resources/testdata/konto_skipped_empty_account_test.xml";
 
 		try {
-			ConverterConfig converterConfig = new ConverterConfig(false, false); /** default for tests: without SEPA extraction **/
+			ConverterConfig converterConfig = new ConverterConfig(false, false, false); /** default for tests: without SEPA extraction **/
 			converter = new Converter(converterConfig);
 			bookingProcessor = new Fp3XmlBookingProcessor();
 			accountProcessor = new AccountProcessor<Fp3XmlBankAccount>();
@@ -305,7 +311,7 @@ class ConverterTest extends CoreBookingUtil {
 	@Test
 	void testConverter_SEPA_Fields_WITH_extraction() throws Exception {
 
-		ConverterConfig converterConfig = new ConverterConfig(false, true);
+		ConverterConfig converterConfig = new ConverterConfig(false, false, true);
 		converter.setConfig(converterConfig);
 
 		Collection<Fp3XmlBankAccount> kontenList = converter.convertXmlToCsvEntries(filename04);
@@ -341,6 +347,79 @@ class ConverterTest extends CoreBookingUtil {
 		assertEquals("Payment-Information-ID-3390", konto.getBookings().get(0).getSepaCustomerRef());
 		assertEquals(SepaTyp.BANK_TRANSFER, konto.getBookings().get(0).getSepaTyp());
 		assertEquals(Typ.REBOOKING_OUT, konto.getBookings().get(0).getTyp());
+	}
+
+	@Test
+	void testConverter_WITH_empty_account() throws Exception {
+
+		ConverterConfig converterConfig = new ConverterConfig(true, false, false);
+		converter.setConfig(converterConfig);
+
+		Collection<Fp3XmlBankAccount> kontenList = converter.convertXmlToCsvEntries(filename07);
+		bookingProcessor.addBookingTypesToAccountBookings(kontenList);
+
+		assertNotNull(kontenList);
+
+		assertEquals(3, kontenList.size());
+
+		Iterator<Fp3XmlBankAccount> iterator = kontenList.iterator();
+
+		Fp3XmlBankAccount konto = (Fp3XmlBankAccount) iterator.next();
+		assertEquals("DE92500617410200174051", konto.getIban());
+		assertEquals("200174051", konto.getNumber());
+
+		assertEquals(1, konto.getBookings().size());
+
+		assertEquals("22.05.24", fromLocalDate(konto.getBookings().get(0).getDate()));
+		assertEquals("100,00", konto.getBookings().get(0).getAmountStr());
+		assertEquals("EndtoEnd: NOTPROVIDED  Auszahlung 022 KT Direktbank  UEBERWEISUNG", konto.getBookings().get(0).getPurpose());
+		assertEquals("NOTPROVIDED", konto.getBookings().get(0).getSepaEndToEnd());
+		assertEquals(SepaTyp.BANK_TRANSFER, konto.getBookings().get(0).getSepaTyp());
+		assertEquals(Typ.REBOOKING_IN, konto.getBookings().get(0).getTyp());
+
+		konto = (Fp3XmlBankAccount) iterator.next();
+		assertEquals("DE55500150010006290050", konto.getIban());
+		assertEquals("6290050", konto.getNumber());
+
+		assertEquals("21.05.24", fromLocalDate(konto.getBookings().get(0).getDate()));
+		assertEquals("-100,00", konto.getBookings().get(0).getAmountStr());
+		assertEquals(
+				"Kundenref.: Payment-Information-ID-3390  EndtoEnd: NOTPROVIDED  Auszahlung 022 KT Direktbank TAN1:446213 IBAN: DE92500617410200174051 BIC: GENODE99ABC  Überweisungsauftrag",
+				konto.getBookings().get(0).getPurpose());
+		assertEquals("NOTPROVIDED", konto.getBookings().get(0).getSepaEndToEnd());
+		assertEquals("Payment-Information-ID-3390", konto.getBookings().get(0).getSepaCustomerRef());
+		assertEquals(SepaTyp.BANK_TRANSFER, konto.getBookings().get(0).getSepaTyp());
+		assertEquals(Typ.REBOOKING_OUT, konto.getBookings().get(0).getTyp());
+
+		konto = (Fp3XmlBankAccount) iterator.next();
+		assertEquals("DE8071970234371", konto.getIban());
+		assertEquals("BLAHNOK1XXX", konto.getBic());
+	}
+
+	@Test
+	void testConverter_WITH_empty_account_book() throws Exception {
+		Converter testConverter = new Converter(new ConverterConfig(true, false, false));
+
+		Collection<Fp3XmlBankAccount> kontenList = testConverter.convertXmlToCsvEntries(filename08);
+
+		assertEquals(1, kontenList.size());
+		Fp3XmlBankAccount konto = kontenList.iterator().next();
+		assertEquals("DE8071970234371", konto.getIban());
+		assertNotNull(konto.getBookings());
+		assertTrue(konto.getBookings().isEmpty());
+	}
+
+	@Test
+	void testConverter_WITH_skipped_empty_account() throws Exception {
+		Converter testConverter = new Converter(new ConverterConfig(true, false, false));
+
+		Collection<Fp3XmlBankAccount> kontenList = testConverter.convertXmlToCsvEntries(filename09);
+
+		assertEquals(1, kontenList.size());
+		Fp3XmlBankAccount konto = kontenList.iterator().next();
+		assertEquals("DE11111111111111111111", konto.getIban());
+		assertNotNull(konto.getBookings());
+		assertTrue(konto.getBookings().isEmpty());
 	}
 
 	@Test

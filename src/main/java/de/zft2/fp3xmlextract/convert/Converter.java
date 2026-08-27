@@ -61,7 +61,7 @@ public class Converter extends AccountProcessor<Fp3XmlBankAccount> {
 		
 		super();
 		
-		setConfig(new ConverterConfig(false, true));
+		setConfig(new ConverterConfig(false, false, true));
 	}
 	
 	public Converter(ConverterConfig config) throws ConfigurationException {
@@ -173,18 +173,18 @@ public class Converter extends AccountProcessor<Fp3XmlBankAccount> {
 			//account.setBankName(element.getElementsByTagName("BANKNAME").item(0) != null ? element.getElementsByTagName("BANKNAME").item(0).getTextContent() : null); // f. PayPal
 			
 			Node first = element.getElementsByTagName("KONTOBUCH").item(0);
-			if (propsSkip.get(account.getIdentifier()) == null && first != null) {
+			if (propsSkip.get(account.getIdentifier()) == null) {
 
 				final String configuredAccountName = findAccountNamePP(account.getIdentifier());
 				account.setNamePP(configuredAccountName != null ? configuredAccountName : account.getAccountName());
 
 				log.trace("\n\nElement: {} IBAN: {} KONTONR: {}", node.getNodeName(), iban, account.getNumber());
 
-				NodeList listBuchungen = first.getChildNodes();
+				NodeList listBuchungen = first != null ? first.getChildNodes() : null;
 
 				List<Fp3XmlBooking> records = extractBookings(node, account, listBuchungen);
 
-				if (account != null && !records.isEmpty()) {
+				if (!records.isEmpty() || config.isWithEmptyAccounts()) {
 					account.setBookings(records);
 					accountList.add(account);
 				}
@@ -210,6 +210,9 @@ public class Converter extends AccountProcessor<Fp3XmlBankAccount> {
 		
 		ArrayList<Fp3XmlBooking> records = new ArrayList<>();
 		
+		if (listBuchungen == null)
+			return records;
+
 		for (int tempB = 0; tempB < listBuchungen.getLength(); tempB++) {
 
 			Node nodeB = listBuchungen.item(tempB);
