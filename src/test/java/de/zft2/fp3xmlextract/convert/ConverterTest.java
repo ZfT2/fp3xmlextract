@@ -3,6 +3,7 @@ package de.zft2.fp3xmlextract.convert;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.math.BigDecimal;
@@ -72,6 +73,8 @@ class ConverterTest extends CoreBookingUtil {
 		assertEquals("18884058", konto.getNumber());
 		assertEquals(5, konto.getBookings().size());
 		assertEquals("24.08.06", fromLocalDate(konto.getBookings().get(0).getDate()));
+		assertNull(konto.getBookings().get(0).getCrossAccountIBAN());
+		assertEquals("1061525816", konto.getBookings().get(0).getCrossAccountNumber());
 
 		konto = (Fp3XmlBankAccount) iterator.next();
 		assertEquals("DE71500105170990651720", konto.getIban());

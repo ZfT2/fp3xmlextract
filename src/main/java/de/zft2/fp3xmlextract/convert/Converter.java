@@ -229,13 +229,7 @@ public class Converter extends AccountProcessor<Fp3XmlBankAccount> {
 			
 			LocalDate dateBooking = parseLocalDate(elementBuchung.getElementsByTagName("DATUM").item(0).getTextContent());
 			
-			String crossIban = null;
-			if(elementBuchung.getElementsByTagName(TAG_IBAN).item(0) != null) {
-				crossIban = elementBuchung.getElementsByTagName(TAG_IBAN).item(0).getTextContent();
-			}
-			if(crossIban == null && elementBuchung.getElementsByTagName(TAG_KONTONR).item(0) != null) {
-				crossIban = elementBuchung.getElementsByTagName(TAG_KONTONR).item(0).getTextContent();
-			}
+			String crossIban = extractElementText(elementBuchung, TAG_IBAN, null);
 			
 			String crossBic = extractElementText(elementBuchung, "BIC", null);
 			

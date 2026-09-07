@@ -865,19 +865,25 @@ class Fp3XmlBookingProcessorTest extends CoreBookingUtil {
 
 	}
 
-	private void checkBooking(Fp3XmlBooking booking, String date, String purpose, String amountStr, String crossAccountIBAN, String typStr) {
+	private void checkBooking(Fp3XmlBooking booking, String date, String purpose, String amountStr, String counterpartIdentifier, String typStr) {
 		assertEquals(asLocalDate(date), booking.getDate());
 		assertEquals(purpose, booking.getPurpose());
 		assertEquals(amountStr, booking.getAmountStr());
-		assertEquals(crossAccountIBAN, booking.getCrossAccountIBAN());
+		assertTrue(hasCounterpartIdentifier(booking, counterpartIdentifier));
 		assertEquals(typStr, booking.getTyp().toString());
 	}
 
-	private boolean checkBookingInList(Fp3XmlBooking booking, String date, String purpose, String amountStr, String crossAccountIBAN, String typStr) {
+	private boolean checkBookingInList(Fp3XmlBooking booking, String date, String purpose, String amountStr, String counterpartIdentifier,
+			String typStr) {
 		return asLocalDate(date).equals(booking.getDate()) && purpose.equalsIgnoreCase(booking.getPurpose())
 				&& amountStr.equalsIgnoreCase(booking.getAmountStr())
-				&& (crossAccountIBAN == null || crossAccountIBAN.equalsIgnoreCase(booking.getCrossAccountIBAN()))
+				&& hasCounterpartIdentifier(booking, counterpartIdentifier)
 				&& (typStr == null || typStr.equalsIgnoreCase(booking.getTyp().toString()));
+	}
+
+	private boolean hasCounterpartIdentifier(Fp3XmlBooking booking, String counterpartIdentifier) {
+		return counterpartIdentifier == null || counterpartIdentifier.equalsIgnoreCase(booking.getCrossAccountIBAN())
+				|| counterpartIdentifier.equalsIgnoreCase(booking.getCrossAccountNumber());
 	}
 
 	private Fp3XmlBankAccount getKontoFromResultList(Collection<Fp3XmlBankAccount> kontenList, String kontoName) {
