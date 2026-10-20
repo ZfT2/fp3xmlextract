@@ -1,6 +1,7 @@
 package de.zft2.fp3xmlextract.convert;
 
 import java.util.Collection;
+import java.util.function.BiPredicate;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -67,6 +68,14 @@ public class Fp3XmlBookingProcessor extends BookingProcessor<Fp3XmlBooking, Fp3X
 		if (withTransferAccount)
 			transferAccount = new Fp3XmlBankAccount();
 		generateCrossBookings(accountList, daysRebooking, transferAccount);
+	}
+
+	public void generateCrossBookings(Collection<Fp3XmlBankAccount> accountList, boolean withTransferAccount, int daysRebooking,
+			BiPredicate<Fp3XmlBankAccount, Fp3XmlBankAccount> missingRecipientRoute) {
+		Fp3XmlBankAccount transferAccount = null;
+		if (withTransferAccount)
+			transferAccount = new Fp3XmlBankAccount();
+		generateCrossBookings(accountList, daysRebooking, transferAccount, missingRecipientRoute);
 	}
 
 }

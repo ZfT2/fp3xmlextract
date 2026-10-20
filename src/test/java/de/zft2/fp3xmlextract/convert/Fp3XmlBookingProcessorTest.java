@@ -45,6 +45,8 @@ class Fp3XmlBookingProcessorTest extends CoreBookingUtil {
 	private static String filenameSameDayNoDiffTwoRebookings01;
 	private static String filenameSameDayNoDiffTwoRebookings02;
 
+	private static String filenameOneDayDiffWithoutRecipient01;
+
 	private static Converter converter;
 	private static Fp3XmlBookingProcessor bookingProcessor;
 
@@ -77,6 +79,8 @@ class Fp3XmlBookingProcessorTest extends CoreBookingUtil {
 
 		filenameSameDayNoDiffTwoRebookings01 = "src/test/resources/testdata/konto_umbuchung_same_day_two_test_01.xml";
 		filenameSameDayNoDiffTwoRebookings02 = "src/test/resources/testdata/konto_umbuchung_same_day_two_test_02.xml";
+
+		filenameOneDayDiffWithoutRecipient01 = "src/test/resources/testdata/konto_umbuchung_one_day_difference_without_recipient_test01.xml";
 
 		try {
 			ConverterConfig config = new ConverterConfig(false, true, false);
@@ -468,6 +472,34 @@ class Fp3XmlBookingProcessorTest extends CoreBookingUtil {
 				booking -> checkBookingInList(booking, "02.02.10", "AG D-Bank 01-10  UEBERWEISUNGSGUTSCHRIFT", "-25518,14", "0018884058", "Umbuchung (Ausgang)")));
 		assertTrue(konto.getBookings().stream()
 				.anyMatch(booking -> checkBookingInList(booking, "01.02.10", "AG D-Bank 01-10  Überweisung", "25518,14", "990651720", "Umbuchung (Eingang)")));
+	}
+
+	@Test
+	void testBookingProcessorUmbuchungWithOneDayDifferenceWithoutRecipient() throws Exception {
+
+		Collection<Fp3XmlBankAccount> kontenList = converter.convertXmlToCsvEntries(filenameOneDayDiffWithoutRecipient01);
+		bookingProcessor.addBookingTypesToAccountBookings(kontenList);
+		bookingProcessor.generateCrossBookings(kontenList, false, DAYS_REBOOKING,
+				(sourceAccount, targetAccount) -> "Girokonto H-Bank".equals(sourceAccount.getNamePP())
+						&& "Tagesgeld J-Bank".equals(targetAccount.getNamePP()));
+
+		assertNotNull(kontenList);
+
+		assertEquals(2, kontenList.size());
+
+		// Konto (Basis)
+		Fp3XmlBankAccount konto = checkKontoHBank(getKontoFromResultList(kontenList, "Girokonto H-Bank"));
+		assertEquals(1, konto.getBookings().size());
+
+		assertTrue(konto.getBookings().stream().anyMatch(booking -> checkBookingInList(booking, "22.05.24",
+				"EndtoEnd: NOTPROVIDED  Auszahlung 022 KT Direktbank  UEBERWEISUNG", "100,00", "DE55500150010006290050", "Umbuchung (Eingang)")));
+		// Konto (Gegenkonto)
+		konto = checkKontoJBank(getKontoFromResultList(kontenList, "Tagesgeld J-Bank"));
+
+		assertTrue(konto.getBookings().stream().anyMatch(booking -> checkBookingInList(booking, "21.05.24",
+				"Kundenref.: Payment-Information-ID-3390  EndtoEnd: NOTPROVIDED  Auszahlung 022 KT Direktbank TAN1:446213 IBAN: DE92500617410200174051 BIC: GENODE99ABC  Überweisungsauftrag",
+				"-100,00", "DE92500617410200174051", "Umbuchung (Ausgang)")));
+		assertNotNull(konto.getBookings().get(0).getCrossBooking());
 	}
 
 	@Test
