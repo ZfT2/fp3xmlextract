@@ -8,7 +8,9 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
 import java.time.format.DateTimeParseException;
+import java.time.temporal.ChronoField;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -36,6 +38,9 @@ import de.zft2.fp3xmlextract.data.Fp3XmlBooking.SepaTyp;
 public class Converter extends AccountProcessor<Fp3XmlBankAccount> {
 
 	private static Logger log = LogManager.getLogger(Converter.class);
+
+	private static final DateTimeFormatter DATE_FORMATTER = new DateTimeFormatterBuilder()
+			.appendPattern("dd.MM.").appendValueReduced(ChronoField.YEAR, 2, 2, 1990).toFormatter();
 	
 	private static final String TAG_KONTO = "KONTO";
 	private static final String TAG_IBAN = "IBAN";
@@ -338,7 +343,7 @@ public class Converter extends AccountProcessor<Fp3XmlBankAccount> {
 	private LocalDate parseLocalDate(String dateStr) {
 		if (dateStr != null) {
 			try {
-				return LocalDate.parse(dateStr, DateTimeFormatter.ofPattern("dd.MM.uu"));
+				return LocalDate.parse(dateStr, DATE_FORMATTER);
 			} catch (DateTimeParseException dtpe) {
 				log.warn("Could not parse date: {}", dateStr, dtpe);
 			}

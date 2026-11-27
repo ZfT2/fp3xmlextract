@@ -7,11 +7,18 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.math.BigDecimal;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.time.LocalDate;
 import java.util.Collection;
 import java.util.Iterator;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import de.zft2.core.dto.Booking.Typ;
 import de.zft2.core.exception.ConfigurationException;
@@ -57,6 +64,50 @@ class ConverterTest extends CoreBookingUtil {
 		} catch (ConfigurationException e) {
 			e.printStackTrace();
 		}
+	}
+
+	@ParameterizedTest
+	@CsvSource({
+			"20.05.00, 2000-05-20, 21.05.00, 2000-05-21",
+			"20.05.26, 2026-05-20, 21.05.26, 2026-05-21",
+			"20.05.89, 2089-05-20, 21.05.89, 2089-05-21",
+			"20.05.90, 1990-05-20, 21.05.90, 1990-05-21",
+			"20.05.99, 1999-05-20, 21.05.99, 1999-05-21",
+			"20.05.26, 2026-05-20, ,",
+			"20.05.26, 2026-05-20, '',",
+			"20.05.26, 2026-05-20, invalid,",
+			"20.05.26, 2026-05-20, 21.05.1999,",
+			"31.02.26, 2026-02-28, 31.02.26, 2026-02-28"
+	})
+	void testXmlDates(String bookingDate, String expectedBookingDate, String valueDate, String expectedValueDate,
+			@TempDir Path tempDir) throws Exception {
+		Path input = tempDir.resolve("dates.xml");
+		Files.writeString(input, """
+				<KONTEN><KONTO><KONTONR>123456</KONTONR><KONTOBUCH><BUCHUNG>
+				<DATUM>%s</DATUM>%s<ZWECK>Test</ZWECK><BETRAG>1,00</BETRAG>
+				</BUCHUNG></KONTOBUCH></KONTO></KONTEN>
+				""".formatted(bookingDate, valueDate == null ? "" : "<VALUTA>" + valueDate + "</VALUTA>"));
+		Converter testConverter = new Converter(new ConverterConfig(false, false, false));
+		Fp3XmlBooking booking = testConverter.convertXmlToCsvEntries(input.toString()).iterator().next().getBookings().get(0);
+		LocalDate expectedValue = expectedValueDate == null ? null : LocalDate.parse(expectedValueDate);
+		assertEquals(LocalDate.parse(expectedBookingDate), booking.getDateBooking());
+		assertEquals(expectedValue, booking.getDateValue());
+		assertEquals(expectedValue != null ? expectedValue : LocalDate.parse(expectedBookingDate), booking.getDate());
+	}
+
+	@ParameterizedTest
+	@ValueSource(booleans = { false, true })
+	void testFp3Dates(boolean withValueDate, @TempDir Path tempDir) throws Exception {
+		Path input = tempDir.resolve("dates.fp3");
+		Files.writeString(input, """
+				<root><b2><m21 u="Test"/><m24 u="1,00"/>
+				<m27 u="20.05.90%s"/><m28 u=""/></b2></root>
+				""".formatted(withValueDate ? "&#10;21.05.99" : ""));
+		Converter testConverter = new Converter(new ConverterConfig(false, false, false));
+		Fp3XmlBooking booking = testConverter.convertFp3ToCsvEntries(input.toString()).iterator().next();
+		assertEquals(LocalDate.of(1990, 5, 20), booking.getDateBooking());
+		assertEquals(withValueDate ? LocalDate.of(1999, 5, 21) : null, booking.getDateValue());
+		assertEquals(withValueDate ? LocalDate.of(1999, 5, 21) : LocalDate.of(1990, 5, 20), booking.getDate());
 	}
 
 	@Test
